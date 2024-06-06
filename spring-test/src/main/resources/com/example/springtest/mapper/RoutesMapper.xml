@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springtest.mapper.RoutesMapper">
+    <select id="routesquery" parameterType="java.util.List" resultType="com.example.springtest.entity.Routes">
+        SELECT * FROM test.routes WHERE id IN
+        <foreach item="item" collection="routesid" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <delete id="routesdelete" parameterType="java.util.List">
+        DELETE FROM test.routes WHERE id IN
+        <foreach item="item" collection="menulist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

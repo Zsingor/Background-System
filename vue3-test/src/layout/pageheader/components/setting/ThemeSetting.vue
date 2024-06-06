@@ -1,0 +1,263 @@
+<template>
+  <div>
+    <el-divider content-position="left">
+      <h3>预设主题</h3>
+    </el-divider>
+    <div class="theme-container">
+      <div class="theme-container-item" @click="setLayoutTheme('theme-1')">
+        <el-container>
+          <el-header height="20px" style="background: #16aad8"/>
+          <el-container>
+            <el-aside width="40px" style="height:100px;background: #545c64"/>
+            <el-main style="background: #F8F8F8"></el-main>
+          </el-container>
+        </el-container>
+      </div>
+      <div class="theme-container-item" @click="setLayoutTheme('theme-2')">
+        <el-container>
+          <el-header height="20px" style="background: hsl(160, 57%, 35%)"/>
+          <el-container>
+            <el-aside width="40px" style="height:100px;background: #545c64"/>
+            <el-main style="background: #F8F8F8"></el-main>
+          </el-container>
+        </el-container>
+      </div>
+      <div class="theme-container-item" @click="setLayoutTheme('theme-3')">
+        <el-container>
+          <el-header height="20px" style="background: hsl(160, 9%, 94%)"/>
+          <el-container>
+            <el-aside width="40px" style="height:100px;background: #E5E5E5"/>
+            <el-main style="background: #F8F8F8"></el-main>
+          </el-container>
+        </el-container>
+      </div>
+      <div class="theme-container-item" @click="setLayoutTheme('theme-4')">
+        <el-container>
+          <el-header height="20px" style="background: hsl(61, 0%, 19%)"/>
+          <el-container>
+            <el-aside width="40px" style="height:100px;background: #3c3f41"/>
+            <el-main style="background: #F8F8F8"></el-main>
+          </el-container>
+        </el-container>
+      </div>
+    </div>
+    <el-divider content-position="left">
+      <h3>主题样式</h3>
+    </el-divider>
+    <div class="theme-item">
+      <p>Primary：</p>
+      <el-color-picker size="default" v-model="persistentConfig.theme.global.primary"
+                       @active-change="updatePrimaryTheme"/>
+    </div>
+    <div class="theme-item">
+      <p>Info：</p>
+      <el-color-picker size="default" v-model="persistentConfig.theme.global.info"
+                       @active-change="updateInfoTheme"/>
+    </div>
+    <div class="theme-item">
+      <p>Success：</p>
+      <el-color-picker size="default" v-model="persistentConfig.theme.global.success"
+                       @active-change="updateSuccessTheme"/>
+    </div>
+    <div class="theme-item">
+      <p>Warning：</p>
+      <el-color-picker size="default" v-model="persistentConfig.theme.global.warning"
+                       @active-change="updateWarningTheme"/>
+    </div>
+    <div class="theme-item">
+      <p>Error：</p>
+      <el-color-picker size="default" v-model="persistentConfig.theme.global.error"
+                       @active-change="updateErrorTheme"/>
+    </div>
+    <el-button style="width: 50%;margin-left:25%;margin-top: 8px;margin-bottom: 8px;"
+               size="default" type="info"
+               @click="resetthemedefault">
+      恢复默认设置
+    </el-button>
+    <el-divider content-position="left">
+      <h3>布局样式</h3>
+    </el-divider>
+    <div class="theme-item">
+      <p>顶部导航背景：</p>
+      <el-color-picker size="default" color-format="hsl"
+                       v-model="persistentConfig.theme.header.bgColor"
+                       @active-change="updateHeader"/>
+    </div>
+    <div class="theme-item">
+      <p>导航标签背景：</p>
+      <el-color-picker size="default" color-format="hsl"
+                       v-model="persistentConfig.theme.tag.bgColor"
+                       @active-change="updateTag"/>
+    </div>
+    <div class="theme-item">
+      <p>侧边栏背景：</p>
+      <el-color-picker size="default"
+                       v-model="persistentConfig.theme.aside.bgColor"
+                       @active-change="updateAside"/>
+    </div>
+    <div class="theme-item">
+      <p>侧边栏文字颜色：</p>
+      <el-color-picker size="default"
+                       v-model="persistentConfig.theme.aside.fontColor"
+                       @active-change="updateAsideFontColor"/>
+    </div>
+    <div class="theme-item">
+      <p>侧边栏文字激活颜色：</p>
+      <el-color-picker size="default"
+                       v-model="persistentConfig.theme.aside.fontActiveColor"
+                       @active-change="updateAsideFontActiveColor"/>
+    </div>
+    <el-button style="width: 50%;margin-left:25%;margin-top: 8px;margin-bottom: 8px;"
+               size="default" type="info"
+               @click="()=>{
+                 persistentConfig.theme.header=_.cloneDeep(defaultTheme.header)
+                 persistentConfig.theme.tag=_.cloneDeep(defaultTheme.tag)
+                 persistentConfig.theme.aside=_.cloneDeep(defaultTheme.aside)
+               }">
+      恢复默认设置
+    </el-button>
+  </div>
+</template>
+
+<script setup>
+import _ from "lodash";
+import {
+  persistentConfig,
+  defaultTheme,
+  updatePrimaryTheme,
+  updateInfoTheme,
+  updateSuccessTheme, updateWarningTheme, updateErrorTheme
+} from "@/layout/layout.js";
+
+const setLayoutTheme=(type)=>{
+  switch (type) {
+    case "theme-1":
+      updateHeader("#16aad8");
+      updateTag("#16aad8");
+      updateAside("#545c64");
+      persistentConfig.theme.aside.fontColor = "#ffffff";
+      persistentConfig.theme.aside.fontActiveColor = "#ffd04b";
+      break;
+    case "theme-2":
+      updateHeader("hsl(160, 57%, 35%)");
+      updateTag("hsl(160, 57%, 35%)");
+      updateAside("#545c64");
+      persistentConfig.theme.aside.fontColor = "#ffffff";
+      persistentConfig.theme.aside.fontActiveColor = "#ffd04b";
+      break;
+    case "theme-3":
+      updateHeader("hsl(160,10%,95%)");
+      updateTag("hsl(200,57%,50%)");
+      updateAside("#E5E5E5");
+      persistentConfig.theme.aside.fontColor = "#171616";
+      persistentConfig.theme.aside.fontActiveColor = "#00AC9B";
+      break;
+    case "theme-4":
+      updateHeader("hsl(61, 0%, 19%)");
+      updateTag("hsl(61, 0%, 19%)");
+      updateAside("#3c3f41");
+      persistentConfig.theme.aside.fontColor = "#DBDBDB";
+      persistentConfig.theme.aside.fontActiveColor = "#00BBFF";
+  }
+}
+
+//恢复按钮主题色的默认配置
+const resetthemedefault=()=>{
+  persistentConfig.theme.global=_.cloneDeep(defaultTheme.global)
+  updatePrimaryTheme(persistentConfig.theme.global.primary)
+  updateInfoTheme(persistentConfig.theme.global.info)
+  updateSuccessTheme(persistentConfig.theme.global.success)
+  updateErrorTheme(persistentConfig.theme.global.error)
+  updateWarningTheme(persistentConfig.theme.global.warning)
+}
+
+// 更新导航头主题
+function updateHeader(value) {
+  const hue = Number(value.substring(value.indexOf("(") + 1, value.indexOf(",")));
+  const saturation = Number(value.substring(value.indexOf(",") + 1, value.indexOf("%")));
+  const lightness = Number(value.substring(value.lastIndexOf(",") + 1, value.lastIndexOf("%")));
+  let lightness1;
+  let lightness2;
+  let fontColor;
+  persistentConfig.theme.header.bgColor = value;
+  if (lightness < 70) {
+    lightness1 = lightness + 15;
+    lightness2 = lightness + 30;
+    fontColor = `hsl(${hue},${saturation}%,100%)`;
+  } else {
+    lightness1 = lightness - 20;
+    lightness2 = lightness - 40;
+    fontColor = `hsl(${hue},${saturation}%,${lightness - 70}%)`;
+  }
+  persistentConfig.theme.header.bgColor1 = `hsl(${hue},${saturation}%,${lightness1}%)`;
+  persistentConfig.theme.header.bgColor2 = `hsl(${hue},${saturation}%,${lightness2}%)`;
+  persistentConfig.theme.header.fontColor = fontColor;
+}
+
+// 更新标签导航主题
+function updateTag(value) {
+  const hue = Number(value.substring(value.indexOf("(") + 1, value.indexOf(",")));
+  const saturation = Number(value.substring(value.indexOf(",") + 1, value.indexOf("%")));
+  const lightness = Number(value.substring(value.lastIndexOf(",") + 1, value.lastIndexOf("%")));
+  let lightness1;
+  let lightness2;
+  let fontColor;
+  persistentConfig.theme.tag.bgColor = value;
+  if (lightness < 70) {
+    lightness1 = lightness + 15;
+    lightness2 = lightness + 30;
+    fontColor = `hsl(${hue},${saturation}%,100%)`;
+  } else {
+    lightness1 = lightness - 20;
+    lightness2 = lightness - 40;
+    fontColor = `hsl(${hue},${saturation}%,${lightness - 70}%)`;
+  }
+  persistentConfig.theme.tag.bgColor1 = `hsl(${hue},${saturation}%,${lightness1}%)`;
+  persistentConfig.theme.tag.bgColor2 = `hsl(${hue},${saturation}%,${lightness2}%)`;
+  persistentConfig.theme.tag.fontColor = fontColor;
+}
+
+// 更新侧边栏背景
+const updateAside=(value)=>{
+  persistentConfig.theme.aside.bgColor = value;
+}
+
+// 更新侧边栏文字颜色
+const updateAsideFontColor=(value)=>{
+  persistentConfig.theme.aside.fontColor = value;
+}
+
+// 更新侧边栏文字激活颜色
+const updateAsideFontActiveColor=(value)=>{
+  persistentConfig.theme.aside.fontActiveColor = value;
+}
+</script>
+
+<style scoped>
+.theme-container {
+  display: flex;
+  flex-wrap: wrap;
+
+  .theme-container-item {
+    width: 50%;
+    height: 130px;
+    padding: 8px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.theme-item {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  p {
+    color: #545c64;
+  }
+}
+</style>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springtest.mapper.UserMapper">
+
+    <select id="userquery" parameterType="com.example.springtest.entity.Form" resultType="com.example.springtest.entity.User">
+        SELECT * FROM test.user
+        WHERE 1=1
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="sex != null and sex != ''">
+            AND sex LIKE CONCAT('%', #{sex}, '%')
+        </if>
+        <if test="address != null and address != ''">
+            AND address LIKE CONCAT('%', #{address}, '%')
+        </if>
+        <if test="createdate != null and createdate != ''">
+            AND createdate = #{createdate}
+        </if>
+        <if test="startdate != null and startdate != ''">
+            AND startdate = #{startdate}
+        </if>
+        <if test="enddate != null and enddate != ''">
+            AND enddate = #{enddate}
+        </if>
+    </select>
+
+</mapper>
