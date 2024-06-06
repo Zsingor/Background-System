@@ -23,7 +23,6 @@ public class RoutesController {
     public Result routesquery(@RequestBody User user)
     {
         try {
-            //List<Routes> data=routesService.routesquery(user);
             JSONObject data=routesService.routesquery(user);
             return Result.success(data);
         }catch (Exception e){
