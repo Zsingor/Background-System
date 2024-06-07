@@ -1,4 +1,6 @@
 import axios from "axios";
+import {message} from "@/utils/message.js";
+import {userInfo} from "@/layout/user.js";
 
 //创建一个新的axios对象
 const request=axios.create({
@@ -13,9 +15,16 @@ const request=axios.create({
 // request拦截器
 // 可以在请求发送前对请求做一些处理
 request.interceptors.request.use(request => {
+    userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"));
+    let token=userInfo.baseInfo.token
+    if(token)
+    {
+        request.headers['token']=token
+    }
     return request;
 }, error => {
-    return error;
+    console.log('request error'+error)
+    return Promise.reject(error)
 });
 
 //response拦截器
@@ -28,8 +37,36 @@ request.interceptors.response.use(response=>{
     }
     return result
 },error => {
-    console.log('response error'+error)
-    return Promise.reject(error)
+    /* 网络连接失败自动处理 */
+    if (error.message.indexOf("Network Error") !== -1) {
+        message("无法连接服务器!", "error");
+        return Promise.reject(error);
+    }
+    /* 网络请求超时自动处理 */
+    if (error.message.indexOf("timeout") !== -1) {
+        message("服务器请求超时!", "error");
+        return Promise.reject(error);
+    }
+    /* 请求400处理 */
+    if (error.response.status === 400) {
+        message("请求不合法!", "error");
+        return Promise.reject(error);
+    }
+    /* 请求404处理 */
+    if (error.response.status === 404) {
+        message("请求接口不存在!", "error");
+        return Promise.reject(error);
+    }
+    if (error.response.status === 415) {
+        message("请求415!", "error");
+        return Promise.reject(error);
+    }
+    // 响应500处理
+    if (error.response.status === 500) {
+        message("服务器内部错误!", "error");
+        return Promise.reject(error);
+    }
+    return Promise.reject(error);
 })
 
 export default request

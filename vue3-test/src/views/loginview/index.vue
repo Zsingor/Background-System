@@ -17,7 +17,7 @@ const router = useRouter()
 var text=ref("")
 
 const login=()=>{
-  request.post("/routes/query",{name:text.value}).then(res => {
+  request.post("/user/login",{name:text.value}).then(res => {
     console.log("res.data",res.data)
     userInfo.baseInfo=res.data
     localStorage.setItem("User_Info", JSON.stringify(res.data)); //存储用户数据

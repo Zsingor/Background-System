@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface UserService {
 
+    JSONObject userlogin(User user);
+
     int useradd(User user);
 
     JSONObject userquery(Form form);

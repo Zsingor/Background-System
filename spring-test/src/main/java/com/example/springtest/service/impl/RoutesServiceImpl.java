@@ -18,21 +18,6 @@ import java.util.stream.Collectors;
 public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RoutesMapper routesMapper;
-    @Autowired
-    private UserMapper userMapper;
-
-    @Override
-    public JSONObject routesquery(User user) {
-        User user1 = userMapper.userRoutesquery(user);
-
-        List<Routes> routesList=routesMapper.routesquery(user1.getRoutesIdAsList());
-
-        List<Routes> menuList = Routeprocess(routesList);
-        JSONObject response = new JSONObject();
-        response.put("menuList", menuList);
-        response.put("user_name", user.getName());
-        return response;
-    }
 
     @Override
     public List<Routes> routesall() {
@@ -103,7 +88,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
     }
 
-    public List<Routes> Routeprocess(List<Routes> routesList){
+    public static List<Routes> Routeprocess(List<Routes> routesList){
         // 分类一级路由和二级路由
         List<Routes> parentRoutes = routesList.stream()
                 .filter(route -> route.getLevel() == 1)

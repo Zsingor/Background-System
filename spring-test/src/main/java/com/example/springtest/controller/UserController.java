@@ -21,6 +21,18 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    //用户登录
+    @PostMapping("/user/login")
+    public Result userlogin(@RequestBody User user)
+    {
+        try {
+            JSONObject data=userService.userlogin(user);
+            return Result.success(data);
+        }catch (Exception e){
+            return Result.error("查询失败");
+        }
+    }
+
     //用户添加
     @PostMapping("/user/add")
     public Result useradd(@RequestBody User user)

@@ -19,17 +19,6 @@ public class RoutesController {
     @Autowired
     private RoutesService routesService;
 
-    @PostMapping("/routes/query")
-    public Result routesquery(@RequestBody User user)
-    {
-        try {
-            JSONObject data=routesService.routesquery(user);
-            return Result.success(data);
-        }catch (Exception e){
-            return Result.error("查询失败");
-        }
-    }
-
     @PostMapping("/routes/all")
     public Result routesall()
     {

@@ -1,16 +1,19 @@
 package com.example.springtest;
 
+import com.auth0.jwt.exceptions.AlgorithmMismatchException;
+import com.auth0.jwt.exceptions.SignatureVerificationException;
+import com.auth0.jwt.exceptions.TokenExpiredException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.springtest.entity.User;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RoutesService;
 import com.example.springtest.service.UserService;
+import com.example.springtest.utils.JwtUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 @SpringBootTest
 class SpringTestApplicationTests {
@@ -24,17 +27,27 @@ class SpringTestApplicationTests {
 
     @Test
     void contextLoads() {
-        User user=new User();
-        //List<String> arr= Arrays.asList("1", "2", "3", "4", "5");
-        user.setName("user11");
-        //user.setRoutesIdFromList(arr);
-//        List<String> abs=user.getRoutesIdAsList();
-//        abs.add("3");
-//        user.setRoutesIdFromList(abs);
-        //userMapper.userroutesupdate(user);
-        //System.out.println(user.getRoutesIdAsList());
-
-        routesService.routesquery(user);
+        Map<String, Object> claims=new HashMap<>();
+        claims.put("username","user11");
+        String token= JwtUtils.generateJWT(claims);
+        System.out.println("token"+token);
+        try {
+            // 验证令牌
+            DecodedJWT verify=JwtUtils.parseJWT(token);
+            System.out.println(verify.getClaim("username"));
+        } catch (SignatureVerificationException e) {
+            e.printStackTrace();
+            System.out.println("1");
+        }catch (TokenExpiredException e){
+            e.printStackTrace();
+            System.out.println("1");
+        }catch (AlgorithmMismatchException e){
+            e.printStackTrace();
+            System.out.println("1");
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("1");
+        }
     }
 
 }

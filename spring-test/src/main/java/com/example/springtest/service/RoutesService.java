@@ -7,7 +7,6 @@ import com.example.springtest.entity.User;
 import java.util.List;
 
 public interface RoutesService {
-    JSONObject routesquery(User user);
 
     List<Routes> routesall();
 

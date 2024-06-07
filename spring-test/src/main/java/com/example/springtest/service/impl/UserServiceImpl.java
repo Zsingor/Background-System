@@ -3,14 +3,18 @@ package com.example.springtest.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Form;
+import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
 import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.UserService;
+import com.example.springtest.utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Service
@@ -19,6 +23,25 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private RoutesMapper routesMapper;
+
+    @Override
+    public JSONObject userlogin(User user) {
+        User user1 = userMapper.userRoutesquery(user);
+
+        List<Routes> routesList=routesMapper.routesquery(user1.getRoutesIdAsList());
+
+        List<Routes> menuList = RoutesServiceImpl.Routeprocess(routesList);
+
+        Map<String, Object> claims=new HashMap<>();
+        claims.put("user_name",user.getName());
+        String token= JwtUtils.generateJWT(claims);
+
+        JSONObject response = new JSONObject();
+        response.put("menuList", menuList);
+        response.put("user_name", user.getName());
+        response.put("token", token);
+        return response;
+    }
 
     // 用户注册
     @Override
