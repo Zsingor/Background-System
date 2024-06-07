@@ -98,6 +98,7 @@ export function resetWatch(xGrid) {
     )
 }
 
+//返回上方按钮分区
 export function getToolbarConfig() {
     return {
         className: 'custom-vxe-table-toolbar',

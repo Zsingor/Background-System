@@ -10,7 +10,7 @@
 <script setup>
 import request from "@/request/index.js";
 import {ref} from "vue";
-import {parseDate} from "@/utils/commons.js";
+import {getExplorerInfo, parseDate} from "@/utils/commons.js";
 import FullDialog from "@/views/home/components/FullDialog.vue";
 
 
@@ -38,7 +38,9 @@ const setrequest = () => {
 }
 
 const opendialog=()=>{
-  showdialog.value=true
+  //showdialog.value=true
+  let explorerInfo=getExplorerInfo()
+  console.log("explorerInfo",explorerInfo)
 }
 </script>
 
