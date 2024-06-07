@@ -1,5 +1,5 @@
 import axios from "axios";
-import {message} from "@/utils/message.js";
+import {message, onceMessage} from "@/utils/message.js";
 import {userInfo} from "@/layout/user.js";
 import router from "@/router/index.js";
 
@@ -38,7 +38,7 @@ request.interceptors.response.use(response=>{
     }
     if(result.code===5001)
     {
-        message(result.msg,"error")
+        onceMessage.error(result.msg)
         router.push("/login")
     }
     return result

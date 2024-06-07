@@ -95,3 +95,29 @@ function addLight(color, amount) {
     const c = cc > 255 ? 255 : cc;
     return c.toString(16).length > 1 ? c.toString(16) : `0${c.toString(16)}`;
 }
+
+/**
+ * 计算rgb颜色的亮度
+ * @param {number} r red
+ * @param {number} g green
+ * @param {number} b blue
+ */
+function luminanace(r, g, b) {
+    const a = [r, g, b].map((v) => {
+        v /= 255;
+        return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return a[0] * 0.2126 + a[1] * 0.7152 + a[2] * 0.0722;
+}
+
+/**
+ * 计算两个rgb颜色的对比度
+ * @param {array} rgb1 rgb color 1
+ * @param {array} rgb2 rgb color 2
+ */
+export function contrast(rgb1, rgb2) {
+    return (
+        (luminanace(~~rgb1[0], ~~rgb1[1], ~~rgb1[2]) + 0.05) /
+        (luminanace(rgb2[0], rgb2[1], rgb2[2]) + 0.05)
+    );
+}
