@@ -84,10 +84,16 @@
                        @active-change="updateHeader"/>
     </div>
     <div class="theme-item">
-      <p>导航标签背景：</p>
+      <p>导航标签激活背景颜色：</p>
       <el-color-picker size="default" color-format="hsl"
                        v-model="persistentConfig.theme.tag.bgColor"
                        @active-change="updateTag"/>
+    </div>
+    <div class="theme-item">
+      <p>导航标签激活文字颜色：</p>
+      <el-color-picker size="default" color-format="hsl"
+                       v-model="persistentConfig.theme.tag.activeFontColor"
+                       @active-change="updateTagFontColor"/>
     </div>
     <div class="theme-item">
       <p>侧边栏背景：</p>
@@ -172,7 +178,7 @@ const resetthemedefault=()=>{
 }
 
 // 更新导航头主题
-function updateHeader(value) {
+const updateHeader=(value)=>{
   const hue = Number(value.substring(value.indexOf("(") + 1, value.indexOf(",")));
   const saturation = Number(value.substring(value.indexOf(",") + 1, value.indexOf("%")));
   const lightness = Number(value.substring(value.lastIndexOf(",") + 1, value.lastIndexOf("%")));
@@ -195,7 +201,7 @@ function updateHeader(value) {
 }
 
 // 更新标签导航主题
-function updateTag(value) {
+const updateTag=(value)=>{
   const hue = Number(value.substring(value.indexOf("(") + 1, value.indexOf(",")));
   const saturation = Number(value.substring(value.indexOf(",") + 1, value.indexOf("%")));
   const lightness = Number(value.substring(value.lastIndexOf(",") + 1, value.lastIndexOf("%")));
@@ -215,6 +221,10 @@ function updateTag(value) {
   persistentConfig.theme.tag.bgColor1 = `hsl(${hue},${saturation}%,${lightness1}%)`;
   persistentConfig.theme.tag.bgColor2 = `hsl(${hue},${saturation}%,${lightness2}%)`;
   persistentConfig.theme.tag.fontColor = fontColor;
+}
+
+const updateTagFontColor=(value)=>{
+  persistentConfig.theme.tag.activeFontColor = value;
 }
 
 // 更新侧边栏背景

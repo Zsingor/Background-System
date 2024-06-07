@@ -52,7 +52,5 @@ const drawerSize = computed(() => {
 </script>
 
 <style scoped>
-.drawer_content{
-  margin-right: 8px;
-}
+
 </style>

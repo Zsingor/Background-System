@@ -10,6 +10,7 @@ import router from './router' //导入路由
 import * as ElementPlusIconsVue from '@element-plus/icons' //导入图标
 import {loadConfig} from "@/setup.js";
 import "@/router/permission.js"
+import "@/styles/element-plus.css"
 
 const app = createApp(App)
 //关闭警告信息

@@ -7,23 +7,23 @@
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="drawer_content">
         <el-form ref="formRef" :model="rootData.formData" :rules="rootData.formRules"
-                 size="medium" label-width="130px" label-position="left">
+                 label-width="120px" label-position="left">
           <el-row :gutter="16">
             <el-col :span="12">
               <el-form-item label="名字:" prop="name">
-                <el-input v-model="rootData.formData.name" clearable/>
+                <el-input size="large" v-model="rootData.formData.name" clearable/>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="性别:" prop="sex">
-                <el-select v-model="rootData.formData.sex" clearable>
+                <el-select size="large" v-model="rootData.formData.sex" clearable>
                   <el-option v-for="item in sexList" :key="item.value" :value="item.value" :label="item.label"/>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="12">
               <el-form-item label="创建时间:" prop="createdate">
-                <el-date-picker size="default" v-model="rootData.formData.createdate"
+                <el-date-picker size="large" v-model="rootData.formData.createdate"
                                 style="width: 100%;" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" />
               </el-form-item>
             </el-col>
@@ -36,22 +36,22 @@
                     range-separator="至"
                     start-placeholder="活动开始日期"
                     end-placeholder="活动结束日期"
-                    size="default"
+                    size="large"
                     style="width: 100%;"
                 />
               </el-form-item>
             </el-col>
             <el-col :span="24">
               <el-form-item label="地址:" prop="address">
-                <el-input v-model="rootData.formData.address"></el-input>
+                <el-input size="large" v-model="rootData.formData.address"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </div>
       <div class="drawer_footer">
-        <el-button @click="resetForm">重置表单</el-button>
-        <el-button style="margin-left: 45px" type="primary" native-type="submit"
+        <el-button size="large" @click="resetForm">重置表单</el-button>
+        <el-button size="large" style="margin-left: 45px" type="primary" native-type="submit"
                    :loading="rootData.submitLoading" @click="submitForm">提交表单
         </el-button>
       </div>

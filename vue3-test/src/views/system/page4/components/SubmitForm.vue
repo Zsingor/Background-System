@@ -1,13 +1,12 @@
 <template>
   <el-drawer :title="rootData.name" size="40%"
              :direction="persistentConfig.drawerPosition"
-             :show-close="false"
              v-model="rootData.showForm"
              @open="openHandler"
              @close="closeHandler">
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="drawer_content">
-        <el-form :model="rootData.formData" :rules="rootData.formRules" ref="formRef"
+        <el-form ref="formRef" :model="rootData.formData" :rules="rootData.formRules"
                  label-width="120px" label-position="left" status-icon>
           <el-form-item label="菜单标识:" prop="name">
             <el-input size="large" v-model="rootData.formData.name"/>

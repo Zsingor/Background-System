@@ -28,7 +28,7 @@
     <el-divider content-position="left">
       <h3>滚动条设置</h3>
     </el-divider>
-    <el-form label-width="140px" label-position="left" size="small">
+    <el-form label-width="140px" label-position="left" size="default">
       <el-form-item label="开启自定义滚动条：">
         <el-switch size="default" v-model="persistentConfig.scroll.openCustom"/>
       </el-form-item>
