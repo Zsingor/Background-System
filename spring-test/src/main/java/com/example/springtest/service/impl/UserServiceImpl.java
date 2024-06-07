@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public JSONObject userlogin(User user) {
-        User user1 = userMapper.userRoutesquery(user);
+        User user1 = userMapper.userPrimaryquery(user);
 
         List<Routes> routesList=routesMapper.routesquery(user1.getRoutesIdAsList());
 

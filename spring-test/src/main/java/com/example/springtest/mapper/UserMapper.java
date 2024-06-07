@@ -17,9 +17,9 @@ public interface UserMapper {
     List<User> userquery(User user);
 
 
-    //查询用户所拥有的路由
+    //根据对应的主键查询用户
     @Select("select * from test.user where name=#{name}")
-    User userRoutesquery(User user);
+    User userPrimaryquery(User user);
 
     //删除用户信息
     @Delete("delete from test.user where name=#{name}")

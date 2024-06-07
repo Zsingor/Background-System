@@ -18,6 +18,17 @@ import java.util.stream.Collectors;
 public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RoutesMapper routesMapper;
+    @Autowired
+    private UserMapper userMapper;
+
+    @Override
+    public List<Routes> routesquery(User user) {
+        User user1 = userMapper.userPrimaryquery(user);
+
+        List<Routes> routesList=routesMapper.routesquery(user1.getRoutesIdAsList());
+
+        return Routeprocess(routesList);
+    }
 
     @Override
     public List<Routes> routesall() {

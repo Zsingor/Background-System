@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface RoutesService {
 
+    List<Routes> routesquery(User user);
+
     List<Routes> routesall();
 
     List<Routes> routesParentquery();
