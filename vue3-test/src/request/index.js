@@ -1,6 +1,7 @@
 import axios from "axios";
 import {message} from "@/utils/message.js";
 import {userInfo} from "@/layout/user.js";
+import router from "@/router/index.js";
 
 //创建一个新的axios对象
 const request=axios.create({
@@ -34,6 +35,11 @@ request.interceptors.response.use(response=>{
     if(typeof result==='string')
     {
         result=result?JSON.parse(result):result
+    }
+    if(result.code===5001)
+    {
+        message(result.msg,"error")
+        router.push("/login")
     }
     return result
 },error => {

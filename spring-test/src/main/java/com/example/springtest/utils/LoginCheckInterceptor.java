@@ -15,6 +15,9 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
     @Override //目标资源运行前执行，返回true放行，返回false不放行
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
     {
+        //中文编码
+        response.setCharacterEncoding("UTF-8");
+
         //处理预检请求
         if(request.getMethod().equals("OPTIONS"))
         {
@@ -27,7 +30,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         //判断令牌是否存在,如果不存在则返回错误信息
         if (!StringUtils.hasLength(token))
         {
-            Result error = Result.error("NoLogin");
+            Result error = Result.error(5001,"用户未登录");
             //手动转换json对象
             String notLogin = JSONObject.toJSONString(error);
             response.getWriter().write(notLogin);
@@ -40,7 +43,7 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         }
         catch (Exception e) {
             //jwt解析失败，返回错误信息
-            Result error = Result.error("NoLogin");
+            Result error = Result.error(5001,"登录过期");
             //手动转换json对象
             String notLogin = JSONObject.toJSONString(error);
             response.getWriter().write(notLogin);

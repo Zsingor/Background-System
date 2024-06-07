@@ -17,10 +17,10 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         //配置白名单
         List<String> whileList = new ArrayList<>();
-        whileList.add("/**");
+        whileList.add("/user/login");
         //配置黑名单
         List<String> blackList = new ArrayList<>();
-        blackList.add("/login");
+        blackList.add("/**");
         registry.addInterceptor(loginCheckInterceptor)
                 //拦截所有发往有关用户资源的请求
                 .addPathPatterns(blackList)
