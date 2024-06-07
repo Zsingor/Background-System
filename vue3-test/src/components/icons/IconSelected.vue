@@ -22,8 +22,9 @@
       </el-scrollbar>
     </div>
     <div class="pagination-wrapper">
-      <el-pagination background layout="total, prev, pager, next, jumper"
+      <el-pagination background layout="total, sizes, prev, pager, next, jumper"
                      :total="iconCount"
+                     :page-sizes="[40, 80, 120, 160, 320]"
                      v-model:pageSize="pagination.pageSize"
                      v-model:currentPage="pagination.currentPage">
       </el-pagination>
@@ -70,7 +71,7 @@ const iconCount = computed(() => showIcons.value.length);
 // 分页
 const pagination = reactive({
   currentPage: 1,
-  pageSize: 70
+  pageSize: 80
 });
 
 // 触发选中事件
@@ -80,11 +81,6 @@ const selectedHandler = (item) => {
 </script>
 
 <style scoped>
-.background{
-  width: 100%;
-  height: 100%;
-}
-
 .icon-background{
   width: 100%;
   height: 100%;

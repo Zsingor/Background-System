@@ -12,10 +12,9 @@
 
 <style scoped>
 
-
 .full-dialog{
-  background: #16aad8;
   width: 100%;
   height: 100%;
+  background: #16aad8;
 }
 </style>

@@ -33,14 +33,17 @@ function closeEvent() {
 
 </script>
 
-<style scoped>
+<style>
+.el-dialog__body {
+  height: calc(100% - 40px);
+}
+
 .icon-wrapper {
   width: 100%;
   height: 100%;
 }
 
 .el-tabs, .el-tabs__content, .el-tab-pane {
-  width: 100%;
   height: 100%;
 }
 

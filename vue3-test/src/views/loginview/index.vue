@@ -7,7 +7,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import {createRouteAndMenu} from "@/router/permission.js";
+import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {persistentConfig} from "@/layout/layout.js";
 import request from "@/request/index.js";
 import {ref} from "vue";

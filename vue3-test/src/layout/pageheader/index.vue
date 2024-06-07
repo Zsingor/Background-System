@@ -47,7 +47,7 @@ import GlobalSetting from "@/layout/pageheader/components/setting/index.vue"
 import {projectName} from "@/setup.js";
 import {persistentConfig} from "@/layout/layout.js";
 import axios from "axios";
-import {createRouteAndMenu} from "@/router/permission.js";
+import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {reloadPage} from "@/layout/tags/tag.js";
 import {provide, reactive} from "vue";
 import { useRouter } from 'vue-router'

@@ -8,8 +8,8 @@ import VXETablePluginExportXLSX from 'vxe-table-plugin-export-xlsx' //导入vxe-
 import "exceljs"
 import router from './router' //导入路由
 import * as ElementPlusIconsVue from '@element-plus/icons' //导入图标
-import "@/mock/routedata.js";
 import {loadConfig} from "@/setup.js";
+import "@/router/permission.js"
 
 const app = createApp(App)
 //关闭警告信息

@@ -1,4 +1,4 @@
-import {createRouteAndMenu} from "@/router/permission.js";
+import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {isEmpty} from "@/utils/commons.js";
 import {ref} from "vue";
 import {
