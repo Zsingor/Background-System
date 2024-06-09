@@ -17,10 +17,13 @@ const request=axios.create({
 // 可以在请求发送前对请求做一些处理
 request.interceptors.request.use(request => {
     userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"));
-    let token=userInfo.baseInfo.token
-    if(token)
+    if(userInfo.baseInfo)
     {
-        request.headers['token']=token
+        let token=userInfo.baseInfo.token
+        if(token)
+        {
+            request.headers['token']=token
+        }
     }
     return request;
 }, error => {

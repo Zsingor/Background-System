@@ -7,7 +7,16 @@ router.beforeEach((to, from, next) => {
     //白名单
     const whiteList=['/login']
     userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"));
-    let token=userInfo.baseInfo.user_name
+    if(!userInfo.baseInfo)
+    {
+        if (to.path !== '/login') {
+            next('/login');
+        } else {
+            next();
+        }
+        return;
+    }
+    let token=userInfo.baseInfo.token
     let hasList=router.getRoutes()
     if(token){
         if(hasList.some(item => item.path === to.path))
