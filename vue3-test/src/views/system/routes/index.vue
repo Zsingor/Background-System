@@ -228,8 +228,7 @@ const gridOptions = reactive({
         body.removeRecords.forEach(item => {
           menu_ids.push(item.id)
         })
-        console.log("menu_ids", menu_ids)
-        return request.post("/routes/delete", menu_ids)
+        request.post("/routes/delete", menu_ids)
       }
     }
   },

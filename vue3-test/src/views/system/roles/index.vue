@@ -110,9 +110,15 @@ const deleterow=(row)=>{
     type: 'warning'
   }).then(() => {
     request.post("/roles/delete", row).then(res => {
-      console.log(res)
       xGrid.value.commitProxy('query')
-      message('删除成功')
+      if(res.code===1)
+      {
+        message('删除成功')
+      }
+      else
+      {
+        message(res.msg,"error")
+      }
     }).catch(() => {
       message("删除失败", "error")
     })

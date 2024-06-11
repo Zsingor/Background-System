@@ -18,10 +18,4 @@ public class User
     private Integer roleid;
     private String description;
     private String status;
-
-//    private String sex;
-//    private String address;
-//    private String createdate;
-//    private String startdate;
-//    private String enddate;
 }
