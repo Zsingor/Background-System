@@ -1,15 +1,12 @@
 <template>
   <el-row :gutter="8" style="padding-bottom: 8px" >
     <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.name" clearable placeholder="名字" />
+      <el-input size="default" v-model="rootData.queryData.name" clearable placeholder="用户名" />
     </el-col>
     <el-col :span="6">
-      <el-select v-model="rootData.queryData.sex" clearable placeholder="性别">
-        <el-option v-for="item in sexList" :key="item.value" :value="item.value" :label="item.label"/>
+      <el-select v-model="rootData.queryData.status" clearable placeholder="状态">
+        <el-option v-for="item in statusList" :key="item.value" :value="item.value" :label="item.label"/>
       </el-select>
-    </el-col>
-    <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.address" clearable placeholder="地址" />
     </el-col>
     <el-col :span="6">
       <el-select clearable placeholder="角色"
@@ -20,20 +17,10 @@
       </el-select>
     </el-col>
     <el-col :span="6">
-      <el-date-picker size="default" v-model="rootData.queryData.createdate"
-                      style="width: 100%;" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" placeholder="创建时间" />
+      <el-input size="default" v-model="rootData.queryData.email" clearable placeholder="邮箱" />
     </el-col>
-    <el-col :span="12">
-      <el-date-picker
-          v-model="rootData.queryData.date_list"
-          type="daterange"
-          value-format="YYYY-MM-DD"
-          range-separator="至"
-          start-placeholder="活动开始日期"
-          end-placeholder="活动结束日期"
-          size="default"
-          style="width: 100%;"
-      />
+    <el-col :span="6">
+      <el-input size="default" v-model="rootData.queryData.description" clearable placeholder="描述" />
     </el-col>
     <el-col :span="24" class="centered-buttons">
       <el-button size="default" type="primary" @click="querydata">查询</el-button>
@@ -48,9 +35,9 @@ import {inject, ref} from "vue";
 const rootData=inject('rootData')
 const xGrid = inject("xGrid");
 
-const sexList = ref([
-  {label: '男', value: 'male'},
-  {label: '女', value: 'female'}
+const statusList = ref([
+  {label: '未启用', value: '0'},
+  {label: '已启用', value: '1'}
 ])
 
 const querydata=()=>{

@@ -61,6 +61,10 @@ public class RolesController {
     @PostMapping("/roles/delete")
     public Result rolesdelete(@RequestBody Roles roles)
     {
+        if (roles.getId()==1)
+        {
+            return Result.error("无法删除该角色");
+        }
         int flag=rolesService.rolesdelete(roles);
         if (flag==1)
         {

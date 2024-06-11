@@ -13,9 +13,14 @@
       <template #role="{ row }">
         <div>{{ rootData.rolesList[row.roleid] }}</div>
       </template>
-      <!--  持续时间显示    -->
-      <template #duration="{ row }">
-        <div>{{ row.startdate }} —— {{ row.enddate }}</div>
+      <!--  状态显示    -->
+      <template #status="{ row }">
+        <div v-if="row.status==='1'">
+          <h4 style="color: #67C23A">已启用</h4>
+        </div>
+        <div v-else>
+          <h4 style="color: #F56C6C">未启用</h4>
+        </div>
       </template>
       <!--  操作按钮组    -->
       <template #operate="{ row }">
@@ -95,13 +100,13 @@ onMounted(() => {
 
 const addmessage = () => {
   Object.assign(rootData.formData, {
-    name: "",
-    sex: "",
-    address: "",
-    createdate: "",
-    startdate: "",
-    enddate: "",
-    date_list: [],
+    id:0,
+    name:"",
+    password:"",
+    email:"",
+    roleid:null,
+    description:"",
+    status:"1"
   })
   rootData.name = "添加信息"
   rootData.selectRow = null
@@ -109,16 +114,10 @@ const addmessage = () => {
 }
 
 const updaterow = (row) => {
-  console.log(row)
   Object.assign(rootData.formData, row)
-  rootData.formData.date_list = [row.startdate, row.enddate]
   rootData.name = "修改信息"
   rootData.selectRow = row
   rootData.showForm = true
-}
-
-const assignRoute = (row) => {
-  console.log(row)
 }
 
 const deleterow = (row) => {
@@ -148,13 +147,12 @@ const gridOptions = reactive({
     filter: true,
     form: true,
     props: {
-      // 对应响应结果 Promise<{ result: [], page: { total: 100 } }>
       result: 'result',
       total: 'page.total' // 配置响应结果总页数字段
     },
     // 只接收Promise，具体实现自由发挥
     ajax: {
-      query: ({form, sorts, filters, page}) => {
+      query: ({page}) => {
         xGrid.value.clearCheckboxRow()
         rootData.queryData["currentpage"]=page.currentPage
         rootData.queryData["pagesize"]=page.pageSize

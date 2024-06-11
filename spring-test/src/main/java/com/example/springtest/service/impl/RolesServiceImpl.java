@@ -7,7 +7,7 @@ import com.example.springtest.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RolesServiceImpl implements RolesService {
@@ -78,6 +78,14 @@ public class RolesServiceImpl implements RolesService {
     @Override
     public int rolesAssignRoute(Roles roles) {
         try {
+            List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
+
+            List<String> routeList=roles.getRoutesIdAsList();
+            Set<String> resultSet = new HashSet<>(routeList);
+            resultSet.addAll(whitelist);
+            List<String> resultList = new ArrayList<>(resultSet);
+
+            roles.setRoutesIdFromList(resultList);
             rolesMapper.rolesAssignRoute(roles);
             return 1;
         }

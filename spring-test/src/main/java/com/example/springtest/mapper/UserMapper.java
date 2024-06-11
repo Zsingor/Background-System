@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     //添加用户信息
-    @Insert("insert into test.user(name,sex,address,createdate,startdate,enddate,roleid)"+
-            "values(#{name},#{sex},#{address},#{createdate},#{startdate},#{enddate},#{roleid})")
+    @Insert("insert into test.user(name,password,email,roleid,description,status)"+
+            "values(#{name},#{password},#{email},#{roleid},#{description},#{status})")
     void useradd(User user);
 
     //查询用户信息
@@ -25,7 +25,7 @@ public interface UserMapper {
     void userdelete(User user);
 
     //更新用户信息
-    @Update("update test.user set name=#{name},sex=#{sex},address=#{address},createdate=#{createdate},"+
-            "startdate=#{startdate},enddate=#{enddate},roleid=#{roleid} where name=#{name}")
+    @Update("update test.user set name=#{name},password=#{password},email=#{email},roleid=#{roleid},"+
+            "description=#{description},status=#{status} where id=#{id}")
     void userupdate(User user);
 }

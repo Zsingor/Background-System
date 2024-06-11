@@ -9,36 +9,24 @@
         <el-form ref="formRef" :model="rootData.formData" :rules="rootData.formRules"
                  label-width="120px" label-position="left">
           <el-row :gutter="16">
-            <el-col :span="12">
-              <el-form-item label="名字:" prop="name">
+            <el-col :span="18">
+              <el-form-item label="用户名:" prop="name">
                 <el-input size="large" v-model="rootData.formData.name" clearable/>
               </el-form-item>
             </el-col>
-            <el-col :span="12">
-              <el-form-item label="性别:" prop="sex">
-                <el-select size="large" v-model="rootData.formData.sex" clearable>
-                  <el-option v-for="item in sexList" :key="item.value" :value="item.value" :label="item.label"/>
-                </el-select>
-              </el-form-item>
-            </el-col>
-            <el-col :span="12">
-              <el-form-item label="创建时间:" prop="createdate">
-                <el-date-picker size="large" v-model="rootData.formData.createdate"
-                                style="width: 100%;" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" />
+            <el-col :span="24">
+              <el-form-item label="密码:" prop="password">
+                <el-input size="large" v-model="rootData.formData.password" clearable/>
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="活动时间:" prop="date_list">
-                <el-date-picker
-                    v-model="rootData.formData.date_list"
-                    type="daterange"
-                    value-format="YYYY-MM-DD"
-                    range-separator="至"
-                    start-placeholder="活动开始日期"
-                    end-placeholder="活动结束日期"
-                    size="large"
-                    style="width: 100%;"
-                />
+              <el-form-item label="邮箱:" prop="email">
+                <el-input size="large" v-model="rootData.formData.email" clearable/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="24">
+              <el-form-item label="描述:" prop="description">
+                <el-input type="textarea" rows="4" size="large" v-model="rootData.formData.description" clearable/>
               </el-form-item>
             </el-col>
             <el-col :span="18">
@@ -54,9 +42,10 @@
                 </el-select>
               </el-form-item>
             </el-col>
-            <el-col :span="24">
-              <el-form-item label="地址:" prop="address">
-                <el-input size="large" v-model="rootData.formData.address"></el-input>
+            <el-col :span="12">
+              <el-form-item label="是否启用:" prop="status">
+                <el-switch size="large" :active-value="'1'" :inactive-value="'0'"
+                           v-model="rootData.formData.status"></el-switch>
               </el-form-item>
             </el-col>
           </el-row>
@@ -84,38 +73,31 @@ const xGrid = inject("xGrid");
 
 const formRef = ref(null)
 
-const sexList = ref([
-  {label: '男', value: 'male'},
-  {label: '女', value: 'female'}
-])
-
 const submitForm = () => {
   formRef.value.validate((valid) => {
     if (valid) {
       rootData.submitLoading = true
-      rootData.formData.startdate=rootData.formData.date_list[0]
-      rootData.formData.enddate=rootData.formData.date_list[1]
       if (rootData.selectRow) {
         request.post("/user/update", rootData.formData).then(res => {
-          rootData.submitLoading = false
           rootData.showForm = false
           xGrid.value.commitProxy('query')
           message('修改成功')
           console.log(res)
         }).catch(() => {
-          rootData.submitLoading = false
           message("修改失败", "error")
+        }).finally(()=>{
+          rootData.submitLoading = false
         })
       } else {
         request.post("/user/add", rootData.formData).then(res => {
-          rootData.submitLoading = false
           rootData.showForm = false
           xGrid.value.commitProxy('query')
           message('添加成功')
           console.log(res)
         }).catch(() => {
-          rootData.submitLoading = false
           message("添加失败", "error")
+        }).finally(()=>{
+          rootData.submitLoading = false
         })
       }
     }
@@ -124,14 +106,13 @@ const submitForm = () => {
 
 const resetForm = () => {
   Object.assign(rootData.formData, {
+    id:0,
     name:"",
-    sex:"",
-    address:"",
-    createdate:"",
-    startdate:"",
-    enddate:"",
-    date_list:[],
-    roleid:-1
+    password:"",
+    email:"",
+    roleid:-1,
+    description:"",
+    status:""
   })
   formRef.value.resetFields()
 }

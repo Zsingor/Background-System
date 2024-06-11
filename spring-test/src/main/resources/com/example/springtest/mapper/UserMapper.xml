@@ -11,24 +11,20 @@
         <if test="name != null and name != ''">
             AND name LIKE CONCAT('%', #{name}, '%')
         </if>
-        <if test="sex != null and sex != ''">
-            AND sex LIKE CONCAT('%', #{sex}, '%')
+        <if test="email != null and email != ''">
+            AND email LIKE CONCAT('%', #{email}, '%')
         </if>
-        <if test="address != null and address != ''">
-            AND address LIKE CONCAT('%', #{address}, '%')
-        </if>
-        <if test="createdate != null and createdate != ''">
-            AND createdate = #{createdate}
-        </if>
-        <if test="startdate != null and startdate != ''">
-            AND startdate = #{startdate}
-        </if>
-        <if test="enddate != null and enddate != ''">
-            AND enddate = #{enddate}
+        <if test="description != null and description != ''">
+            AND description LIKE CONCAT('%', #{description}, '%')
         </if>
         <if test="roleid != null and roleid != ''">
             AND roleid = #{roleid}
         </if>
+
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+
     </select>
 
 </mapper>

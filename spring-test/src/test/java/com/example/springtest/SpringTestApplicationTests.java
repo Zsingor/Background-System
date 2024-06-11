@@ -27,27 +27,35 @@ class SpringTestApplicationTests {
 
     @Test
     void contextLoads() {
-        Map<String, Object> claims=new HashMap<>();
-        claims.put("username","user11");
-        String token= JwtUtils.generateJWT(claims);
-        System.out.println("token"+token);
-        try {
-            // 验证令牌
-            DecodedJWT verify=JwtUtils.parseJWT(token);
-            System.out.println(verify.getClaim("username"));
-        } catch (SignatureVerificationException e) {
-            e.printStackTrace();
-            System.out.println("1");
-        }catch (TokenExpiredException e){
-            e.printStackTrace();
-            System.out.println("1");
-        }catch (AlgorithmMismatchException e){
-            e.printStackTrace();
-            System.out.println("1");
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("1");
-        }
+//        Map<String, Object> claims=new HashMap<>();
+//        claims.put("username","user11");
+//        String token= JwtUtils.generateJWT(claims);
+//        System.out.println("token"+token);
+//        try {
+//            // 验证令牌
+//            DecodedJWT verify=JwtUtils.parseJWT(token);
+//            System.out.println(verify.getClaim("username"));
+//        } catch (SignatureVerificationException e) {
+//            e.printStackTrace();
+//            System.out.println("1");
+//        }catch (TokenExpiredException e){
+//            e.printStackTrace();
+//            System.out.println("1");
+//        }catch (AlgorithmMismatchException e){
+//            e.printStackTrace();
+//            System.out.println("1");
+//        }catch (Exception e){
+//            e.printStackTrace();
+//            System.out.println("1");
+//        }
+        List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
+        List<String> vlist=new ArrayList<>(Arrays.asList("3", "4","5","6"));
+        Set<String> resultSet = new HashSet<>(vlist);
+        resultSet.addAll(whitelist);
+
+        // Convert the set back to a list if needed
+        List<String> resultList = new ArrayList<>(resultSet);
+        System.out.println(resultList);
     }
 
 }

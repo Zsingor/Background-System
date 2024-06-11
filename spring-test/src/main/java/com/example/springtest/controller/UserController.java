@@ -62,6 +62,10 @@ public class UserController {
     @PostMapping("/user/delete")
     public Result userdelete(@RequestBody User user)
     {
+        if(user.getId()==1)
+        {
+            return Result.error("无法删除该用户");
+        }
         int flag=userService.userdelete(user);
         if (flag==1)
         {

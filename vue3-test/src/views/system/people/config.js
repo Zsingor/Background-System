@@ -2,40 +2,39 @@
 import {getToolbarConfig} from "@/utils/tableconfig.js";
 import {isEmpty} from "@/utils/commons.js";
 
+const checkEmail = (rule, value, callback) => {
+    const regEmail = /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+    if (!regEmail.test(value)&&!isEmpty(value)) {
+        callback(new Error('请输入正确的邮箱格式'));
+    } else {
+        callback();
+    }
+}
+
 export function getTableConfig() {
     return {
         formRules: {
             name: [
                 {required: true, message: '请输入名称'},
-                {min: 1, max: 20, message: '长度在 1 到 20 个字符'}
+                {min: 1, max: 30, message: '长度在 1 到 30 个字符'}
             ],
-            sex: [
-                {required: true, message: '请选择性别'},
-                {min: 1, max: 10, message: '长度在 1 到 10 个字符'}
+            password: [
+                {required: true, message: '请选择密码'},
+                {min: 6, max: 30, message: '长度在 6 到 30 个字符'}
             ],
-            address: [
-                {required: true, message: '请输入地址'},
-                {min: 1, max: 50, message: '长度在 1 到 50 个字符'}
+            email:[
+                {required:false,message:"请输入邮箱",trigger:"blur"},
+                {validator: checkEmail, trigger: 'blur'}
             ],
         },
         columns: [
             {type: 'checkbox', width: 50, fixed: 'left'},
             {type: 'seq', width: 50},
-            {field: 'name', title: 'name',width:120, sortable: true,},
-            {field: 'sex', width:120,title: 'sex'},
-            {field: 'roleid', width:120,title: '所属角色',slots: {default: 'role'}},
-            {field: 'createdate', minWidth: 120,title: '创建时间'},
-            {
-                title: "持续时间段",
-                minWidth: 180,
-                slots: {default: 'duration'}
-            },
-            {field: 'address', title: 'Address', minWidth: 120,filters: [
-                    {label: '上海', value: '上海'},
-                    {label: '北京', value: '北京'},
-                    {label: '广州', value: '广州'},
-                ]
-            },
+            {field: 'name', title: 'name',minWidth:120, sortable: true,},
+            {field: 'roleid', minWidth:120,title: '所属角色',slots: {default: 'role'}},
+            {field: 'email', minWidth:120,title: '邮箱'},
+            {field: 'description', minWidth:120,title: '账号描述'},
+            {field: 'status', minWidth:120,title: '状态',slots: {default: 'status'}},
             {title: '操作', minWidth: 140, fixed: 'right', slots: {default: 'operate'}}
         ],
         queryData:{

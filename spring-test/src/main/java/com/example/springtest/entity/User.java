@@ -14,13 +14,14 @@ public class User
     private Integer id;
     private String name;
     private String password;
+    private String email;
     private Integer roleid;
     private String description;
     private String status;
 
-    private String sex;
-    private String address;
-    private String createdate;
-    private String startdate;
-    private String enddate;
+//    private String sex;
+//    private String address;
+//    private String createdate;
+//    private String startdate;
+//    private String enddate;
 }

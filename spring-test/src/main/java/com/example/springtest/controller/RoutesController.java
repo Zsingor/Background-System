@@ -10,6 +10,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @CrossOrigin
@@ -87,6 +89,12 @@ public class RoutesController {
     @PostMapping("/routes/delete")
     public Result routesdelete(@RequestBody List<String> menulist)
     {
+        List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
+        menulist.removeAll(whitelist);
+        if(menulist.isEmpty())
+        {
+            return Result.error("无法删除初始路由");
+        }
         int flag=routesService.routesdelete(menulist);
         if (flag==1)
         {
