@@ -1,7 +1,6 @@
 package com.example.springtest.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.springtest.entity.Form;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.User;
 import com.example.springtest.service.UserService;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @CrossOrigin
 @Slf4j
@@ -49,10 +46,11 @@ public class UserController {
 
     //用户查询
     @PostMapping("/user/query")
-    public Result userquery(@RequestBody Form form)
+    public Result userquery(@RequestBody User user)
     {
+        System.out.println(user);
         try {
-            JSONObject data=userService.userquery(form);
+            JSONObject data=userService.userquery(user);
             return Result.success(data);
         }
         catch (Exception error){
@@ -86,20 +84,6 @@ public class UserController {
         else
         {
             return Result.error("修改失败");
-        }
-    }
-
-    //用户路由添加
-    @PostMapping("/user/addroute")
-    public Result useraddroute(@RequestBody User user)
-    {
-        int flag=userService.useraddroute(user);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("添加失败");
         }
     }
 }

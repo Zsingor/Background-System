@@ -55,7 +55,7 @@
 import {onActivated, onDeactivated, onMounted, provide, reactive, ref, toRaw} from "vue";
 import request from "@/request/index.js";
 import {dbclickHandler, resetWatch} from "@/utils/tableconfig.js";
-import SubmitForm from "@/views/system/page4/components/SubmitForm.vue";
+import SubmitForm from "@/views/system/routes/components/SubmitForm.vue";
 import {isEmpty} from "@/utils/commons.js";
 import _ from "lodash";
 import useClipboard from 'vue-clipboard3';
@@ -65,7 +65,7 @@ const { toClipboard } = useClipboard();
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
-  name: 'page4'
+  name: 'routes'
 })
 
 const xGrid = ref({})

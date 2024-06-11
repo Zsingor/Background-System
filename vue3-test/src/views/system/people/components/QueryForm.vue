@@ -1,21 +1,29 @@
 <template>
   <el-row :gutter="8" style="padding-bottom: 8px" >
-    <el-col :span="8">
-      <el-input size="defailt" v-model="rootData.queryData.name" clearable placeholder="名字" />
+    <el-col :span="6">
+      <el-input size="default" v-model="rootData.queryData.name" clearable placeholder="名字" />
     </el-col>
-    <el-col :span="8">
+    <el-col :span="6">
       <el-select v-model="rootData.queryData.sex" clearable placeholder="性别">
         <el-option v-for="item in sexList" :key="item.value" :value="item.value" :label="item.label"/>
       </el-select>
     </el-col>
-    <el-col :span="8">
-      <el-input size="defailt" v-model="rootData.queryData.address" clearable placeholder="地址" />
+    <el-col :span="6">
+      <el-input size="default" v-model="rootData.queryData.address" clearable placeholder="地址" />
     </el-col>
-    <el-col :span="8">
+    <el-col :span="6">
+      <el-select clearable placeholder="角色"
+                 v-model="rootData.queryData.roleid">
+        <el-option v-for="item in rootData.rolesMenu" :key="item.id"
+                   :label="item.name" :value="item.id">
+        </el-option>
+      </el-select>
+    </el-col>
+    <el-col :span="6">
       <el-date-picker size="default" v-model="rootData.queryData.createdate"
                       style="width: 100%;" type="datetime" value-format="YYYY-MM-DD HH:mm:ss" placeholder="创建时间" />
     </el-col>
-    <el-col :span="16">
+    <el-col :span="12">
       <el-date-picker
           v-model="rootData.queryData.date_list"
           type="daterange"

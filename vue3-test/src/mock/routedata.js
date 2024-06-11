@@ -11,10 +11,10 @@ Mock.mock("/route/list", "get", {
             "icon": "House",
             "children": [
                 {
-                    "name": "page1",
+                    "name": "people",
                     "title": "页面1",
                     "icon": "CircleCheck",
-                    "path": "/system/page1"
+                    "path": "/system/people"
                 }
             ]
         },
@@ -27,7 +27,7 @@ Mock.mock("/route/list", "get", {
                 {
                     "name": "page2",
                     "title": "页面2",
-                    "path": "/manager/page4"
+                    "path": "/manager/routes"
                 },
                 {
                     "name": "page3",

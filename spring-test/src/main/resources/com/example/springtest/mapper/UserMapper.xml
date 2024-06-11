@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.springtest.mapper.UserMapper">
 
-    <select id="userquery" parameterType="com.example.springtest.entity.Form" resultType="com.example.springtest.entity.User">
+    <select id="userquery" parameterType="com.example.springtest.entity.User" resultType="com.example.springtest.entity.User">
         SELECT * FROM test.user
         WHERE 1=1
         <if test="name != null and name != ''">
@@ -25,6 +25,9 @@
         </if>
         <if test="enddate != null and enddate != ''">
             AND enddate = #{enddate}
+        </if>
+        <if test="roleid != null and roleid != ''">
+            AND roleid = #{roleid}
         </if>
     </select>
 

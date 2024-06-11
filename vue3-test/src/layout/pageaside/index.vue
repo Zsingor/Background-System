@@ -1,19 +1,21 @@
 <template>
-  <el-menu
-      :default-active="$route.path"
-      :background-color="persistentConfig.theme.aside.bgColor"
-      :active-text-color="persistentConfig.theme.aside.fontActiveColor"
-      :text-color="persistentConfig.theme.aside.fontColor"
-      :collapse-transition="false"
-      :collapse="persistentConfig.isCollapse"
-      :router="true"
-  >
-    <MenuItem
-        v-for="(route, index) in routeMenus"
-        :key="index"
-        :item="route"
-    />
-  </el-menu>
+  <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-menu
+        :default-active="$route.path"
+        :background-color="persistentConfig.theme.aside.bgColor"
+        :active-text-color="persistentConfig.theme.aside.fontActiveColor"
+        :text-color="persistentConfig.theme.aside.fontColor"
+        :collapse-transition="false"
+        :collapse="persistentConfig.isCollapse"
+        :router="true"
+    >
+      <MenuItem
+          v-for="(route, index) in routeMenus"
+          :key="index"
+          :item="route"
+      />
+    </el-menu>
+  </el-scrollbar>
 </template>
 
 <script setup>

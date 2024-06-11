@@ -1,8 +1,8 @@
 package com.example.springtest.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
-import com.example.springtest.entity.User;
+import com.example.springtest.mapper.RolesMapper;
 import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RoutesService;
@@ -19,14 +19,12 @@ public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RoutesMapper routesMapper;
     @Autowired
-    private UserMapper userMapper;
+    private RolesMapper rolesMapper;
 
     @Override
-    public List<Routes> routesquery(User user) {
-        User user1 = userMapper.userPrimaryquery(user);
-
-        List<Routes> routesList=routesMapper.routesquery(user1.getRoutesIdAsList());
-
+    public List<Routes> routesquery(Roles roles) {
+        Roles newroles=rolesMapper.rolesqueryPrimary(roles.getId());
+        List<Routes> routesList=routesMapper.routesquery(newroles.getRoutesIdAsList());
         return Routeprocess(routesList);
     }
 

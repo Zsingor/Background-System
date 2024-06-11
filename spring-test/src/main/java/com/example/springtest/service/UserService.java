@@ -2,10 +2,7 @@ package com.example.springtest.service;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.springtest.entity.Form;
 import com.example.springtest.entity.User;
-
-import java.util.List;
 
 public interface UserService {
 
@@ -13,11 +10,9 @@ public interface UserService {
 
     int useradd(User user);
 
-    JSONObject userquery(Form form);
+    JSONObject userquery(User user);
 
     int userdelete(User user);
 
     int userupdate(User user);
-
-    int useraddroute(User user);
 }

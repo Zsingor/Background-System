@@ -1,7 +1,7 @@
 <template>
   <el-dialog title="分配菜单"
              :width="windowConfig.dialogWidth"
-             top="5vh"
+             top="3vh"
              v-model="rootData.showDialog"
              :before-close="handlerClose">
     <el-tree
@@ -47,15 +47,15 @@ const defaultProps={
 }
 
 const submit=()=>{
+  rootData.submitLoading = true
   const ids = []
   unref(treeRef).getCheckedNodes(false, true).forEach(item => {
     ids.push(item.id)
   })
   const routesid=ids.join(',')
-  rootData.submitLoading = true
-  request.post("/user/addroute", {name:rootData.userMenus.name,routesid:routesid}).then(res => {
+  request.post("/roles/assignRoute", {id:rootData.rolesMenus.id,routesid:routesid}).then(res => {
     message('菜单分配成功')
-    rootData.showMenuDialog = false
+    rootData.showDialog = false
   }).catch(e=>{
     message("菜单分配失败",error)
   }).finally(() => {
@@ -68,9 +68,9 @@ watch(() => rootData.showDialog, value => {
   // 等dom渲染完成后再进行操作，否则拿不到ref
   nextTick(() => {
     if (value) {
-      unref(treeRef).setCheckedKeys(rootData.userMenus.menus)
+      unref(treeRef).setCheckedKeys(rootData.rolesMenus.menus)
     } else {
-      rootData.userMenus.menus = []
+      rootData.rolesMenus.menus = []
       unref(treeRef).setCheckedKeys([])
     }
   })

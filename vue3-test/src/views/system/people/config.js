@@ -23,6 +23,7 @@ export function getTableConfig() {
             {type: 'seq', width: 50},
             {field: 'name', title: 'name',width:120, sortable: true,},
             {field: 'sex', width:120,title: 'sex'},
+            {field: 'roleid', width:120,title: '所属角色',slots: {default: 'role'}},
             {field: 'createdate', minWidth: 120,title: '创建时间'},
             {
                 title: "持续时间段",

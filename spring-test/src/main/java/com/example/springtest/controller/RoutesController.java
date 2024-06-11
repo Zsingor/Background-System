@@ -2,6 +2,7 @@ package com.example.springtest.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Result;
+import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
 import com.example.springtest.service.RoutesService;
@@ -20,10 +21,10 @@ public class RoutesController {
     private RoutesService routesService;
 
     @PostMapping("/routes/query")
-    public Result routesquery(@RequestBody User user)
+    public Result routesquery(@RequestBody Roles roles)
     {
         try {
-            List<Routes> data=routesService.routesquery(user);
+            List<Routes> data=routesService.routesquery(roles);
             return Result.success(data);
         }catch (Exception e){
             return Result.error("查询失败");

@@ -1,0 +1,280 @@
+<template>
+  <div class="background">
+    <vxe-grid ref='xGrid' v-bind="gridOptions" @cell-dblclick="dbclickHandler">
+      <template #toolbar_buttons>
+        <vxe-button status="primary" @click="addmessage">新增角色</vxe-button>
+      </template>
+      <template #operate="{ row }">
+        <el-button type="primary" @click="updaterow(row)">编辑</el-button>
+        <el-button type="danger" @click="deleterow(row)">删除</el-button>
+        <el-button type="info" @click="assignRoute(row)">分配路由</el-button>
+      </template>
+    </vxe-grid>
+
+    <vxe-modal v-model="rootData.showForm" :title="rootData.selectRow ? '编辑&保存' : '新增&保存'" width="800" min-width="600" min-height="300" :loading="rootData.submitLoading" resize destroy-on-close>
+      <template #default>
+        <vxe-form :data="rootData.formData" :rules="rootData.formRules" title-align="right" title-width="100" @submit="submitEvent">
+          <vxe-form-item title="基础信息" title-align="left" :title-width="200" :span="24" :title-prefix="{icon: 'vxe-icon-comment'}"></vxe-form-item>
+          <vxe-form-item field="name" title="角色名称" :span="12" :item-render="{}">
+            <template #default="{ data }">
+              <vxe-input v-model="data.name" placeholder="请输入角色名称"></vxe-input>
+            </template>
+          </vxe-form-item>
+          <vxe-form-item field="description" title="角色描述" :span="12" :item-render="{}">
+            <template #default="{ data }">
+              <vxe-input v-model="data.description" placeholder="请输入角色描述"></vxe-input>
+            </template>
+          </vxe-form-item>
+          <vxe-form-item align="center" title-align="left" :span="24">
+            <template #default>
+              <vxe-button type="submit">提交</vxe-button>
+              <vxe-button type="reset">重置</vxe-button>
+            </template>
+          </vxe-form-item>
+        </vxe-form>
+      </template>
+    </vxe-modal>
+
+    <RoutesDialog></RoutesDialog>
+  </div>
+</template>
+
+<script setup>
+
+import {dbclickHandler, resetWatch, VxeTableCommonsConfig} from "@/utils/tableconfig.js";
+import {onActivated, onDeactivated, onMounted, provide, reactive, ref, toRaw} from "vue";
+import {isEmpty} from "@/utils/commons.js";
+import _ from "lodash";
+import {message} from "@/utils/message.js";
+import request from "@/request/index.js";
+import {persistentConfig} from "@/layout/layout.js";
+import {ElMessageBox} from "element-plus";
+import axios from "axios";
+import RoutesDialog from "@/views/system/roles/components/RoutesDialog.vue";
+
+defineOptions({
+  name: 'roles'
+})
+
+const xGrid = ref({})
+
+
+const formRules = {
+  name: [
+    {required: true, message: '请输入角色名称'}
+  ],
+  description: [
+    {required: true, message: '请输入角色描述'}
+  ],
+}
+
+const rootData = reactive({
+  showForm: false,
+  showDialog:false,
+  submitLoading: false,
+  selectRow: null,
+  formData: {
+    id:0,
+    name: "",
+    description:"",
+  },
+  formRules: Object.assign({}, formRules),
+  menuDatas: [],
+  rolesMenus: {// 角色拥有的菜单数据
+    id: 0,
+    menus: []
+  },
+})
+
+const addmessage=()=>{
+  Object.assign(rootData.formData, {
+    id:0,
+    name: "",
+    description:"",
+  })
+  rootData.selectRow = null
+  rootData.showForm = true
+}
+
+const updaterow=(row)=>{
+  Object.assign(rootData.formData, row)
+  rootData.selectRow = row
+  rootData.showForm = true
+}
+
+const deleterow=(row)=>{
+  console.log(row)
+  ElMessageBox.confirm('您确定要删除吗？', '提示', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning'
+  }).then(() => {
+    request.post("/roles/delete", row).then(res => {
+      console.log(res)
+      xGrid.value.commitProxy('query')
+      message('删除成功')
+    }).catch(() => {
+      message("删除失败", "error")
+    })
+  })
+}
+
+//分配路由
+const assignRoute=(row)=>{
+  rootData.rolesMenus.id = row.id
+  // 发送两个请求：1.获取所有菜单  2.获取角色拥有的菜单
+  axios.all([
+    request.post('/routes/all'),
+    request.post("/routes/query", row)
+  ]).then(axios.spread((menus, userMenus) => {
+    rootData.menuDatas = []
+    rootData.menuDatas = menus.data
+    if (!isEmpty(userMenus.data)) {
+      userMenus.data.forEach(item => {
+        if (isEmpty(item.children)) {
+          rootData.rolesMenus.menus.push(item.id)
+        } else {
+          item.children.forEach(child => {
+            rootData.rolesMenus.menus.push(child.id)
+          })
+        }
+      })
+    }
+  })).finally(() => {
+    rootData.showDialog = true
+  })
+}
+
+const submitEvent=()=>{
+  rootData.submitLoading = true
+  if (rootData.selectRow) {
+    console.log(rootData.formData)
+    request.post("/roles/update", rootData.formData).then(res => {
+      rootData.showForm = false
+      xGrid.value.commitProxy('query')
+      message('修改成功')
+      console.log(res)
+    }).catch(() => {
+      message("修改失败", "error")
+    }).finally(() => {
+      rootData.submitLoading = false
+    })
+  } else {
+    request.post("/roles/add", rootData.formData).then(res => {
+      rootData.showForm = false
+      xGrid.value.commitProxy('query')
+      message('添加成功')
+      console.log(res)
+    }).catch(() => {
+      message("添加失败", "error")
+    }).finally(() => {
+      rootData.submitLoading = false
+    })
+  }
+}
+
+const gridOptions = reactive({
+  rowId: 'name',
+  ...VxeTableCommonsConfig,
+  formConfig: {
+    items: [
+      {
+        field: 'name',
+        span: 6,
+        itemRender: { name: '$input', props: { placeholder: '角色名称', clearable: true } }
+      },
+      {
+        field: 'description',
+        span: 6,
+        itemRender: { name: '$input', props: { placeholder: '角色描述', clearable: true } }
+      },
+      {
+        span: 6,
+        align: 'left',
+        itemRender: {
+          name: '$buttons',
+          children: [
+            {
+              props: {
+                type: 'submit',
+                content: '搜索',
+                status: 'primary'
+              }
+            },
+            {
+              props: {
+                type: 'reset',
+                content: '重置'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+  columns: [
+    {type: 'checkbox', width: 50, fixed: 'left'},
+    {type: 'seq', width: 50},
+    {field: 'name', title: '角色名称',minWidth:120},
+    {field: 'description', title: '角色描述',minWidth:120},
+    {title: '操作', minWidth: 140, fixed: 'right', slots: {default: 'operate'}}
+  ],
+  proxyConfig: {
+    form: true,
+    ajax: {
+      query: ({form,page}) => {
+        xGrid.value.clearCheckboxRow()
+        return new Promise((resolve, reject) => {
+          const params = {
+            "currentpage": page.currentPage,
+            "pagesize": page.pageSize,
+            "name": form.name,
+            "description": form.description,
+          }
+          console.log(page)
+          request.post("/roles/query", params).then(res => {
+            console.log("res", res)
+            resolve({
+              page: {
+                total: res.data.rowSum
+              },
+              result: res.data.roleslist
+            })
+          }).catch(() => {
+            reject()
+          })
+        })
+      },
+    }
+  },
+})
+
+
+provide('xGrid', xGrid)
+provide('rootData', rootData)
+
+
+//用于处理改变滑动条时表格的变化
+let tableWatch
+onMounted(() => {
+  if (!persistentConfig.openKeepalive) {
+    tableWatch = resetWatch(xGrid.value)
+  }
+})
+onActivated(() => {
+  if (persistentConfig.openKeepalive) {
+    tableWatch = resetWatch(xGrid.value)
+  }
+})
+onDeactivated(() => {
+  tableWatch()
+})
+
+</script>
+
+<style scoped>
+.background {
+  width: 100%;
+  height: 100%;
+}
+</style>

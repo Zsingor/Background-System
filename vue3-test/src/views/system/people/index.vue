@@ -9,6 +9,10 @@
       <template #toolbar_buttons class="buttons">
         <vxe-button status="primary" @click="addmessage">新增</vxe-button>
       </template>
+      <!--  所属角色显示显示    -->
+      <template #role="{ row }">
+        <div>{{ rootData.rolesList[row.roleid] }}</div>
+      </template>
       <!--  持续时间显示    -->
       <template #duration="{ row }">
         <div>{{ row.startdate }} —— {{ row.enddate }}</div>
@@ -45,27 +49,25 @@
     </vxe-grid>
 
     <SubmitForm></SubmitForm>
-    <RoutesDialog></RoutesDialog>
   </div>
 </template>
 
 <script setup>
 import {provide, reactive, ref, onMounted, onActivated, onDeactivated} from 'vue'
 import {message} from "@/utils/message.js";
-import QueryForm from "@/views/system/page1/components/QueryForm.vue";
+import QueryForm from "@/views/system/people/components/QueryForm.vue";
 import request from "@/request/index.js";
 import {ElMessageBox} from "element-plus";
 import {VxeTableCommonsConfig, dbclickHandler, resetWatch} from "@/utils/tableconfig";
-import SubmitForm from "@/views/system/page1/components/SubmitForm.vue";
-import {getTableConfig} from "@/views/system/page1/config.js";
-import RoutesDialog from "@/views/system/page1/components/RoutesDialog.vue";
+import SubmitForm from "@/views/system/people/components/SubmitForm.vue";
+import {getTableConfig} from "@/views/system/people/config.js";
 import axios from "axios";
 import {isEmpty} from "@/utils/commons.js";
 import {persistentConfig} from "@/layout/layout.js";
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
-  name: 'page1'
+  name: 'people'
 })
 
 const xGrid = ref()
@@ -78,14 +80,11 @@ const rootData = reactive({
   showDialog: false,
   submitLoading: false,
   selectRow: null,
-  menuDatas: [],
-  userMenus: {                                          // 用户拥有的菜单数据
-    name: "",
-    menus: []
-  },
   formData: {},
   queryData: {},
   formRules: Object.assign({}, tableConfig.formRules),
+  rolesMenu:[],
+  rolesList:{}
 })
 
 console.log("rootData", rootData.formRules)
@@ -110,6 +109,7 @@ const addmessage = () => {
 }
 
 const updaterow = (row) => {
+  console.log(row)
   Object.assign(rootData.formData, row)
   rootData.formData.date_list = [row.startdate, row.enddate]
   rootData.name = "修改信息"
@@ -118,45 +118,7 @@ const updaterow = (row) => {
 }
 
 const assignRoute = (row) => {
-  rootData.userMenus.name = row.name
-  if (rootData.menuDatas.length === 0) {
-    // 发送两个请求：1.获取所有菜单  2.获取用户拥有的菜单
-    axios.all([
-      request.post('/routes/all'),
-      request.post("/routes/query", {name: row.name})
-    ]).then(axios.spread((menus, userMenus) => {
-      rootData.menuDatas = menus.data
-      if (!isEmpty(userMenus.data)) {
-        userMenus.data.forEach(item => {
-          if (isEmpty(item.children)) {
-            rootData.userMenus.menus.push(item.id)
-          } else {
-            item.children.forEach(child => {
-              rootData.userMenus.menus.push(child.id)
-            })
-          }
-        })
-      }
-    })).finally(() => {
-      rootData.showDialog = true
-    })
-  } else {
-    request.post("/routes/query", {name: row.name}).then(res => {
-      if (!isEmpty(res.data)) {
-        res.data.forEach(item => {
-          if (isEmpty(item.children)) {
-            rootData.userMenus.menus.push(item.id)
-          } else {
-            item.children.forEach(child => {
-              rootData.userMenus.menus.push(child.id)
-            })
-          }
-        })
-      }
-    }).finally(() => {
-      rootData.showDialog = true
-    })
-  }
+  console.log(row)
 }
 
 const deleterow = (row) => {
@@ -166,7 +128,6 @@ const deleterow = (row) => {
     type: 'warning'
   }).then(() => {
     request.post("/user/delete", row).then(res => {
-      console.log(res)
       xGrid.value.commitProxy('query')
       message('删除成功')
     }).catch(() => {
@@ -195,13 +156,10 @@ const gridOptions = reactive({
     ajax: {
       query: ({form, sorts, filters, page}) => {
         xGrid.value.clearCheckboxRow()
+        rootData.queryData["currentpage"]=page.currentPage
+        rootData.queryData["pagesize"]=page.pageSize
         return new Promise((resolve, reject) => {
-          const params = {
-            "currentpage": page.currentPage,
-            "pagesize": page.pageSize,
-            "queryData": rootData.queryData,
-          }
-          request.post("/user/query", params).then(res => {
+          request.post("/user/query", rootData.queryData).then(res => {
             console.log("res", res)
             resolve({
               page: {
@@ -212,18 +170,22 @@ const gridOptions = reactive({
           }).catch(() => {
             reject()
           })
+          request.post("/roles/queryAll").then(res => {
+            rootData.rolesMenu = res.data
+            res.data.forEach(item => {
+              rootData.rolesList[item.id] = item.name
+            })
+            console.log(rootData.rolesList)
+          })
         })
       },
       //用于导出全部数据时的查询
       queryAll: () => {
         xGrid.value.clearCheckboxRow()
+        rootData.queryData["currentpage"]=1
+        rootData.queryData["pagesize"]=1000000
         return new Promise((resolve, reject) => {
-          const params = {
-            "currentpage": 1,
-            "pagesize": 1000000,
-            "queryData": rootData.queryData,
-          }
-          request.post("/user/query", params).then(res => {
+          request.post("/user/query", rootData.queryData).then(res => {
             console.log("res", res)
             resolve(res.data.userlist)
           }).catch(() => {

@@ -2,9 +2,10 @@ package com.example.springtest.service.impl;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.example.springtest.entity.Form;
+import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
+import com.example.springtest.mapper.RolesMapper;
 import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.UserService;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -23,12 +23,16 @@ public class UserServiceImpl implements UserService {
     private UserMapper userMapper;
     @Autowired
     private RoutesMapper routesMapper;
+    @Autowired
+    private RolesMapper rolesMapper;
+
 
     @Override
     public JSONObject userlogin(User user) {
         User user1 = userMapper.userPrimaryquery(user);
 
-        List<Routes> routesList=routesMapper.routesquery(user1.getRoutesIdAsList());
+        Roles roles=rolesMapper.rolesqueryPrimary(user1.getRoleid());
+        List<Routes> routesList=routesMapper.routesquery(roles.getRoutesIdAsList());
 
         List<Routes> menuList = RoutesServiceImpl.Routeprocess(routesList);
 
@@ -58,13 +62,12 @@ public class UserServiceImpl implements UserService {
 
     // 用户查询
     @Override
-    public JSONObject userquery(Form form) {
-        User user=form.getQueryData();
+    public JSONObject userquery(User user) {
         List<User> data=userMapper.userquery(user);
         List<User> res;
         int rowSum=data.size();
-        int start = (form.getCurrentpage() - 1) * form.getPagesize();
-        int end = form.getCurrentpage() * form.getPagesize();
+        int start = (user.getCurrentpage() - 1) * user.getPagesize();
+        int end = user.getCurrentpage() * user.getPagesize();
         if(end<=rowSum)
         {
             res=data.subList(start,end);
@@ -97,18 +100,6 @@ public class UserServiceImpl implements UserService {
     public int userupdate(User user) {
         try {
             userMapper.userupdate(user);
-            return 1;
-        }
-        catch (Exception error)
-        {
-            return 0;
-        }
-    }
-
-    //用户路由添加
-    public int useraddroute(User user) {
-        try {
-            userMapper.userroutesupdate(user);
             return 1;
         }
         catch (Exception error)
