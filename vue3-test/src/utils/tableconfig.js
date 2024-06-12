@@ -1,7 +1,10 @@
 import Clipboard from 'clipboard'
 import {message} from "@/utils/message.js";
+import _ from "lodash"
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import {unref, watch} from "vue";
+import {ElMessageBox} from "element-plus";
+import request from "@/request/index.js";
 
 export const pageSizes = [10, 25, 50, 100, 250, 500]
 
@@ -108,5 +111,60 @@ export function getToolbarConfig() {
         slots: {
             buttons: 'toolbar_buttons'
         }
+    }
+}
+
+/**
+ * 删除数据（基于vxe高级表格，必须设置rowId）
+ * @param $grid   vxe表格实例
+ * @param url     接口地址
+ * @param batch   是否为批量删除
+ * @param row     当前行数据，当batch为false时生效
+ */
+export function deleteTableData($grid, url, batch, row) {
+    if (batch) {
+        const datas = $grid.getCheckboxRecords();
+        if (_.isArray(datas) && datas.length > 0) {
+            ElMessageBox.confirm("您确定要删除吗？", "提示", {
+                type: "warning"
+            }).then(() => {
+                const ids = [];
+                datas.forEach(item => {
+                    ids.push(item[$grid.props.rowId]);
+                });
+                $grid.reactData.tableLoading = true;
+                request.post(url, ids).then((res) => {
+                    if (res.code === 1) {
+                        message("删除成功");
+                        $grid.commitProxy("query");
+                    }
+                    else {
+                        message(res.msg,"error")
+                    }
+                });
+            }).catch(() => { }).finally(() => {
+                $grid.reactData.tableLoading = false;
+            });
+        } else {
+            message("请选择数据！", "warning");
+        }
+    } else {
+        ElMessageBox.confirm("您确定要删除吗？", "提示", {
+            type: "warning"
+        }).then(() => {
+            $grid.reactData.tableLoading = true;
+            request.post(url, row).then((res) => {
+                if (res.code === 1) {
+                    message("删除成功");
+                    $grid.commitProxy("query");
+                }
+                else
+                {
+                    message(res.msg,"error")
+                }
+            });
+        }).catch(() => { }).finally(() => {
+            $grid.reactData.tableLoading = false;
+        });
     }
 }

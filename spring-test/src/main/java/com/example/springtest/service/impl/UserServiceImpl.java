@@ -6,6 +6,7 @@ import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
 import com.example.springtest.mapper.RolesMapper;
+import com.example.springtest.mapper.RolesRoutesMapper;
 import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.UserService;
@@ -25,6 +26,8 @@ public class UserServiceImpl implements UserService {
     private RoutesMapper routesMapper;
     @Autowired
     private RolesMapper rolesMapper;
+    @Autowired
+    private RolesRoutesMapper rolesRoutesMapper;
 
 
     @Override
@@ -32,7 +35,9 @@ public class UserServiceImpl implements UserService {
         User user1 = userMapper.userPrimaryquery(user);
 
         Roles roles=rolesMapper.rolesqueryPrimary(user1.getRoleid());
-        List<Routes> routesList=routesMapper.routesquery(roles.getRoutesIdAsList());
+
+        List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
+        List<Routes> routesList=routesMapper.routesquery(routesIds);
 
         List<Routes> menuList = RoutesServiceImpl.Routeprocess(routesList);
 

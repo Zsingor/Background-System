@@ -3,6 +3,8 @@ package com.example.springtest.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Roles;
 import com.example.springtest.mapper.RolesMapper;
+import com.example.springtest.mapper.RolesRoutesMapper;
+import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,10 @@ import java.util.*;
 public class RolesServiceImpl implements RolesService {
     @Autowired
     private RolesMapper rolesMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private RolesRoutesMapper rolesRoutesMapper;
 
     @Override
     public int rolesadd(Roles roles) {
@@ -54,6 +60,7 @@ public class RolesServiceImpl implements RolesService {
     @Override
     public int rolesdelete(Roles roles) {
         try {
+            userMapper.userUpdateRole(roles.getId());
             rolesMapper.rolesdelete(roles);
             return 1;
         }
@@ -78,15 +85,21 @@ public class RolesServiceImpl implements RolesService {
     @Override
     public int rolesAssignRoute(Roles roles) {
         try {
-            List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
-
-            List<String> routeList=roles.getRoutesIdAsList();
-            Set<String> resultSet = new HashSet<>(routeList);
-            resultSet.addAll(whitelist);
-            List<String> resultList = new ArrayList<>(resultSet);
-
-            roles.setRoutesIdFromList(resultList);
-            rolesMapper.rolesAssignRoute(roles);
+            List<String> routeList=roles.getRoutesid();
+            System.out.println(routeList);
+            if(roles.getId()==1)
+            {
+                List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
+                Set<String> resultSet = new HashSet<>(routeList);
+                resultSet.addAll(whitelist);
+                List<String> resultList = new ArrayList<>(resultSet);
+                //roles.setRoutesIdFromList(resultList);
+                rolesRoutesMapper.deleteRoleRoutes(roles);
+                rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList);
+            }
+            //rolesMapper.rolesAssignRoute(roles);
+            rolesRoutesMapper.deleteRoleRoutes(roles);
+            rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList);
             return 1;
         }
         catch (Exception error)

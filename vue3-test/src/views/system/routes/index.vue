@@ -3,7 +3,7 @@
     <vxe-grid ref='xGrid' v-bind="gridOptions" v-on="gridEvents" @cell-dblclick="dbclickHandler">
       <template #toolbar_buttons>
         <vxe-button status="primary" @click="addmessage">新增菜单</vxe-button>
-        <vxe-button status="danger" @click="xGrid.commitProxy('delete')">批量删除</vxe-button>
+        <vxe-button status="danger" @click="deleteTableData(xGrid,'/routes/delete',true)">批量删除</vxe-button>
       </template>
       <template #menuicon="{ row }">
         <el-icon size="large">
@@ -54,7 +54,7 @@
 
 import {onActivated, onDeactivated, onMounted, provide, reactive, ref, toRaw} from "vue";
 import request from "@/request/index.js";
-import {dbclickHandler, resetWatch} from "@/utils/tableconfig.js";
+import {dbclickHandler, deleteTableData, resetWatch} from "@/utils/tableconfig.js";
 import SubmitForm from "@/views/system/routes/components/SubmitForm.vue";
 import {isEmpty} from "@/utils/commons.js";
 import _ from "lodash";
@@ -222,13 +222,6 @@ const gridOptions = reactive({
             rootData.parentMenus = res.data
           })
         })
-      },
-      delete: ({body}) => {
-        const menu_ids = []
-        body.removeRecords.forEach(item => {
-          menu_ids.push(item.id)
-        })
-        request.post("/routes/delete", menu_ids)
       }
     }
   },

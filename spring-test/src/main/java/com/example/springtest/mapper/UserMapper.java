@@ -28,4 +28,8 @@ public interface UserMapper {
     @Update("update test.user set name=#{name},password=#{password},email=#{email},roleid=#{roleid},"+
             "description=#{description},status=#{status} where id=#{id}")
     void userupdate(User user);
+
+    //更新用户的角色
+    @Update("update test.user set roleid=null where roleid=#{roleid}")
+    void userUpdateRole(int roleid);
 }

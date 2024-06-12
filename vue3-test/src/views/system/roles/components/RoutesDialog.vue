@@ -52,8 +52,8 @@ const submit=()=>{
   unref(treeRef).getCheckedNodes(false, true).forEach(item => {
     ids.push(item.id)
   })
-  const routesid=ids.join(',')
-  request.post("/roles/assignRoute", {id:rootData.rolesMenus.id,routesid:routesid}).then(res => {
+  //const routesid=ids.join(',')
+  request.post("/roles/assignRoute", {id:rootData.rolesMenus.id,routesid:ids}).then(res => {
     message('菜单分配成功')
     rootData.showDialog = false
   }).catch(e=>{

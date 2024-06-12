@@ -25,8 +25,4 @@ public interface RolesMapper {
 
     @Update("update test.roles set name=#{name},description=#{description} where id=#{id}")
     void rolesupdate(Roles roles);
-
-    //更新用户路由信息
-    @Update("update test.roles set routesid=#{routesid} where id=#{id}")
-    void rolesAssignRoute(Roles roles);
 }

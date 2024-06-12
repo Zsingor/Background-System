@@ -30,7 +30,6 @@ public interface RoutesMapper {
     void routesupdate(Routes routes);
 
     //删除路由
-    //@Delete("delete from test.routes where id=#{id}")
     void routesdelete(List<String> menulist);
 
     //查询路由的父id

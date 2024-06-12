@@ -19,20 +19,5 @@ public class Roles {
     private Integer id;
     private String name;
     private String description;
-    private String routesid;
-
-    public List<String> getRoutesIdAsList() {
-        if (routesid == null || routesid.isEmpty()) {
-            return new ArrayList<>();
-        }
-        return Arrays.stream(routesid.split(","))
-                .map(String::valueOf)
-                .collect(Collectors.toList());
-    }
-
-    public void setRoutesIdFromList(List<String> routeIds) {
-        this.routesid = routeIds.stream()
-                .map(String::valueOf)
-                .collect(Collectors.joining(","));
-    }
+    private List<String> routesid;
 }

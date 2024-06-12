@@ -29,7 +29,7 @@
             <Edit/>
           </el-icon>
         </vxe-button>
-        <vxe-button title="删除" circle @click="deleterow(row)">
+        <vxe-button title="删除" circle @click="deleteTableData(xGrid,'/user/delete',false,row)">
           <el-icon>
             <Delete/>
           </el-icon>
@@ -63,7 +63,7 @@ import {message} from "@/utils/message.js";
 import QueryForm from "@/views/system/people/components/QueryForm.vue";
 import request from "@/request/index.js";
 import {ElMessageBox} from "element-plus";
-import {VxeTableCommonsConfig, dbclickHandler, resetWatch} from "@/utils/tableconfig";
+import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from "@/utils/tableconfig";
 import SubmitForm from "@/views/system/people/components/SubmitForm.vue";
 import {getTableConfig} from "@/views/system/people/config.js";
 import axios from "axios";
@@ -118,28 +118,6 @@ const updaterow = (row) => {
   rootData.name = "修改信息"
   rootData.selectRow = row
   rootData.showForm = true
-}
-
-const deleterow = (row) => {
-  ElMessageBox.confirm('您确定要删除吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    request.post("/user/delete", row).then(res => {
-      xGrid.value.commitProxy('query')
-      if(res.code===1)
-      {
-        message('删除成功')
-      }
-      else
-      {
-        message(res.msg,"error")
-      }
-    }).catch(() => {
-      message("删除失败", "error")
-    })
-  })
 }
 
 const gridOptions = reactive({

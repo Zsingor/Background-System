@@ -6,7 +6,7 @@
       </template>
       <template #operate="{ row }">
         <el-button type="primary" @click="updaterow(row)">编辑</el-button>
-        <el-button type="danger" @click="deleterow(row)">删除</el-button>
+        <el-button type="danger" @click="deleteTableData(xGrid,'/roles/delete',false,row)">删除</el-button>
         <el-button type="info" @click="assignRoute(row)">分配路由</el-button>
       </template>
     </vxe-grid>
@@ -41,7 +41,7 @@
 
 <script setup>
 
-import {dbclickHandler, resetWatch, VxeTableCommonsConfig} from "@/utils/tableconfig.js";
+import {dbclickHandler, deleteTableData, resetWatch, VxeTableCommonsConfig} from "@/utils/tableconfig.js";
 import {onActivated, onDeactivated, onMounted, provide, reactive, ref, toRaw} from "vue";
 import {isEmpty} from "@/utils/commons.js";
 import _ from "lodash";
@@ -100,29 +100,6 @@ const updaterow=(row)=>{
   Object.assign(rootData.formData, row)
   rootData.selectRow = row
   rootData.showForm = true
-}
-
-const deleterow=(row)=>{
-  console.log(row)
-  ElMessageBox.confirm('您确定要删除吗？', '提示', {
-    confirmButtonText: '确定',
-    cancelButtonText: '取消',
-    type: 'warning'
-  }).then(() => {
-    request.post("/roles/delete", row).then(res => {
-      xGrid.value.commitProxy('query')
-      if(res.code===1)
-      {
-        message('删除成功')
-      }
-      else
-      {
-        message(res.msg,"error")
-      }
-    }).catch(() => {
-      message("删除失败", "error")
-    })
-  })
 }
 
 //分配路由

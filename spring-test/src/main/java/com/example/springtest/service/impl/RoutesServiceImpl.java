@@ -2,9 +2,8 @@ package com.example.springtest.service.impl;
 
 import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
-import com.example.springtest.mapper.RolesMapper;
+import com.example.springtest.mapper.RolesRoutesMapper;
 import com.example.springtest.mapper.RoutesMapper;
-import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RoutesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,12 +18,13 @@ public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RoutesMapper routesMapper;
     @Autowired
-    private RolesMapper rolesMapper;
+    private RolesRoutesMapper rolesRoutesMapper;
 
     @Override
     public List<Routes> routesquery(Roles roles) {
-        Roles newroles=rolesMapper.rolesqueryPrimary(roles.getId());
-        List<Routes> routesList=routesMapper.routesquery(newroles.getRoutesIdAsList());
+        List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
+        List<Routes> routesList=routesMapper.routesquery(routesIds);
+
         return Routeprocess(routesList);
     }
 
@@ -88,6 +88,7 @@ public class RoutesServiceImpl implements RoutesService {
     @Override
     public int routesdelete(List<String> menulist) {
         try {
+            rolesRoutesMapper.deleteRouteRoles(menulist);
             routesMapper.routesdelete(menulist);
             return 1;
         }
