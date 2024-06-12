@@ -9,6 +9,7 @@
         <foreach item="item" collection="routesid" open="(" separator="," close=")">
             #{item}
         </foreach>
+        ORDER BY position DESC
     </select>
 
     <delete id="routesdelete" parameterType="java.util.List">

@@ -102,7 +102,7 @@ const addmessage = () => {
     email:"",
     roleid:null,
     description:"",
-    status:"1"
+    status:"1",
   })
   rootData.name = "添加信息"
   rootData.selectRow = null

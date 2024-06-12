@@ -31,6 +31,9 @@
           <el-form-item label="菜单级别:">
             <el-input-number size="large" v-model="rootData.formData.level" :min="1" :max="2"/>
           </el-form-item>
+          <el-form-item label="菜单权重:">
+            <el-input-number size="large" v-model="rootData.formData.position" :min="0" :max="999"/>
+          </el-form-item>
           <el-form-item label="父级菜单:" prop="parent_menu_id">
             <el-select clearable filterable placeholder="选择父级菜单"
                        size="large"
@@ -143,6 +146,7 @@ const resetForm = () => {
     title: "",
     path: "",
     level: 1,
+    position:0,
     status: "1",
     icon: "",
     parentid: ""

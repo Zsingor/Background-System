@@ -108,6 +108,7 @@ const addmessage = () => {
     title: "",
     path: "",
     level: 1,
+    position:0,
     status: "1",
     icon: "",
     parentid: "",

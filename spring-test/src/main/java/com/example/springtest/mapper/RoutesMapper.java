@@ -12,21 +12,21 @@ public interface RoutesMapper {
     List<Routes> routesquery(List<String> routesid);
 
     //查询所有路由信息
-    @Select("select * from test.routes")
+    @Select("select * from test.routes order by position DESC ")
     List<Routes> routesAllquery();
 
     //查询所有父路由
-    @Select("select * from test.routes where level=1")
+    @Select("select * from test.routes where level=1 order by position DESC")
     List<Routes> routesParentquery();
 
     //添加新路由
-    @Insert("insert into test.routes(id,name,title,path,level,status,icon,parentid)"+
-            "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid})")
+    @Insert("insert into test.routes(id,name,title,path,level,status,icon,parentid,position)"+
+            "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid},#{position})")
     void routesadd(Routes routes);
 
     //修改路由
     @Update("update test.routes set name=#{name},title=#{title},path=#{path},level=#{level},"+
-            "status=#{status},icon=#{icon},parentid=#{parentid} where id=#{id}")
+            "status=#{status},icon=#{icon},parentid=#{parentid},position=#{position} where id=#{id}")
     void routesupdate(Routes routes);
 
     //删除路由
