@@ -1,6 +1,7 @@
 package com.example.springtest.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.User;
 import com.example.springtest.service.UserService;
@@ -53,6 +54,7 @@ public class UserController {
         }
     }
 
+    @AutoLog
     //用户查询
     @PostMapping("/user/query")
     public Result userquery(@RequestBody User user)

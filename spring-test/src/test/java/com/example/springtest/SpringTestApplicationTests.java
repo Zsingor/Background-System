@@ -15,43 +15,36 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 
-@SpringBootTest
+//@SpringBootTest
 class SpringTestApplicationTests {
-
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private RoutesService routesService;
 
     @Test
     void contextLoads() {
-//        Map<String, Object> claims=new HashMap<>();
-//        claims.put("username","user11");
-//        String token= JwtUtils.generateJWT(claims);
-//        System.out.println("token"+token);
-//        try {
-//            // 验证令牌
-//            DecodedJWT verify=JwtUtils.parseJWT(token);
-//            System.out.println(verify.getClaim("username"));
-//        } catch (SignatureVerificationException e) {
-//            e.printStackTrace();
-//            System.out.println("1");
-//        }catch (TokenExpiredException e){
-//            e.printStackTrace();
-//            System.out.println("1");
-//        }catch (AlgorithmMismatchException e){
-//            e.printStackTrace();
-//            System.out.println("1");
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            System.out.println("1");
-//        }
+        Map<String, Object> claims=new HashMap<>();
+        claims.put("username","user11");
+        String token= JwtUtils.generateJWT(claims);
+        System.out.println("token"+token);
+        try {
+            // 验证令牌
+            DecodedJWT verify=JwtUtils.parseJWT(token);
+            System.out.println(verify.getClaim("username").toString());
+        } catch (SignatureVerificationException e) {
+            e.printStackTrace();
+            System.out.println("1");
+        }catch (TokenExpiredException e){
+            e.printStackTrace();
+            System.out.println("1");
+        }catch (AlgorithmMismatchException e){
+            e.printStackTrace();
+            System.out.println("1");
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println("1");
+        }
 
-        String uuid = UUID.randomUUID().toString().replace("-", "");
-        System.out.println(uuid);
-        System.out.println(uuid.length());
+//        String uuid = UUID.randomUUID().toString().replace("-", "");
+//        System.out.println(uuid);
+//        System.out.println(uuid.length());
     }
 
 }
