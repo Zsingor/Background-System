@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @RestController
@@ -61,9 +62,9 @@ public class RolesController {
     @PostMapping("/roles/delete")
     public Result rolesdelete(@RequestBody Roles roles)
     {
-        if (roles.getId()==1)
+        if (Objects.equals(roles.getId(), "1"))
         {
-            return Result.error("无法删除该角色");
+            return Result.error("无法删除超级管理员");
         }
         int flag=rolesService.rolesdelete(roles);
         if (flag==1)

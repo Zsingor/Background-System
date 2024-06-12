@@ -11,6 +11,7 @@ import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.UserService;
 import com.example.springtest.utils.JwtUtils;
+import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -67,6 +68,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int useradd(User user) {
         try {
+            user.setId(UUIDUtils.getUUID());
             userMapper.useradd(user);
             return 1;
         }

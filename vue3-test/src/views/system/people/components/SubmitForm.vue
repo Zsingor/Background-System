@@ -106,7 +106,7 @@ const submitForm = () => {
 
 const resetForm = () => {
   Object.assign(rootData.formData, {
-    id:0,
+    id:"",
     name:"",
     password:"",
     email:"",

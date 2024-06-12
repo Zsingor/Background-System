@@ -5,12 +5,12 @@ import com.example.springtest.entity.Routes;
 import com.example.springtest.mapper.RolesRoutesMapper;
 import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.service.RoutesService;
+import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,22 +48,7 @@ public class RoutesServiceImpl implements RoutesService {
             if (routesall.stream().anyMatch(route -> Objects.equals(route.getName(), name))) {
                 return 2;
             }
-            String str = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            Random random = new Random();
-            StringBuffer sb;
-            //为了确保生成的id为唯一值
-            while (true) {
-                sb = new StringBuffer();
-                for (int i = 0; i < 6; i++) {
-                    int number = random.nextInt(62);
-                    sb.append(str.charAt(number));
-                }
-                StringBuffer finalSb = sb;
-                if (routesall.stream().noneMatch(route -> Objects.equals(route.getId(), finalSb.toString()))) {
-                    break;
-                }
-            }
-            routes.setId(sb.toString());
+            routes.setId(UUIDUtils.getUUID());
             routesMapper.routesadd(routes);
             return 1;
         }

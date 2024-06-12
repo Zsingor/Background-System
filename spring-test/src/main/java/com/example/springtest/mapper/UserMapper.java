@@ -8,8 +8,8 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     //添加用户信息
-    @Insert("insert into test.user(name,password,email,roleid,description,status)"+
-            "values(#{name},#{password},#{email},#{roleid},#{description},#{status})")
+    @Insert("insert into test.user(id,name,password,email,roleid,description,status)"+
+            "values(#{id},#{name},#{password},#{email},#{roleid},#{description},#{status})")
     void useradd(User user);
 
     //查询用户信息
@@ -31,5 +31,5 @@ public interface UserMapper {
 
     //更新用户的角色
     @Update("update test.user set roleid=null where roleid=#{roleid}")
-    void userUpdateRole(int roleid);
+    void userUpdateRole(String roleid);
 }

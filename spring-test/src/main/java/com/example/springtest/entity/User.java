@@ -11,7 +11,7 @@ public class User
 {
     private Integer currentpage;
     private Integer pagesize;
-    private Integer id;
+    private String id;
     private String name;
     private String password;
     private String email;

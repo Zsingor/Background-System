@@ -6,6 +6,7 @@ import com.example.springtest.mapper.RolesMapper;
 import com.example.springtest.mapper.RolesRoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RolesService;
+import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class RolesServiceImpl implements RolesService {
     @Override
     public int rolesadd(Roles roles) {
         try {
+            roles.setId(UUIDUtils.getUUID());
             rolesMapper.rolesadd(roles);
             return 1;
         }
@@ -87,17 +89,15 @@ public class RolesServiceImpl implements RolesService {
         try {
             List<String> routeList=roles.getRoutesid();
             System.out.println(routeList);
-            if(roles.getId()==1)
+            if(Objects.equals(roles.getId(), "1"))
             {
                 List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
                 Set<String> resultSet = new HashSet<>(routeList);
                 resultSet.addAll(whitelist);
                 List<String> resultList = new ArrayList<>(resultSet);
-                //roles.setRoutesIdFromList(resultList);
                 rolesRoutesMapper.deleteRoleRoutes(roles);
                 rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList);
             }
-            //rolesMapper.rolesAssignRoute(roles);
             rolesRoutesMapper.deleteRoleRoutes(roles);
             rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList);
             return 1;

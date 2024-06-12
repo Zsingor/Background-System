@@ -88,7 +88,7 @@ const rootData = reactive({
 
 const addmessage=()=>{
   Object.assign(rootData.formData, {
-    id:0,
+    id:"",
     name: "",
     description:"",
   })

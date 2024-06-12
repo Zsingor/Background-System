@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 @Slf4j
 @RestController
 public class UserController {
@@ -69,9 +71,9 @@ public class UserController {
     @PostMapping("/user/delete")
     public Result userdelete(@RequestBody User user)
     {
-        if(user.getId()==1)
+        if(Objects.equals(user.getId(), "1"))
         {
-            return Result.error("无法删除该用户");
+            return Result.error("无法删除初始用户");
         }
         int flag=userService.userdelete(user);
         if (flag==1)

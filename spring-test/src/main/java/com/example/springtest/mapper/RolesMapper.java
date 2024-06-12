@@ -8,8 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface RolesMapper {
-    @Insert("insert into test.roles(name,description)"+
-            "values(#{name},#{description})")
+    @Insert("insert into test.roles(id,name,description)"+
+            "values(#{id},#{name},#{description})")
     void rolesadd(Roles roles);
 
     @Select("select * from test.roles")

@@ -59,15 +59,11 @@
 
 <script setup>
 import {provide, reactive, ref, onMounted, onActivated, onDeactivated} from 'vue'
-import {message} from "@/utils/message.js";
 import QueryForm from "@/views/system/people/components/QueryForm.vue";
 import request from "@/request/index.js";
-import {ElMessageBox} from "element-plus";
 import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from "@/utils/tableconfig";
 import SubmitForm from "@/views/system/people/components/SubmitForm.vue";
 import {getTableConfig} from "@/views/system/people/config.js";
-import axios from "axios";
-import {isEmpty} from "@/utils/commons.js";
 import {persistentConfig} from "@/layout/layout.js";
 
 //定义界面的name，用于使用keep-alive
@@ -100,7 +96,7 @@ onMounted(() => {
 
 const addmessage = () => {
   Object.assign(rootData.formData, {
-    id:0,
+    id:"",
     name:"",
     password:"",
     email:"",

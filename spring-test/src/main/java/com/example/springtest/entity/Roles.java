@@ -13,7 +13,7 @@ import java.util.List;
 public class Roles {
     private Integer currentpage;
     private Integer pagesize;
-    private Integer id;
+    private String id;
     private String name;
     private String description;
     private List<String> routesid;

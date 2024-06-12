@@ -1,7 +1,6 @@
 package com.example.springtest.mapper;
 
 import com.example.springtest.entity.Roles;
-import com.example.springtest.entity.Routes;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -18,5 +17,5 @@ public interface RolesRoutesMapper {
 
     void deleteRouteRoles(List<String> menulist);
 
-    void addRoleRoutes(Integer roleid, List<String> routeids);
+    void addRoleRoutes(String roleid, List<String> routeids);
 }

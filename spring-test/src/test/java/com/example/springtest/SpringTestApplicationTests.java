@@ -48,14 +48,10 @@ class SpringTestApplicationTests {
 //            e.printStackTrace();
 //            System.out.println("1");
 //        }
-        List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
-        List<String> vlist=new ArrayList<>(Arrays.asList("3", "4","5","6"));
-        Set<String> resultSet = new HashSet<>(vlist);
-        resultSet.addAll(whitelist);
 
-        // Convert the set back to a list if needed
-        List<String> resultList = new ArrayList<>(resultSet);
-        System.out.println(resultList);
+        String uuid = UUID.randomUUID().toString().replace("-", "");
+        System.out.println(uuid);
+        System.out.println(uuid.length());
     }
 
 }
