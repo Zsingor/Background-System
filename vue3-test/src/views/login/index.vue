@@ -1,0 +1,179 @@
+<template>
+  <div class="background">
+    <div class="bg-card">
+      <div class="content-left">
+        <div class="switch" id="switch-cnt" ref="switchCtn">
+          <div class="left_container" id="switch-c1" ref="switchC1">
+            <h2 class="left_title">Hello Friend!</h2>
+            <p class="left_description">欢迎使用后台管理系统</p>
+          </div>
+        </div>
+      </div>
+      <div class="content-right">
+        <div style="width: 100%;text-align: center;">
+          <div style="font-size: 30px;width:100%;font-weight: bold;text-align: center;margin-bottom: 40px;color: #4C5D6E">登 录</div>
+          <div style="margin-left: 20%;width: 60%">
+            <el-form :model="user" :rules="rules" ref="loginRef">
+              <el-form-item prop="name">
+                <el-input clearable size="large" placeholder="请输入用户名" v-model="user.name"></el-input>
+              </el-form-item>
+              <el-form-item prop="password">
+                <el-input clearable size="large" show-password type="password" placeholder="请输入密码" v-model="user.password"></el-input>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div style="width:100%;text-align: center;margin-bottom: 15px">
+            <button class="button-login" @click="login">确认</button>
+          </div>
+          <div>
+            还没有账号?去 <span style="color: #409eff;cursor: pointer" @click="$router.push('/register')">申请</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script setup>
+import { useRouter } from 'vue-router'
+import {createRouteAndMenu} from "@/router/routeUtils.js";
+import {persistentConfig} from "@/layout/layout.js";
+import request from "@/request/index.js";
+import {reactive, ref} from "vue";
+import {userInfo} from "@/layout/user.js";
+import {message} from "@/utils/message.js";
+
+const router = useRouter()
+const loginRef = ref(null);
+var user=reactive({
+  name:"",
+  password:""
+})
+
+const rules = ref({
+  name:[
+    {required:true,message:"请输入用户名",trigger:"blur"}
+  ],
+  password:[
+    {required:true,message:"请输入密码",trigger:"blur"}
+  ],
+  validcode: [
+    {required:true,message:"请输入验证码",trigger:"blur" }
+  ]
+})
+
+const login=()=>{
+  loginRef.value.validate((valid) => {
+    if (valid) {
+      request.post("/user/login",user).then(res => {
+        if(res.code===1)
+        {
+          userInfo.baseInfo=res.data
+          localStorage.setItem("User_Info", JSON.stringify(res.data)); //存储用户数据
+          persistentConfig.routeTags = [];
+          createRouteAndMenu(userInfo.baseInfo.menuList)
+          message("登录成功")
+          router.push("/");
+        }
+        else {
+          message(res.msg,"error")
+        }
+      }).catch(error => {
+        console.log(error);
+      })
+    }
+  })
+}
+</script>
+
+<style scoped>
+.background{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #5FC0FA;
+}
+
+.bg-card{
+  width: 70%;
+  height: 80%;
+  display: flex;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.content-left{
+  width: 50%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: 1.25s;
+  background-color: #ecf0f3;
+  overflow: hidden;
+  box-shadow: 4px 4px 10px #d1dfe6;
+}
+
+.left_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: 50px 55px;
+}
+
+.left_title {
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 3;
+  color: #181818;
+  letter-spacing: 0.5px;
+}
+
+.left_description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #181818;
+  letter-spacing: 0.25px;
+}
+
+.content-right{
+  width: 50%;
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+
+.button-login{
+  width: 30%;
+  height:50px;
+  border-radius: 25px;
+  margin-top: 50px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 1.15px;
+  background-color: #4B70E2;
+  color: #f9f9f9;
+  box-shadow: 4px 4px 8px #d1d9e6;
+  border: none;
+  outline: none;
+}
+
+.button-login{
+  cursor: pointer;
+}
+
+.button-login:hover {
+  box-shadow: 6px 6px 10px #d1d9e6, -3px -3px 5px #f9f9f9;
+  transform: scale(0.985);
+  transition: 0.25s;
+}
+</style>

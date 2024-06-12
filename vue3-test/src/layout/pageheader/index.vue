@@ -30,8 +30,8 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="login">
-                <el-icon><User /></el-icon>
-                我的信息
+                <el-icon><SwitchButton /></el-icon>
+                退出登录
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

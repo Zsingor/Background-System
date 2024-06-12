@@ -89,7 +89,7 @@ public class RolesServiceImpl implements RolesService {
             System.out.println(routeList);
             if(roles.getId()==1)
             {
-                List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4"));
+                List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
                 Set<String> resultSet = new HashSet<>(routeList);
                 resultSet.addAll(whitelist);
                 List<String> resultList = new ArrayList<>(resultSet);

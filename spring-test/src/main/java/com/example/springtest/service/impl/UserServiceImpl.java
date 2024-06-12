@@ -33,22 +33,33 @@ public class UserServiceImpl implements UserService {
     @Override
     public JSONObject userlogin(User user) {
         User user1 = userMapper.userPrimaryquery(user);
-
-        Roles roles=rolesMapper.rolesqueryPrimary(user1.getRoleid());
-
-        List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
-        List<Routes> routesList=routesMapper.routesquery(routesIds);
-
-        List<Routes> menuList = RoutesServiceImpl.Routeprocess(routesList);
-
-        Map<String, Object> claims=new HashMap<>();
-        claims.put("user_name",user.getName());
-        String token= JwtUtils.generateJWT(claims);
-
         JSONObject response = new JSONObject();
-        response.put("menuList", menuList);
-        response.put("user_name", user.getName());
-        response.put("token", token);
+        if(user1==null)
+        {
+            response.put("token", "0");
+        }
+        else if(!user1.getPassword().equals(user.getPassword()))
+        {
+            response.put("token", "1");
+        }
+        else
+        {
+            Roles roles=rolesMapper.rolesqueryPrimary(user1.getRoleid());
+
+            List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
+            List<Routes> routesList=routesMapper.routesquery(routesIds);
+
+            List<Routes> menuList = RoutesServiceImpl.Routeprocess(routesList);
+
+            Map<String, Object> claims=new HashMap<>();
+            claims.put("user_id",user.getId());
+            claims.put("user_name",user.getName());
+            String token= JwtUtils.generateJWT(claims);
+
+            response.put("menuList", menuList);
+            response.put("user_name", user.getName());
+            response.put("token", token);
+        }
         return response;
     }
 

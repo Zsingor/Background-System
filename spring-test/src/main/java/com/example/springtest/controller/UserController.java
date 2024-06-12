@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@CrossOrigin
 @Slf4j
 @RestController
 public class UserController {
@@ -24,6 +23,14 @@ public class UserController {
     {
         try {
             JSONObject data=userService.userlogin(user);
+            if(data.get("token")=="0")
+            {
+                return Result.error("当前用户不存在");
+            }
+            else if(data.get("token")=="1")
+            {
+                return Result.error("用户名或密码错误");
+            }
             return Result.success(data);
         }catch (Exception e){
             return Result.error("查询失败");

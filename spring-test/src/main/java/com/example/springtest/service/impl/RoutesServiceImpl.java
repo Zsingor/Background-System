@@ -54,7 +54,7 @@ public class RoutesServiceImpl implements RoutesService {
             //为了确保生成的id为唯一值
             while (true) {
                 sb = new StringBuffer();
-                for (int i = 0; i < 8; i++) {
+                for (int i = 0; i < 6; i++) {
                     int number = random.nextInt(62);
                     sb.append(str.charAt(number));
                 }

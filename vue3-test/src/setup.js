@@ -30,6 +30,9 @@ export function loadConfig() {
     // 2.初始化路由信息
     if (!isEmpty(localStorage.getItem("User_Info"))) {
         userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))
-        createRouteAndMenu(userInfo.baseInfo.menuList)
+        if(!isEmpty(userInfo.baseInfo))
+        {
+            createRouteAndMenu(userInfo.baseInfo.menuList)
+        }
     }
 }
