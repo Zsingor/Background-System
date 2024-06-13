@@ -16,7 +16,7 @@ public interface RolesMapper {
     List<Roles> rolesqueryAll();
 
     @Select("select * from test.roles where id=#{id}")
-    Roles rolesqueryPrimary(Integer id);
+    Roles rolesqueryPrimary(String id);
 
     List<Roles> rolesquery(Roles roles);
 
