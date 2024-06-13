@@ -28,7 +28,7 @@
           style="width: 100%"
           v-model="rootData.queryData.startDate"
           type="datetime"
-          placeholder="开始时间"
+          placeholder="操作起始时间"
           format="YYYY-MM-DD hh:mm:ss"
           value-format="x"
       />
@@ -38,7 +38,7 @@
           style="width: 100%"
           v-model="rootData.queryData.endDate"
           type="datetime"
-          placeholder="结束时间"
+          placeholder="操作终止时间"
           format="YYYY-MM-DD hh:mm:ss"
           value-format="x"
       />

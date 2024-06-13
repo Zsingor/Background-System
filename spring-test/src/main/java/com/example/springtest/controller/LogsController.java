@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 public class LogsController {
@@ -26,6 +28,19 @@ public class LogsController {
         }
         catch (Exception error){
             return Result.error("获取数据失败:"+error);
+        }
+    }
+
+    @PostMapping("/logs/delete")
+    public Result logsdelete(@RequestBody List<String> logslist)
+    {
+        int flag=logsService.logsdelete(logslist);
+        if (flag==1)
+        {
+            return Result.success();
+        }
+        else {
+            return Result.error("删除失败");
         }
     }
 }

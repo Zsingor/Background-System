@@ -17,4 +17,6 @@ public interface LogsMapper {
     void logsdelete(Logs logs);
 
     List<Logs> logsquery(Logs logs);
+
+    void logsdelete(List<String> logslist);
 }

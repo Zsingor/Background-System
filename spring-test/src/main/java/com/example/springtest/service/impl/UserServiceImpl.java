@@ -18,6 +18,7 @@ import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,9 +52,12 @@ public class UserServiceImpl implements UserService {
             Roles roles=rolesMapper.rolesqueryPrimary(user1.getRoleid());
 
             List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
-            List<Routes> routesList=routesMapper.routesquery(routesIds);
-
-            List<Routes> menuList = RoutesServiceImpl.Routeprocess(routesList);
+            List<Routes> menuList=new ArrayList<Routes>();
+            if(!routesIds.isEmpty())
+            {
+                List<Routes> routesList=routesMapper.routesquery(routesIds);
+                menuList = RoutesServiceImpl.Routeprocess(routesList);
+            }
 
             Map<String, Object> claims=new HashMap<>();
             claims.put("user_id",user1.getId());

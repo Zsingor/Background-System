@@ -74,9 +74,9 @@ public class LogAspect {
 
             return result;
         }
-        catch (Exception error)
+        catch (Exception e)
         {
-            return Result.error("日志信息添加失败");
+            return Result.error(e.toString());
         }
     }
 

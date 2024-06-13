@@ -31,5 +31,13 @@
         <if test="endDate != null">
             AND operatedate &lt;= #{endDate}
         </if>
+        ORDER BY operatedate DESC
     </select>
+
+    <delete id="logsdelete" parameterType="java.util.List">
+        DELETE FROM test.logs WHERE id IN
+        <foreach item="item" collection="logslist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

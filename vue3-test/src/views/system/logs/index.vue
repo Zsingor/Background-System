@@ -7,7 +7,7 @@
       </template>
       <!--  表格上方的按钮组    -->
       <template #toolbar_buttons class="buttons">
-        <vxe-button status="danger" @click="addmessage">批量删除</vxe-button>
+        <vxe-button status="danger" @click="deleteTableData(xGrid,'/logs/delete',true)">批量删除</vxe-button>
       </template>
       <!--  所属角色显示显示    -->
       <template #role="{ row }">
@@ -15,7 +15,7 @@
       </template>
       <!--  操作按钮组    -->
       <template #operate="{ row }">
-        <vxe-button title="删除" circle @click="deleteTableData(xGrid,'/user/delete',false,row)">
+        <vxe-button title="删除" circle @click="deleterow(row)">
           <el-icon>
             <Delete/>
           </el-icon>
@@ -32,6 +32,8 @@ import request from "@/request/index.js";
 import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from "@/utils/tableconfig";
 import {persistentConfig} from "@/layout/layout.js";
 import {parseDate} from "@/utils/commons.js";
+import {message} from "@/utils/message.js";
+import {ElMessageBox} from "element-plus";
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
@@ -47,19 +49,45 @@ const rootData = reactive({
   rolesList:{}
 })
 
+const deleterow=(row)=>{
+  let ids=[]
+  ids.push(row.id)
+  ElMessageBox.confirm("您确定要删除吗？", "提示", {
+    type: "warning"
+  }).then(() => {
+    xGrid.value.reactData.tableLoading = true;
+    request.post("/logs/delete",ids).then(res=>{
+      if(res.code===1)
+      {
+        message("删除成功")
+        xGrid.value.commitProxy("query");
+      }
+      else {
+        message(res.msg,"error")
+      }
+    }).catch(error=>{
+      message(error,"error")
+    })
+  }).catch(() => {
+
+  }).finally(() => {
+    xGrid.value.reactData.tableLoading = false;
+  });
+}
+
 const gridOptions = reactive({
   rowId: 'id',
   ...VxeTableCommonsConfig,
   columns: [
     {type: 'checkbox', width: 50, fixed: 'left'},
     {type: 'seq', width: 50},
-    {field: 'username', title: '用户名称',minWidth:120},
-    {field: 'roleid', title: '所属角色',minWidth:120,slots: {default: 'role'}},
-    {field: 'module', title: '操作模块',minWidth:120},
-    {field: 'operate', title: '操作内容',minWidth:120},
-    {field: 'details', title: '详细内容',minWidth:120},
-    {field: 'ip', title: 'IP地址',minWidth:120},
-    {field: 'operatedate', title: '操作时间',minWidth:120,formatter: "formatDate"},
+    {field: 'username', title: '用户名称',minWidth:100},
+    {field: 'roleid', title: '所属角色',minWidth:100,slots: {default: 'role'}},
+    {field: 'module', title: '操作模块',minWidth:100},
+    {field: 'operate', title: '操作内容',minWidth:100},
+    {field: 'details', title: '详细内容',minWidth:200},
+    {field: 'ip', title: 'IP地址',minWidth:100},
+    {field: 'operatedate', title: '操作时间',minWidth:150,formatter: "formatDate"},
     {title: '操作', minWidth: 50, fixed: 'right', slots: {default: 'operate'}}
   ],
   proxyConfig: {

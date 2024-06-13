@@ -2,6 +2,7 @@ package com.example.springtest.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.Roles;
 import com.example.springtest.service.RolesService;
@@ -21,6 +22,7 @@ public class RolesController {
     @Autowired
     private RolesService rolesService;
 
+    @AutoLog(module = "角色管理",operate = "添加角色")
     @PostMapping("/roles/add")
     public Result rolesadd(@RequestBody Roles roles)
     {
@@ -58,6 +60,7 @@ public class RolesController {
         }
     }
 
+    @AutoLog(module = "角色管理",operate = "删除角色")
     @PostMapping("/roles/delete")
     public Result rolesdelete(@RequestBody Roles roles)
     {
@@ -75,6 +78,7 @@ public class RolesController {
         }
     }
 
+    @AutoLog(module = "角色管理",operate = "更新角色信息")
     @PostMapping("/roles/update")
     public Result rolesupdate(@RequestBody Roles roles)
     {

@@ -1,6 +1,7 @@
 package com.example.springtest.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
@@ -55,6 +56,7 @@ public class RoutesController {
         }
     }
 
+    @AutoLog(module = "路由管理",operate = "添加路由")
     @PostMapping("/routes/add")
     public Result routesadd(@RequestBody Routes routes)
     {
@@ -73,6 +75,7 @@ public class RoutesController {
         }
     }
 
+    @AutoLog(module = "路由管理",operate = "更新路由信息")
     @PostMapping("/routes/update")
     public Result routesupdate(@RequestBody Routes routes)
     {
@@ -86,6 +89,7 @@ public class RoutesController {
         }
     }
 
+    @AutoLog(module = "路由管理",operate = "删除路由")
     @PostMapping("/routes/delete")
     public Result routesdelete(@RequestBody List<String> menulist)
     {

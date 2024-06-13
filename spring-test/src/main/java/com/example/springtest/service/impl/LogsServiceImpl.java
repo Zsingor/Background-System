@@ -54,4 +54,16 @@ public class LogsServiceImpl implements LogsService {
             return 0;
         }
     }
+
+    @Override
+    public int logsdelete(List<String> logslist) {
+        try {
+            logsMapper.logsdelete(logslist);
+            return 1;
+        }
+        catch (Exception error)
+        {
+            return 0;
+        }
+    }
 }

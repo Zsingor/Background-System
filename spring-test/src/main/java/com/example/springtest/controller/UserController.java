@@ -21,6 +21,7 @@ public class UserController {
     private UserService userService;
 
     //用户登录
+    @AutoLog(module = "用户管理",operate = "用户登录")
     @PostMapping("/user/login")
     public Result userlogin(@RequestBody User user)
     {
@@ -70,6 +71,7 @@ public class UserController {
 
     //用户删除
     @PostMapping("/user/delete")
+    @AutoLog(module = "用户管理",operate = "删除用户")
     public Result userdelete(@RequestBody User user)
     {
         if(Objects.equals(user.getId(), "1"))
@@ -88,6 +90,7 @@ public class UserController {
 
     //用户修改
     @PostMapping("/user/update")
+    @AutoLog(module = "用户管理",operate = "更新用户信息")
     public Result update(@RequestBody User user)
     {
         int flag=userService.userupdate(user);
