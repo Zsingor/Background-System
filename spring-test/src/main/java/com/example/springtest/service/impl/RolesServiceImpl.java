@@ -1,11 +1,14 @@
 package com.example.springtest.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Roles;
+import com.example.springtest.entity.User;
 import com.example.springtest.mapper.RolesMapper;
 import com.example.springtest.mapper.RolesRoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RolesService;
+import com.example.springtest.utils.QueryResult;
 import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,23 +43,13 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public JSONObject rolesquery(Roles roles) {
-        List<Roles> res;
+    public JSONObject rolesquery(String json) {
+        JSONObject jsonObject= JSON.parseObject(json);
+        Roles roles=jsonObject.getObject("queryForm",Roles.class);
+        int currentPage=jsonObject.getInteger("currentPage");
+        int pageSize=jsonObject.getInteger("pageSize");
         List<Roles> data=rolesMapper.rolesquery(roles);
-        int rowSum=data.size();
-        int start = (roles.getCurrentpage() - 1) * roles.getPagesize();
-        int end = roles.getCurrentpage() * roles.getPagesize();
-        if(end<=rowSum)
-        {
-            res=data.subList(start,end);
-        }
-        else {
-            res=data.subList(start,rowSum);
-        }
-        JSONObject response = new JSONObject();
-        response.put("rowSum", rowSum);
-        response.put("roleslist", res);
-        return response;
+        return QueryResult.getResult(data,currentPage,pageSize);
     }
 
     @Override

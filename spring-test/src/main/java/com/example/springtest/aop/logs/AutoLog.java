@@ -10,6 +10,6 @@ public @interface AutoLog {
     /**模块*/
     String module() default "";
 
-    /**描述*/
-    String description() default "";
+    /**操作*/
+    String operate() default "";
 }

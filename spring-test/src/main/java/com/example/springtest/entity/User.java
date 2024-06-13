@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor //全参构造
 public class User
 {
-    private Integer currentpage;
-    private Integer pagesize;
     private String id;
     private String name;
     private String password;

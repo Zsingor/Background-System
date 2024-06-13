@@ -1,7 +1,9 @@
 package com.example.springtest.service.impl;
 
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
@@ -11,6 +13,7 @@ import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.UserService;
 import com.example.springtest.utils.JwtUtils;
+import com.example.springtest.utils.QueryResult;
 import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,12 +56,15 @@ public class UserServiceImpl implements UserService {
             List<Routes> menuList = RoutesServiceImpl.Routeprocess(routesList);
 
             Map<String, Object> claims=new HashMap<>();
-            claims.put("user_id",user.getId());
-            claims.put("user_name",user.getName());
+            claims.put("user_id",user1.getId());
+            claims.put("user_name",user1.getName());
+            claims.put("user_role",roles.getName());
+            claims.put("role_id",roles.getId());
             String token= JwtUtils.generateJWT(claims);
 
             response.put("menuList", menuList);
             response.put("user_name", user.getName());
+            response.put("role_id", roles.getId());
             response.put("token", token);
         }
         return response;
@@ -80,23 +86,16 @@ public class UserServiceImpl implements UserService {
 
     // 用户查询
     @Override
-    public JSONObject userquery(User user) {
+    public JSONObject userquery(String json) {
+        //根据json解析出具体的值
+        JSONObject jsonObject= JSON.parseObject(json);
+        User user=jsonObject.getObject("queryForm",User.class);
+        int currentPage=jsonObject.getInteger("currentPage");
+        int pageSize=jsonObject.getInteger("pageSize");
+
         List<User> data=userMapper.userquery(user);
-        List<User> res;
-        int rowSum=data.size();
-        int start = (user.getCurrentpage() - 1) * user.getPagesize();
-        int end = user.getCurrentpage() * user.getPagesize();
-        if(end<=rowSum)
-        {
-            res=data.subList(start,end);
-        }
-        else {
-            res=data.subList(start,rowSum);
-        }
-        JSONObject response = new JSONObject();
-        response.put("rowSum", rowSum);
-        response.put("userlist", res);
-        return response;
+
+        return QueryResult.getResult(data,currentPage,pageSize);
     }
 
     // 用户删除

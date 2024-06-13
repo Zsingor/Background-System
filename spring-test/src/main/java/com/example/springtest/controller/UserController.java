@@ -41,6 +41,7 @@ public class UserController {
     }
 
     //用户添加
+    @AutoLog(module = "用户管理",operate = "添加用户")
     @PostMapping("/user/add")
     public Result useradd(@RequestBody User user)
     {
@@ -54,14 +55,12 @@ public class UserController {
         }
     }
 
-    @AutoLog
     //用户查询
     @PostMapping("/user/query")
-    public Result userquery(@RequestBody User user)
+    public Result userquery(@RequestBody String json)
     {
-        System.out.println(user);
         try {
-            JSONObject data=userService.userquery(user);
+            JSONObject data=userService.userquery(json);
             return Result.success(data);
         }
         catch (Exception error){

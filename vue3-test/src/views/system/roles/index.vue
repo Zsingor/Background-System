@@ -208,11 +208,13 @@ const gridOptions = reactive({
       query: ({form,page}) => {
         xGrid.value.clearCheckboxRow()
         return new Promise((resolve, reject) => {
-          const params = {
-            "currentpage": page.currentPage,
-            "pagesize": page.pageSize,
-            "name": form.name,
-            "description": form.description,
+          const params={
+            currentPage:page.currentPage,
+            pageSize:page.pageSize,
+            queryForm:{
+              "name": form.name,
+              "description": form.description,
+            }
           }
           console.log(page)
           request.post("/roles/query", params).then(res => {
@@ -221,7 +223,7 @@ const gridOptions = reactive({
               page: {
                 total: res.data.rowSum
               },
-              result: res.data.roleslist
+              result: res.data.resultList
             })
           }).catch(() => {
             reject()

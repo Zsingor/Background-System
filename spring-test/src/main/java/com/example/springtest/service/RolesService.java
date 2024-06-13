@@ -11,7 +11,7 @@ public interface RolesService {
 
     List<Roles> rolesqueryAll();
 
-    JSONObject rolesquery(Roles roles);
+    JSONObject rolesquery(String json);
 
     int rolesdelete(Roles roles);
 

@@ -1,8 +1,8 @@
-package com.example.springtest.utils;
+package com.example.springtest.config.interceptor;
 
 import com.alibaba.fastjson.JSONObject;
-import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.springtest.entity.Result;
+import com.example.springtest.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Component;

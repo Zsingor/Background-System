@@ -47,11 +47,10 @@ public class RolesController {
 
     //角色查询
     @PostMapping("/roles/query")
-    public Result rolesquery(@RequestBody Roles roles)
+    public Result rolesquery(@RequestBody String json)
     {
-        System.out.println(roles);
         try {
-            JSONObject data=rolesService.rolesquery(roles);
+            JSONObject data=rolesService.rolesquery(json);
             return Result.success(data);
         }
         catch (Exception error){

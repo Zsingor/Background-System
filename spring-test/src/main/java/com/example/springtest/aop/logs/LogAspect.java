@@ -4,13 +4,14 @@ import com.alibaba.fastjson.JSONObject;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.springtest.entity.Logs;
 import com.example.springtest.entity.Result;
+import com.example.springtest.service.LogsService;
 import com.example.springtest.utils.JwtUtils;
 import com.example.springtest.utils.UUIDUtils;
 import jakarta.servlet.http.HttpServletRequest;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -19,67 +20,62 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 @Component
 @Aspect
 //处理AOP的处理器
 public class LogAspect {
+    @Autowired
+    private LogsService logsService;
+
     @Around("@annotation(autoLog)")
     public Object doAround(ProceedingJoinPoint joinPoint, AutoLog autoLog)throws Throwable{
         try {
             //执行具体的接口
             Result result=(Result) joinPoint.proceed();
 
+            String className=joinPoint.getTarget().getClass().getName();
             String methodName = joinPoint.getSignature().getName();
-            Method method = currentMethod(joinPoint,methodName);
-            System.out.println("方法名称"+methodName);
-            System.out.println("操作包名"+joinPoint.getTarget().getClass().getName());
-            System.out.println(method);
-            System.out.println("参数:"+Arrays.toString(joinPoint.getArgs()));
+            String params = Arrays.toString(joinPoint.getArgs());
 
+            String details="[类名]:"+className+"  [方法]:"+methodName+" [参数]:"+params;
+
+            String id= UUIDUtils.getUUID();
+
+            //操作模块
+            String module=autoLog.module();
 
             //操作内容
-            String operate=autoLog.module();
-
-            //操作描述
-            String identify=autoLog.description();
+            String operate=autoLog.operate();
 
             //操作时间
-            Date time=new Date();
+            Date operatetime=new Date(System.currentTimeMillis());
 
-            HttpServletRequest request= ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            HttpServletRequest request= ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
             //操作ip
             String ip=getIp(request);
 
             //操作姓名
-            String user_id="";
-            String user_name="";
-            DecodedJWT verify = null;
             String token = request.getHeader("token");
-            if(token!=null)
-            {
-                verify=JwtUtils.parseJWT(token);
-                user_id=verify.getClaim("user_id").toString();
-                user_name=verify.getClaim("user_name").toString();
-            }
-            else
+            if(token==null)
             {
                 JSONObject data=(JSONObject) result.getData();
                 token=data.getString("token");
-                verify=JwtUtils.parseJWT(token);
-                user_id=verify.getClaim("user_id").toString();
-                user_name=verify.getClaim("user_name").toString();
             }
-            String ID= UUIDUtils.getUUID();
-//            Logs log=new Logs(ID,user_id,user_name,identify,operate,ip,time);
-//            logService.addlog(operationLog);
+            DecodedJWT verify=JwtUtils.parseJWT(token);
+            String userid=verify.getClaim("user_id").toString().replace("\"", "");;
+            String username=verify.getClaim("user_name").toString().replace("\"", "");
+            String roleid=verify.getClaim("role_id").toString().replace("\"", "");
+
+            Logs logs=new Logs(id,userid,username,roleid,module,operate,details,ip,operatetime,null,null);
+            logsService.logsadd(logs);
 
             return result;
         }
         catch (Exception error)
         {
-            System.out.println(error);
             return Result.error("日志信息添加失败");
         }
     }

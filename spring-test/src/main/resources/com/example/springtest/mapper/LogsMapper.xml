@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springtest.mapper.LogsMapper">
+    <select id="logsquery" parameterType="com.example.springtest.entity.Logs" resultType="com.example.springtest.entity.Logs">
+        SELECT * FROM test.logs
+        WHERE 1=1
+        <if test="username != null and username != ''">
+            AND username LIKE CONCAT('%', #{username}, '%')
+        </if>
+        <if test="roleid != null and roleid != ''">
+            AND roleid = #{roleid}
+        </if>
+        <if test="module != null and module != ''">
+            AND module LIKE CONCAT('%', #{module}, '%')
+        </if>
+        <if test="operate != null and operate != ''">
+            AND operate LIKE CONCAT('%', #{operate}, '%')
+        </if>
+        <if test="details != null and details != ''">
+            AND details LIKE CONCAT('%', #{details}, '%')
+        </if>
+        <if test="ip != null and ip != ''">
+            AND ip LIKE CONCAT('%', #{ip}, '%')
+        </if>
+        <if test="startDate != null">
+            AND operatedate &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND operatedate &lt;= #{endDate}
+        </if>
+    </select>
+</mapper>

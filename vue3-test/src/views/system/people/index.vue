@@ -88,12 +88,6 @@ const rootData = reactive({
   rolesList:{}
 })
 
-console.log("rootData", rootData.formRules)
-
-onMounted(() => {
-  console.log("页面被加载")
-})
-
 const addmessage = () => {
   Object.assign(rootData.formData, {
     id:"",
@@ -135,16 +129,19 @@ const gridOptions = reactive({
     ajax: {
       query: ({page}) => {
         xGrid.value.clearCheckboxRow()
-        rootData.queryData["currentpage"]=page.currentPage
-        rootData.queryData["pagesize"]=page.pageSize
+        const params={
+          currentPage:page.currentPage,
+          pageSize:page.pageSize,
+          queryForm:rootData.queryData
+        }
         return new Promise((resolve, reject) => {
-          request.post("/user/query", rootData.queryData).then(res => {
+          request.post("/user/query", params).then(res => {
             console.log("res", res)
             resolve({
               page: {
                 total: res.data.rowSum
               },
-              result: res.data.userlist
+              result: res.data.resultList
             })
           }).catch(() => {
             reject()
@@ -154,19 +151,20 @@ const gridOptions = reactive({
             res.data.forEach(item => {
               rootData.rolesList[item.id] = item.name
             })
-            console.log(rootData.rolesList)
           })
         })
       },
       //用于导出全部数据时的查询
       queryAll: () => {
         xGrid.value.clearCheckboxRow()
-        rootData.queryData["currentpage"]=1
-        rootData.queryData["pagesize"]=1000000
+        const params={
+          currentPage:1,
+          pageSize:1000000,
+          queryForm:rootData.queryData
+        }
         return new Promise((resolve, reject) => {
-          request.post("/user/query", rootData.queryData).then(res => {
-            console.log("res", res)
-            resolve(res.data.userlist)
+          request.post("/user/query", params).then(res => {
+            resolve(res.data.resultList)
           }).catch(() => {
             reject()
           })

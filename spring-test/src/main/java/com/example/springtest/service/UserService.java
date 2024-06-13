@@ -10,7 +10,7 @@ public interface UserService {
 
     int useradd(User user);
 
-    JSONObject userquery(User user);
+    JSONObject userquery(String json);
 
     int userdelete(User user);
 

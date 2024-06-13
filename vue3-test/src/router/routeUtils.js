@@ -125,7 +125,6 @@ export function createLayoutRouteMenu(layoutRoute) {
                 routeMenu.children.push(childMenu);
             });
         }
-        console.log("routeMenu",routeMenu)
         routeMenus.push(routeMenu);
         // if (verifyRouteRole(route) && verifyRoute(route)) {
         //

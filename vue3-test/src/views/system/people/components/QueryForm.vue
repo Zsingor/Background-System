@@ -41,11 +41,6 @@ const statusList = ref([
 ])
 
 const querydata=()=>{
-  if(rootData.queryData.date_list&&rootData.queryData.date_list.length>0)
-  {
-    rootData.queryData.startdate=rootData.queryData.date_list[0]
-    rootData.queryData.enddate=rootData.queryData.date_list[1]
-  }
   xGrid.value.commitProxy('query')
 }
 
