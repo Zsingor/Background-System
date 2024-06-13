@@ -15,7 +15,7 @@ public class User
     private String name;
     private String password;
     private String email;
-    private Integer roleid;
+    private String roleid;
     private String description;
     private String status;
 }
