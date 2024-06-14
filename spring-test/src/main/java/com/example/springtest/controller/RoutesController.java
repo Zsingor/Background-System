@@ -18,12 +18,13 @@ import java.util.List;
 @CrossOrigin
 @Slf4j
 @RestController
+@RequestMapping("/routes")
 public class RoutesController {
 
     @Autowired
     private RoutesService routesService;
 
-    @PostMapping("/routes/query")
+    @PostMapping("/query")
     public Result routesquery(@RequestBody Roles roles)
     {
         try {
@@ -34,8 +35,8 @@ public class RoutesController {
         }
     }
 
-    @PostMapping("/routes/all")
-    public Result routesall()
+    @PostMapping("/queryAll")
+    public Result routesqueryAll()
     {
         try {
             List<Routes> data=routesService.routesall();
@@ -45,7 +46,7 @@ public class RoutesController {
         }
     }
 
-    @PostMapping("/routes/parents")
+    @PostMapping("/parents")
     public Result routesparents()
     {
         try {
@@ -57,7 +58,7 @@ public class RoutesController {
     }
 
     @AutoLog(module = "路由管理",operate = "添加路由")
-    @PostMapping("/routes/add")
+    @PostMapping("/add")
     public Result routesadd(@RequestBody Routes routes)
     {
         int flag=routesService.routesadd(routes);
@@ -76,7 +77,7 @@ public class RoutesController {
     }
 
     @AutoLog(module = "路由管理",operate = "更新路由信息")
-    @PostMapping("/routes/update")
+    @PostMapping("/update")
     public Result routesupdate(@RequestBody Routes routes)
     {
         int flag=routesService.routesupdate(routes);
@@ -90,7 +91,7 @@ public class RoutesController {
     }
 
     @AutoLog(module = "路由管理",operate = "删除路由")
-    @PostMapping("/routes/delete")
+    @PostMapping("/delete")
     public Result routesdelete(@RequestBody List<String> menulist)
     {
         List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
@@ -109,7 +110,7 @@ public class RoutesController {
         }
     }
 
-    @GetMapping("/routes/get/{name}")
+    @GetMapping("/get/{name}")
     public Result gettest(@PathVariable(value = "name") String name)
     {
         System.out.println(name);

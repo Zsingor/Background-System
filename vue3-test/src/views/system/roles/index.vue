@@ -107,7 +107,7 @@ const assignRoute=(row)=>{
   rootData.rolesMenus.id = row.id
   // 发送两个请求：1.获取所有菜单  2.获取角色拥有的菜单
   axios.all([
-    request.post('/routes/all'),
+    request.post('/routes/queryAll'),
     request.post("/routes/query", row)
   ]).then(axios.spread((menus, userMenus) => {
     rootData.menuDatas = []

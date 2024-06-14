@@ -66,6 +66,7 @@ import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from
 import SubmitForm from "@/views/system/people/components/SubmitForm.vue";
 import {getTableConfig} from "@/views/system/people/config.js";
 import {persistentConfig} from "@/layout/layout.js";
+import axios from "axios";
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
@@ -136,22 +137,24 @@ const gridOptions = reactive({
           queryForm:rootData.queryData
         }
         return new Promise((resolve, reject) => {
-          request.post("/user/query", params).then(res => {
-            console.log("res", res)
-            resolve({
-              page: {
-                total: res.data.rowSum
-              },
-              result: res.data.resultList
-            })
-          }).catch(() => {
-            reject()
-          })
-          request.post("/roles/queryAll").then(res => {
-            rootData.rolesMenu = res.data
-            res.data.forEach(item => {
+          axios.all([
+            request.post("/roles/queryAll"),
+            request.post("/user/query", params)
+          ]).then(axios.spread((res1, res2) => {
+            //处理全部角色的数据
+            rootData.rolesMenu = res1.data
+            res1.data.forEach(item => {
               rootData.rolesList[item.id] = item.name
             })
+            //处理表格数据
+            resolve({
+              page: {
+                total: res2.data.rowSum
+              },
+              result: res2.data.resultList
+            })
+          })).catch(() => {
+            reject()
           })
         })
       },

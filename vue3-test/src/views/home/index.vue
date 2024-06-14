@@ -29,7 +29,7 @@ const setrequest = () => {
   //       console.log(error)
   //     })
 
-  request.post('/routes/all').then(res => {
+  request.post('/routes/queryAll').then(res => {
     console.log(res)
   })
       .catch(error => {

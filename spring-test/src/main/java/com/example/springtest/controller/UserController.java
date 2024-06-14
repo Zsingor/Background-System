@@ -7,10 +7,7 @@ import com.example.springtest.entity.User;
 import com.example.springtest.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,13 +16,14 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
+@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
 
     //用户登录
     @AutoLog(module = "用户管理",operate = "用户登录")
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public Result userlogin(@RequestBody User user)
     {
         try {
@@ -46,7 +44,7 @@ public class UserController {
 
     //用户添加
     @AutoLog(module = "用户管理",operate = "添加用户")
-    @PostMapping("/user/add")
+    @PostMapping("/add")
     public Result useradd(@RequestBody User user)
     {
         int flag=userService.useradd(user);
@@ -60,7 +58,7 @@ public class UserController {
     }
 
     //用户查询
-    @PostMapping("/user/query")
+    @PostMapping("/query")
     public Result userquery(@RequestBody String json)
     {
         try {
@@ -73,7 +71,7 @@ public class UserController {
     }
 
     //用户删除
-    @PostMapping("/user/delete")
+    @PostMapping("/delete")
     @AutoLog(module = "用户管理",operate = "删除用户")
     public Result userdelete(@RequestBody List<String> userlist)
     {
@@ -94,7 +92,7 @@ public class UserController {
     }
 
     //用户修改
-    @PostMapping("/user/update")
+    @PostMapping("/update")
     @AutoLog(module = "用户管理",operate = "更新用户信息")
     public Result update(@RequestBody User user)
     {

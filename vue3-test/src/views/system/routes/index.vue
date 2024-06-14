@@ -216,7 +216,7 @@ const gridOptions = reactive({
       query: () => {
         return new Promise((resolve, reject) => {
           xGrid.value.clearCheckboxRow()
-          request.post("/routes/all").then(res => {
+          request.post("/routes/queryAll").then(res => {
             resolve(res.data)
           }).catch(() => {
             reject()

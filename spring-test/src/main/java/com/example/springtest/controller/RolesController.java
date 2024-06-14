@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -18,13 +19,14 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
+@RequestMapping("/roles")
 public class RolesController {
 
     @Autowired
     private RolesService rolesService;
 
     @AutoLog(module = "角色管理",operate = "添加角色")
-    @PostMapping("/roles/add")
+    @PostMapping("/add")
     public Result rolesadd(@RequestBody Roles roles)
     {
         int flag=rolesService.rolesadd(roles);
@@ -37,7 +39,7 @@ public class RolesController {
         }
     }
 
-    @PostMapping("/roles/queryAll")
+    @PostMapping("/queryAll")
     public Result rolesqueryAll()
     {
         try {
@@ -49,7 +51,7 @@ public class RolesController {
     }
 
     //角色查询
-    @PostMapping("/roles/query")
+    @PostMapping("/query")
     public Result rolesquery(@RequestBody String json)
     {
         try {
@@ -62,7 +64,7 @@ public class RolesController {
     }
 
     @AutoLog(module = "角色管理",operate = "删除角色")
-    @PostMapping("/roles/delete")
+    @PostMapping("/delete")
     public Result rolesdelete(@RequestBody List<String> rolelist)
     {
         List<String> whitelist=new ArrayList<>(List.of("1"));
@@ -82,7 +84,7 @@ public class RolesController {
     }
 
     @AutoLog(module = "角色管理",operate = "更新角色信息")
-    @PostMapping("/roles/update")
+    @PostMapping("/update")
     public Result rolesupdate(@RequestBody Roles roles)
     {
         System.out.println(roles);
@@ -97,7 +99,7 @@ public class RolesController {
     }
 
     //角色路由添加
-    @PostMapping("/roles/assignRoute")
+    @PostMapping("/assignRoute")
     public Result rolesAssignRoute(@RequestBody Roles roles)
     {
         int flag=rolesService.rolesAssignRoute(roles);

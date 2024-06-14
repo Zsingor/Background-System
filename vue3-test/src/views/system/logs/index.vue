@@ -36,6 +36,7 @@ import {persistentConfig} from "@/layout/layout.js";
 import {isEmpty, parseDate} from "@/utils/commons.js";
 import {message} from "@/utils/message.js";
 import {ElMessageBox} from "element-plus";
+import axios from "axios";
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
@@ -104,20 +105,23 @@ const gridOptions = reactive({
           queryForm: rootData.queryData
         }
         return new Promise((resolve, reject) => {
-          request.post("/roles/queryAll").then(res => {
-            rootData.rolesMenu = res.data
-            res.data.forEach(item => {
+          axios.all([
+            request.post("/roles/queryAll"),
+            request.post("/logs/query", params)
+          ]).then(axios.spread((res1, res2) => {
+            //处理全部角色的数据
+            rootData.rolesMenu = res1.data
+            res1.data.forEach(item => {
               rootData.rolesList[item.id] = item.name
             })
-          })
-          request.post("/logs/query", params).then(res => {
+            //处理表格数据
             resolve({
               page: {
-                total: res.data.rowSum
+                total: res2.data.rowSum
               },
-              result: res.data.resultList
+              result: res2.data.resultList
             })
-          }).catch(() => {
+          })).catch(() => {
             reject()
           })
         })
