@@ -14,4 +14,11 @@
             AND description LIKE CONCAT('%', #{description}, '%')
         </if>
     </select>
+
+    <delete id="rolesdelete" parameterType="java.util.List">
+        DELETE FROM test.roles WHERE id IN
+        <foreach item="item" collection="rolelist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

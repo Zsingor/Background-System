@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -62,13 +63,15 @@ public class RolesController {
 
     @AutoLog(module = "角色管理",operate = "删除角色")
     @PostMapping("/roles/delete")
-    public Result rolesdelete(@RequestBody Roles roles)
+    public Result rolesdelete(@RequestBody List<String> rolelist)
     {
-        if (Objects.equals(roles.getId(), "1"))
+        List<String> whitelist=new ArrayList<>(List.of("1"));
+        rolelist.removeAll(whitelist);
+        if(rolelist.isEmpty())
         {
             return Result.error("无法删除超级管理员");
         }
-        int flag=rolesService.rolesdelete(roles);
+        int flag=rolesService.rolesdelete(rolelist);
         if (flag==1)
         {
             return Result.success();

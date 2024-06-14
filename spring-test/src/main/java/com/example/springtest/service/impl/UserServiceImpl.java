@@ -104,9 +104,9 @@ public class UserServiceImpl implements UserService {
 
     // 用户删除
     @Override
-    public int userdelete(User user) {
+    public int userdelete(List<String> userlist) {
         try {
-            userMapper.userdelete(user);
+            userMapper.userdelete(userlist);
             return 1;
         }
         catch (Exception error)

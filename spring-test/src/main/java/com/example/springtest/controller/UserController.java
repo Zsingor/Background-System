@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -72,13 +75,15 @@ public class UserController {
     //用户删除
     @PostMapping("/user/delete")
     @AutoLog(module = "用户管理",operate = "删除用户")
-    public Result userdelete(@RequestBody User user)
+    public Result userdelete(@RequestBody List<String> userlist)
     {
-        if(Objects.equals(user.getId(), "1"))
+        List<String> whitelist=new ArrayList<>(List.of("1"));
+        userlist.removeAll(whitelist);
+        if(userlist.isEmpty())
         {
             return Result.error("无法删除初始用户");
         }
-        int flag=userService.userdelete(user);
+        int flag=userService.userdelete(userlist);
         if (flag==1)
         {
             return Result.success();

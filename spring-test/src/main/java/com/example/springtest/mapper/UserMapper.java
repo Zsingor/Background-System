@@ -21,8 +21,7 @@ public interface UserMapper {
     User userPrimaryquery(User user);
 
     //删除用户信息
-    @Delete("delete from test.user where name=#{name}")
-    void userdelete(User user);
+    void userdelete(List<String> userlist);
 
     //更新用户信息
     @Update("update test.user set name=#{name},password=#{password},email=#{email},roleid=#{roleid},"+
@@ -31,5 +30,5 @@ public interface UserMapper {
 
     //更新用户的角色
     @Update("update test.user set roleid=null where roleid=#{roleid}")
-    void userUpdateRole(String roleid);
+    void userUpdateRole(List<String> rolelist);
 }

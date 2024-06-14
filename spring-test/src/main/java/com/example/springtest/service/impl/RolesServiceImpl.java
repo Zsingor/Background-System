@@ -53,10 +53,10 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public int rolesdelete(Roles roles) {
+    public int rolesdelete(List<String> rolelist) {
         try {
-            userMapper.userUpdateRole(roles.getId());
-            rolesMapper.rolesdelete(roles);
+            userMapper.userUpdateRole(rolelist);
+            rolesMapper.rolesdelete(rolelist);
             return 1;
         }
         catch (Exception error)

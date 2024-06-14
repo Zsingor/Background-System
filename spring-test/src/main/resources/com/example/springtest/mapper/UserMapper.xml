@@ -20,11 +20,23 @@
         <if test="roleid != null and roleid != ''">
             AND roleid = #{roleid}
         </if>
-
         <if test="status != null and status != ''">
             AND status = #{status}
         </if>
-
     </select>
+
+    <delete id="userdelete" parameterType="java.util.List">
+        DELETE FROM test.user WHERE id IN
+        <foreach item="item" collection="userlist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="userUpdateRole" parameterType="java.util.List">
+        update test.user set roleid = null where roleid in
+        <foreach item="item" collection="rolelist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

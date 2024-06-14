@@ -15,7 +15,7 @@
       </template>
       <!--  操作按钮组    -->
       <template #operate="{ row }">
-        <vxe-button title="删除" circle @click="deleterow(row)">
+        <vxe-button title="删除" circle @click="deleteTableData(xGrid,'/logs/delete',false,row)">
           <el-icon>
             <Delete/>
           </el-icon>
@@ -48,32 +48,6 @@ const rootData = reactive({
   rolesMenu:[],
   rolesList:{}
 })
-
-const deleterow=(row)=>{
-  let ids=[]
-  ids.push(row.id)
-  ElMessageBox.confirm("您确定要删除吗？", "提示", {
-    type: "warning"
-  }).then(() => {
-    xGrid.value.reactData.tableLoading = true;
-    request.post("/logs/delete",ids).then(res=>{
-      if(res.code===1)
-      {
-        message("删除成功")
-        xGrid.value.commitProxy("query");
-      }
-      else {
-        message(res.msg,"error")
-      }
-    }).catch(error=>{
-      message(error,"error")
-    })
-  }).catch(() => {
-
-  }).finally(() => {
-    xGrid.value.reactData.tableLoading = false;
-  });
-}
 
 const gridOptions = reactive({
   rowId: 'id',

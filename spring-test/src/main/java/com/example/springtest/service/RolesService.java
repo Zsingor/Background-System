@@ -13,7 +13,7 @@ public interface RolesService {
 
     JSONObject rolesquery(String json);
 
-    int rolesdelete(Roles roles);
+    int rolesdelete(List<String> rolelist);
 
     int rolesupdate(Roles roles);
 

@@ -153,7 +153,9 @@ export function deleteTableData($grid, url, batch, row) {
             type: "warning"
         }).then(() => {
             $grid.reactData.tableLoading = true;
-            request.post(url, row).then((res) => {
+            const ids = [];
+            ids.push(row[$grid.props.rowId])
+            request.post(url, ids).then((res) => {
                 if (res.code === 1) {
                     message("删除成功");
                     $grid.commitProxy("query");

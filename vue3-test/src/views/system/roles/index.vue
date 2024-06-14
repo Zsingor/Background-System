@@ -157,7 +157,7 @@ const submitEvent=()=>{
 }
 
 const gridOptions = reactive({
-  rowId: 'name',
+  rowId: 'id',
   ...VxeTableCommonsConfig,
   formConfig: {
     items: [

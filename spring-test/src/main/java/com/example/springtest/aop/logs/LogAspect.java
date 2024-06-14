@@ -58,8 +58,12 @@ public class LogAspect {
             String ip=getIp(request);
 
             //操作姓名
-            String token = request.getHeader("token");
-            if(token==null)
+            String token="";
+            if(!Objects.equals(methodName, "userlogin"))
+            {
+                token = request.getHeader("token");
+            }
+            else
             {
                 JSONObject data=(JSONObject) result.getData();
                 token=data.getString("token");

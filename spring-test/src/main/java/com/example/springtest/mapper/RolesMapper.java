@@ -20,8 +20,7 @@ public interface RolesMapper {
 
     List<Roles> rolesquery(Roles roles);
 
-    @Delete("delete from test.roles where id=#{id}")
-    void rolesdelete(Roles roles);
+    void rolesdelete(List<String> rolelist);
 
     @Update("update test.roles set name=#{name},description=#{description} where id=#{id}")
     void rolesupdate(Roles roles);

@@ -8,6 +8,7 @@
       <!--  表格上方的按钮组    -->
       <template #toolbar_buttons class="buttons">
         <vxe-button status="primary" @click="addmessage">新增</vxe-button>
+        <vxe-button status="danger" @click="deleteTableData(xGrid,'/user/delete',true)">批量删除</vxe-button>
       </template>
       <!--  所属角色显示显示    -->
       <template #role="{ row }">
@@ -111,7 +112,7 @@ const updaterow = (row) => {
 }
 
 const gridOptions = reactive({
-  rowId: 'name',
+  rowId: 'id',
   ...VxeTableCommonsConfig,
   toolbarConfig: tableConfig.toolbarConfig,
   exportConfig: tableConfig.exportConfig,
