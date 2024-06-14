@@ -17,4 +17,6 @@ public interface UserService {
     int userdelete(List<String> userlist);
 
     int userupdate(User user);
+
+    int userAssignRole(User user);
 }

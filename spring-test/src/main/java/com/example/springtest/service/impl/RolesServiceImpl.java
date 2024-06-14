@@ -81,7 +81,6 @@ public class RolesServiceImpl implements RolesService {
     public int rolesAssignRoute(Roles roles) {
         try {
             List<String> routeList=roles.getRoutesid();
-            System.out.println(routeList);
             if(Objects.equals(roles.getId(), "1"))
             {
                 List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
@@ -91,8 +90,10 @@ public class RolesServiceImpl implements RolesService {
                 rolesRoutesMapper.deleteRoleRoutes(roles);
                 rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList);
             }
-            rolesRoutesMapper.deleteRoleRoutes(roles);
-            rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList);
+            else {
+                rolesRoutesMapper.deleteRoleRoutes(roles);
+                rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList);
+            }
             return 1;
         }
         catch (Exception error)

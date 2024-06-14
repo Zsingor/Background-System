@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.springtest.mapper.UserRolesMapper">
+    <insert id="addUserRoles">
+        insert into test.user_roles(userid, roleid)
+        values
+        <foreach collection="roleids" item="roleid" separator=",">
+            (#{userid}, #{roleid})
+        </foreach>
+    </insert>
+</mapper>

@@ -99,6 +99,7 @@ public class RolesController {
     }
 
     //角色路由添加
+    @AutoLog(module = "角色管理",operate = "更新角色路由")
     @PostMapping("/assignRoute")
     public Result rolesAssignRoute(@RequestBody Roles roles)
     {

@@ -7,10 +7,7 @@ import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
-import com.example.springtest.mapper.RolesMapper;
-import com.example.springtest.mapper.RolesRoutesMapper;
-import com.example.springtest.mapper.RoutesMapper;
-import com.example.springtest.mapper.UserMapper;
+import com.example.springtest.mapper.*;
 import com.example.springtest.service.UserService;
 import com.example.springtest.utils.JwtUtils;
 import com.example.springtest.utils.QueryResult;
@@ -18,10 +15,7 @@ import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -33,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private RolesMapper rolesMapper;
     @Autowired
     private RolesRoutesMapper rolesRoutesMapper;
+    @Autowired
+    private UserRolesMapper userRolesMapper;
 
 
     @Override
@@ -121,6 +117,32 @@ public class UserServiceImpl implements UserService {
     public int userupdate(User user) {
         try {
             userMapper.userupdate(user);
+            return 1;
+        }
+        catch (Exception error)
+        {
+            return 0;
+        }
+    }
+
+    @Override
+    public int userAssignRole(User user) {
+        try {
+            List<String> roleList=user.getRolesid();
+            if(Objects.equals(user.getId(), "1"))
+            {
+                List<String> whitelist=new ArrayList<>(List.of("1"));
+                Set<String> resultSet = new HashSet<>(roleList);
+                resultSet.addAll(whitelist);
+                List<String> resultList = new ArrayList<>(resultSet);
+                user.setRolesid(resultList);
+                userRolesMapper.deleteUserRoles(user);
+                userRolesMapper.addUserRoles(user.getId(),resultList);
+            }
+            else {
+                userRolesMapper.deleteUserRoles(user);
+                userRolesMapper.addUserRoles(user.getId(),roleList);
+            }
             return 1;
         }
         catch (Exception error)

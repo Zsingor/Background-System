@@ -1,7 +1,6 @@
 <template>
   <el-dialog title="分配菜单"
              :width="windowConfig.dialogWidth"
-             top="3vh"
              v-model="rootData.showDialog"
              :before-close="handlerClose">
     <el-tree

@@ -43,9 +43,9 @@
           </vxe-button>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="assignRoute(row)">
+              <el-dropdown-item @click="assignRole(row)">
                 <el-button type="text">
-                  分配路由
+                  分配角色
                 </el-button>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -54,19 +54,46 @@
       </template>
     </vxe-grid>
 
+    <el-dialog title="分配角色"
+               width=30%
+               v-model="rootData.showDialog">
+      <el-select
+          v-model="rootData.userMenus.menus"
+          multiple
+          placeholder="Select"
+          style="width: 100%"
+      >
+        <el-option
+            v-for="item in rootData.rolesMenu"
+            :key="item.id"
+            :label="item.name"
+            :value="item.id"
+        />
+      </el-select>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="rootData.showDialog = false">取消</el-button>
+          <el-button :loading="rootData.submitLoading" type="primary" @click="submitRoles">
+            确认
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
+
     <SubmitForm></SubmitForm>
   </div>
 </template>
 
 <script setup>
-import {provide, reactive, ref, onMounted, onActivated, onDeactivated} from 'vue'
+import {provide, reactive, ref, onMounted, onActivated, onDeactivated, unref} from 'vue'
 import QueryForm from "@/views/system/people/components/QueryForm.vue";
 import request from "@/request/index.js";
 import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from "@/utils/tableconfig";
 import SubmitForm from "@/views/system/people/components/SubmitForm.vue";
 import {getTableConfig} from "@/views/system/people/config.js";
-import {persistentConfig} from "@/layout/layout.js";
+import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import axios from "axios";
+import {message} from "@/utils/message.js";
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
@@ -86,6 +113,11 @@ const rootData = reactive({
   formData: {},
   queryData: {},
   formRules: Object.assign({}, tableConfig.formRules),
+  userroles:[],
+  userMenus: {// 角色拥有的菜单数据
+    id: 0,
+    menus: []
+  },
   rolesMenu:[],
   rolesList:{}
 })
@@ -110,6 +142,27 @@ const updaterow = (row) => {
   rootData.name = "修改信息"
   rootData.selectRow = row
   rootData.showForm = true
+}
+
+const assignRole=(row)=>{
+  rootData.userMenus.menus=[];
+  rootData.userMenus.menus.push(row.roleid)
+  rootData.userMenus.id=row.id
+  rootData.showDialog=true
+}
+
+const submitRoles=()=>{
+  console.log(rootData.userroles)
+
+  rootData.submitLoading = true
+  request.post("/user/assignRole", {id:rootData.userMenus.id,rolesid:rootData.userMenus.menus}).then(res => {
+    message('角色分配成功')
+    rootData.showDialog = false
+  }).catch(e=>{
+    message("角色分配失败",error)
+  }).finally(() => {
+    rootData.submitLoading = false
+  })
 }
 
 const gridOptions = reactive({

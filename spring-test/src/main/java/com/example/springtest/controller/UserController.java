@@ -3,6 +3,7 @@ package com.example.springtest.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
+import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.User;
 import com.example.springtest.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -104,6 +105,21 @@ public class UserController {
         else
         {
             return Result.error("修改失败");
+        }
+    }
+
+    //角色路由添加
+    @AutoLog(module = "用户管理",operate = "更新用户角色")
+    @PostMapping("/assignRole")
+    public Result userAssignRole(@RequestBody User user)
+    {
+        int flag=userService.userAssignRole(user);
+        if (flag==1)
+        {
+            return Result.success();
+        }
+        else {
+            return Result.error("添加失败");
         }
     }
 }
