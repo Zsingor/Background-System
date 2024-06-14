@@ -22,7 +22,7 @@
     <el-col :span="6">
       <el-input size="default" v-model="rootData.queryData.description" clearable placeholder="描述" />
     </el-col>
-    <el-col :span="24" class="centered-buttons">
+    <el-col :span="6" class="centered-buttons">
       <el-button size="default" type="primary" @click="querydata">查询</el-button>
       <el-button size="default" @click="resetForm">重置</el-button>
     </el-col>
@@ -53,7 +53,7 @@ const resetForm=()=>{
 <style scoped>
 
 .centered-buttons {
-  text-align: center;
+  text-align: left;
 }
 
 .el-col{

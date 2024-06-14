@@ -1,50 +1,52 @@
 <template>
   <div class="background">
-    <vxe-grid ref='xGrid' v-bind="gridOptions" v-on="gridEvents" @cell-dblclick="dbclickHandler">
-      <template #toolbar_buttons>
-        <vxe-button status="primary" @click="addmessage">新增菜单</vxe-button>
-        <vxe-button status="danger" @click="deleteTableData(xGrid,'/routes/delete',true)">批量删除</vxe-button>
-      </template>
-      <template #menuicon="{ row }">
-        <el-icon size="large">
-          <component :is="row.icon"></component>
-        </el-icon>
-      </template>
-      <template #menupath="{ row }">
-        <div v-if="row.level===1">
-          <span style="color:#16aad8">{{ row.path }}</span>
-        </div>
-        <div v-else>
-          <span style="color:#67C23A">{{ row.path }}</span>
-        </div>
-      </template>
-      <template #menustatus="{ row }">
-        <vxe-switch v-model="row.status"
-                    @click="switchUpdateHandler(row)"
-                    open-label="启用" close-label="禁用"
-                    open-value="1" close-value="0"></vxe-switch>
-      </template>
-      <template #menulevel="{ row }">
-        <div v-if="row.level===1">
-          <span style="color:#16aad8">一级菜单</span>
-        </div>
-        <div v-else>
-          <span style="color:#67C23A">二级菜单</span>
-        </div>
-      </template>
-      <template #operate="{ row }">
-        <vxe-button title="编辑" circle @click="updaterow(row)">
-          <el-icon>
-            <Edit/>
+    <el-card>
+      <vxe-grid ref='xGrid' v-bind="gridOptions" v-on="gridEvents" @cell-dblclick="dbclickHandler">
+        <template #toolbar_buttons>
+          <vxe-button status="primary" @click="addmessage">新增菜单</vxe-button>
+          <vxe-button status="danger" @click="deleteTableData(xGrid,'/routes/delete',true)">批量删除</vxe-button>
+        </template>
+        <template #menuicon="{ row }">
+          <el-icon size="large">
+            <component :is="row.icon"></component>
           </el-icon>
-        </vxe-button>
-        <vxe-button title="复制菜单" circle @click="copyMenu(row,$event)">
-          <el-icon>
-            <CopyDocument/>
-          </el-icon>
-        </vxe-button>
-      </template>
-    </vxe-grid>
+        </template>
+        <template #menupath="{ row }">
+          <div v-if="row.level===1">
+            <span style="color:#16aad8">{{ row.path }}</span>
+          </div>
+          <div v-else>
+            <span style="color:#67C23A">{{ row.path }}</span>
+          </div>
+        </template>
+        <template #menustatus="{ row }">
+          <vxe-switch v-model="row.status"
+                      @click="switchUpdateHandler(row)"
+                      open-label="启用" close-label="禁用"
+                      open-value="1" close-value="0"></vxe-switch>
+        </template>
+        <template #menulevel="{ row }">
+          <div v-if="row.level===1">
+            <span style="color:#16aad8">一级菜单</span>
+          </div>
+          <div v-else>
+            <span style="color:#67C23A">二级菜单</span>
+          </div>
+        </template>
+        <template #operate="{ row }">
+          <vxe-button title="编辑" circle @click="updaterow(row)">
+            <el-icon>
+              <Edit/>
+            </el-icon>
+          </vxe-button>
+          <vxe-button title="复制菜单" circle @click="copyMenu(row,$event)">
+            <el-icon>
+              <CopyDocument/>
+            </el-icon>
+          </vxe-button>
+        </template>
+      </vxe-grid>
+    </el-card>
 
     <SubmitForm></SubmitForm>
   </div>
@@ -254,5 +256,10 @@ onDeactivated(() => {
 .background {
   width: 100%;
   height: 100%;
+}
+
+.el-card{
+  width: 100%;
+  height: 99%;
 }
 </style>

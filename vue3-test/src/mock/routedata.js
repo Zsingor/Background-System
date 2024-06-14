@@ -21,18 +21,18 @@ Mock.mock("/route/list", "get", {
         {
             "name": "manager",
             "title": "审批管理",
-            "path": "/manager",
+            "path": "/table",
             "icon": "House",
             "children": [
                 {
                     "name": "page2",
                     "title": "页面2",
-                    "path": "/manager/routes"
+                    "path": "/table/routes"
                 },
                 {
                     "name": "page3",
                     "title": "页面3",
-                    "path": "/manager/page3"
+                    "path": "/table/vxetable"
                 }
             ]
         },

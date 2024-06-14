@@ -19,3 +19,8 @@
 .el-tabs, .el-tabs__content, .el-tab-pane {
     height: 100%;
 }
+
+.el-card__body{
+    width: 100%;
+    height: 100%;
+}

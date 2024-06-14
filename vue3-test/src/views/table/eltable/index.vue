@@ -1,12 +1,18 @@
 <template>
   <div>
-    页面三
+    eltable
   </div>
 </template>
 
 <script setup>
+import {onMounted} from "vue";
+
 defineOptions({
-  name: 'page3'
+  name: 'eltable'
+})
+
+onMounted(()=>{
+  console.log("加载")
 })
 </script>
 

@@ -93,7 +93,7 @@ const login=()=>{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #5FC0FA;
+  background-color: #3a5587;
 }
 
 .bg-card{

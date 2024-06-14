@@ -9,10 +9,6 @@
       <template #toolbar_buttons class="buttons">
         <vxe-button status="danger" @click="deleteTableData(xGrid,'/logs/delete',true)">批量删除</vxe-button>
       </template>
-      <!--  所属角色显示显示    -->
-      <template #role="{ row }">
-        <div>{{ rootData.rolesList[row.roleid] }}</div>
-      </template>
       <!--  操作按钮组    -->
       <template #operate="{ row }">
         <vxe-button title="删除" circle @click="deleteTableData(xGrid,'/logs/delete',false,row)">
@@ -29,9 +25,15 @@
 import {provide, reactive, ref, onMounted, onActivated, onDeactivated} from 'vue'
 import QueryForm from "@/views/system/logs/components/QueryForm.vue";
 import request from "@/request/index.js";
-import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from "@/utils/tableconfig";
+import {
+  VxeTableCommonsConfig,
+  dbclickHandler,
+  resetWatch,
+  deleteTableData,
+  getToolbarConfig
+} from "@/utils/tableconfig";
 import {persistentConfig} from "@/layout/layout.js";
-import {parseDate} from "@/utils/commons.js";
+import {isEmpty, parseDate} from "@/utils/commons.js";
 import {message} from "@/utils/message.js";
 import {ElMessageBox} from "element-plus";
 
@@ -45,23 +47,42 @@ const xGrid = ref()
 
 const rootData = reactive({
   queryData: {},
-  rolesMenu:[],
-  rolesList:{}
+  rolesMenu: [],
+  rolesList: {}
 })
 
 const gridOptions = reactive({
   rowId: 'id',
   ...VxeTableCommonsConfig,
+  toolbarConfig: {
+    ...getToolbarConfig(),
+    export: true,
+  },
+  exportConfig: {
+    types: ["csv", "xlsx", "html", "xml", "txt"],
+    modes: ["current", "selected", "all"],
+    columnFilterMethod: ({column}) => {
+      if (column.type === 'checkbox' || column.type === 'seq') {
+        return false
+      } else {
+        return !isEmpty(column.property)
+      }
+    }
+  },
   columns: [
     {type: 'checkbox', width: 50, fixed: 'left'},
     {type: 'seq', width: 50},
-    {field: 'username', title: '用户名称',minWidth:100},
-    {field: 'roleid', title: '所属角色',minWidth:100,slots: {default: 'role'}},
-    {field: 'module', title: '操作模块',minWidth:100},
-    {field: 'operate', title: '操作内容',minWidth:100},
-    {field: 'details', title: '详细内容',minWidth:200},
-    {field: 'ip', title: 'IP地址',minWidth:100},
-    {field: 'operatedate', title: '操作时间',minWidth:150,formatter: "formatDate"},
+    {field: 'username', title: '用户名称', minWidth: 100},
+    {field: 'roleid', title: '所属角色', minWidth: 100,
+      formatter: ({cellValue})=>{
+        return rootData.rolesList[cellValue]
+      }
+    },
+    {field: 'module', title: '操作模块', minWidth: 100},
+    {field: 'operate', title: '操作内容', minWidth: 100},
+    {field: 'details', title: '详细内容', minWidth: 200},
+    {field: 'ip', title: 'IP地址', minWidth: 100},
+    {field: 'operatedate', title: '操作时间', minWidth: 150, formatter: "formatDate"},
     {title: '操作', minWidth: 50, fixed: 'right', slots: {default: 'operate'}}
   ],
   proxyConfig: {
@@ -77,12 +98,18 @@ const gridOptions = reactive({
     ajax: {
       query: ({page}) => {
         xGrid.value.clearCheckboxRow()
-        const params={
-          currentPage:page.currentPage,
-          pageSize:page.pageSize,
-          queryForm:rootData.queryData
+        const params = {
+          currentPage: page.currentPage,
+          pageSize: page.pageSize,
+          queryForm: rootData.queryData
         }
         return new Promise((resolve, reject) => {
+          request.post("/roles/queryAll").then(res => {
+            rootData.rolesMenu = res.data
+            res.data.forEach(item => {
+              rootData.rolesList[item.id] = item.name
+            })
+          })
           request.post("/logs/query", params).then(res => {
             console.log("res", res)
             resolve({
@@ -94,25 +121,18 @@ const gridOptions = reactive({
           }).catch(() => {
             reject()
           })
-          request.post("/roles/queryAll").then(res => {
-            rootData.rolesMenu = res.data
-            res.data.forEach(item => {
-              rootData.rolesList[item.id] = item.name
-            })
-          })
         })
       },
       //用于导出全部数据时的查询
       queryAll: () => {
         xGrid.value.clearCheckboxRow()
-        const params={
-          currentPage:1,
-          pageSize:1000000,
-          queryForm:rootData.queryData
+        const params = {
+          currentPage: 1,
+          pageSize: 1000000,
+          queryForm: rootData.queryData
         }
         return new Promise((resolve, reject) => {
           request.post("/logs/query", params).then(res => {
-            console.log("res", res)
             resolve(res.data.resultList)
           }).catch(() => {
             reject()
