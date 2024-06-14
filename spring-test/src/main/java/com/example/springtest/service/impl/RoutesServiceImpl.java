@@ -54,6 +54,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
         catch (Exception error)
         {
+            System.out.println(error);
             return 0;
         }
     }

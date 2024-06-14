@@ -14,6 +14,22 @@
           <el-form-item label="菜单标题:" prop="title">
             <el-input size="large" v-model="rootData.formData.title"/>
           </el-form-item>
+          <el-form-item label="菜单级别:">
+            <el-input-number size="large" v-model="rootData.formData.level" :min="1" :max="2"/>
+          </el-form-item>
+          <el-form-item label="父级菜单:" prop="parent_menu_id">
+            <el-select clearable filterable placeholder="选择父级菜单"
+                       size="large"
+                       :disabled="disableSelectParentMenu"
+                       v-model="rootData.formData.parentid"
+                       @change="parentMenuChangeHandler"
+                       @clear="parentMenuClearHandler">
+              <el-option v-for="item in rootData.parentMenus" :key="item.id"
+                         :label="item.title" :value="item.id">
+                <span style="float: left">{{ item.title }}</span>
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="菜单url:" prop="path">
             <el-input size="large" v-model="rootData.formData.path">
               <template #prepend>
@@ -28,24 +44,8 @@
               <component :is="rootData.formData.icon"></component>
             </el-icon>
           </el-form-item>
-          <el-form-item label="菜单级别:">
-            <el-input-number size="large" v-model="rootData.formData.level" :min="1" :max="2"/>
-          </el-form-item>
           <el-form-item label="菜单权重:">
             <el-input-number size="large" v-model="rootData.formData.position" :min="0" :max="999"/>
-          </el-form-item>
-          <el-form-item label="父级菜单:" prop="parent_menu_id">
-            <el-select clearable filterable placeholder="选择父级菜单"
-                       size="large"
-                       :disabled="disableSelectParentMenu"
-                       v-model="rootData.formData.parentid"
-                       @change="parentMenuChangeHandler"
-                       @clear="parentMenuClearHandler">
-              <el-option v-for="item in rootData.parentMenus" :key="item.id"
-                         :label="item.title" :value="item.id">
-                <span style="float: left">{{ item.title }}</span>
-              </el-option>
-            </el-select>
           </el-form-item>
           <el-form-item label="是否启用:" prop="status">
             <el-switch size="large" :active-value="'1'" :inactive-value="'0'"
@@ -130,7 +130,8 @@ const submitForm = () => {
             resetForm()
             message('添加成功')
           }
-        }).catch(() => {
+        }).catch((e) => {
+          console.log(e)
           message("添加失败", "error")
         }).finally(() => {
           rootData.submitLoading = false
