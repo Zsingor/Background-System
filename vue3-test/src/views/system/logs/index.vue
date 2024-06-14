@@ -111,7 +111,6 @@ const gridOptions = reactive({
             })
           })
           request.post("/logs/query", params).then(res => {
-            console.log("res", res)
             resolve({
               page: {
                 total: res.data.rowSum

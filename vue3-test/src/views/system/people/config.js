@@ -30,7 +30,8 @@ export function getTableConfig() {
         columns: [
             {type: 'checkbox', width: 50, fixed: 'left'},
             {type: 'seq', width: 50},
-            {field: 'name', title: 'name',minWidth:120, sortable: true,},
+            {field: 'name', title: '用户名',minWidth:120},
+            {field: 'password', visible: false, title: '密码',minWidth:120},
             {field: 'roleid', minWidth:120,title: '所属角色',slots: {default: 'role'}},
             {field: 'email', minWidth:120,title: '邮箱'},
             {field: 'description', minWidth:120,title: '账号描述'},

@@ -80,8 +80,8 @@ const formRules = {
   title: [
     {required: true, message: '请输入标题'}
   ],
-  level: [
-    {required: true, message: '请输入等级'}
+  path: [
+    {required: true, message: '请输入路径'}
   ],
 }
 

@@ -10,10 +10,6 @@
             <span class="tag-flag"></span>
             <span class="tag-text">{{ tag.title }}</span>
             <span v-if="isActive(tag.path)" class="tag-icon"
-                  @click.prevent.stop="reloadPage()">
-              <el-icon><Refresh /></el-icon>
-            </span>
-            <span v-if="isActive(tag.path)" class="tag-icon"
                   @click.prevent.stop="closeTag(index,route.fullPath)">
               <el-icon><Close /></el-icon>
             </span>
@@ -153,7 +149,7 @@ onMounted(() => {
         width: 16px;
         height: 16px;
         font-size: 12px;
-        margin-left: 4px;
+        margin-left: 8px;
         border-radius: 50%;
         display: flex;
         align-items: center;
