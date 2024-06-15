@@ -24,6 +24,7 @@ public class RoutesController {
     @Autowired
     private RoutesService routesService;
 
+    //路由查询
     @PostMapping("/query")
     public Result routesquery(@RequestBody Roles roles)
     {
@@ -35,6 +36,7 @@ public class RoutesController {
         }
     }
 
+    //查询全部路由
     @PostMapping("/queryAll")
     public Result routesqueryAll()
     {
@@ -46,6 +48,7 @@ public class RoutesController {
         }
     }
 
+    //查询所有的父路由
     @PostMapping("/parents")
     public Result routesparents()
     {
@@ -57,6 +60,8 @@ public class RoutesController {
         }
     }
 
+
+    //添加路由
     @AutoLog(module = "路由管理",operate = "添加路由")
     @PostMapping("/add")
     public Result routesadd(@RequestBody Routes routes)
@@ -76,6 +81,8 @@ public class RoutesController {
         }
     }
 
+
+    //更新路由信息
     @AutoLog(module = "路由管理",operate = "更新路由信息")
     @PostMapping("/update")
     public Result routesupdate(@RequestBody Routes routes)
@@ -90,6 +97,8 @@ public class RoutesController {
         }
     }
 
+
+    //删除路由
     @AutoLog(module = "路由管理",operate = "删除路由")
     @PostMapping("/delete")
     public Result routesdelete(@RequestBody List<String> menulist)

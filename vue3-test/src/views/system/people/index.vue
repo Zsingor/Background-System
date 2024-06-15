@@ -12,7 +12,11 @@
       </template>
       <!--  所属角色显示显示    -->
       <template #role="{ row }">
-        <div>{{ rootData.rolesList[row.roleid] }}</div>
+          <div>
+            <el-tag class="item-tag" v-for="(roleid, index) in row.rolesid">
+              {{ rootData.rolesList[roleid] }}
+            </el-tag>
+          </div>
       </template>
       <!--  状态显示    -->
       <template #status="{ row }">
@@ -94,6 +98,8 @@ import {getTableConfig} from "@/views/system/people/config.js";
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import axios from "axios";
 import {message} from "@/utils/message.js";
+import {isEmpty} from "@/utils/commons.js";
+import {routeMenus} from "@/layout/user.js";
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
@@ -131,6 +137,7 @@ const addmessage = () => {
     roleid:null,
     description:"",
     status:"1",
+    rolesid:[]
   })
   rootData.name = "添加信息"
   rootData.selectRow = null
@@ -144,16 +151,14 @@ const updaterow = (row) => {
   rootData.showForm = true
 }
 
+//分配角色
 const assignRole=(row)=>{
-  rootData.userMenus.menus=[];
-  rootData.userMenus.menus.push(row.roleid)
+  rootData.userMenus.menus=row.rolesid
   rootData.userMenus.id=row.id
-  rootData.showDialog=true
+  rootData.showDialog = true
 }
 
 const submitRoles=()=>{
-  console.log(rootData.userroles)
-
   rootData.submitLoading = true
   request.post("/user/assignRole", {id:rootData.userMenus.id,rolesid:rootData.userMenus.menus}).then(res => {
     message('角色分配成功')
@@ -256,5 +261,9 @@ onDeactivated(() => {
 .background {
   width: 100%;
   height: 100%;
+}
+
+.item-tag{
+  margin-left: 5px;
 }
 </style>

@@ -10,9 +10,6 @@
         <if test="username != null and username != ''">
             AND username LIKE CONCAT('%', #{username}, '%')
         </if>
-        <if test="roleid != null and roleid != ''">
-            AND roleid = #{roleid}
-        </if>
         <if test="module != null and module != ''">
             AND module LIKE CONCAT('%', #{module}, '%')
         </if>

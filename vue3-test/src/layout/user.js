@@ -5,7 +5,6 @@ export const routeMenus = ref([]);            // 路由菜单集合
 // 用户初始信息
 export const userModel = {
     user_name: "",
-    role_id: "",
     token:"",
     menuList: []
 };

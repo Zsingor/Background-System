@@ -11,4 +11,18 @@
             (#{userid}, #{roleid})
         </foreach>
     </insert>
+
+    <delete id="deleteRolesUsers" parameterType="java.util.List">
+        DELETE FROM test.user_roles WHERE roleid IN
+        <foreach item="item" collection="rolesid" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <delete id="deleteUsersRoles" parameterType="java.util.List">
+        DELETE FROM test.user_roles WHERE userid IN
+        <foreach item="item" collection="usersid" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
 </mapper>

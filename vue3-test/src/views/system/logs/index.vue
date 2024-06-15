@@ -74,11 +74,6 @@ const gridOptions = reactive({
     {type: 'checkbox', width: 50, fixed: 'left'},
     {type: 'seq', width: 50},
     {field: 'username', title: '用户名称', minWidth: 100},
-    {field: 'roleid', title: '所属角色', minWidth: 100,
-      formatter: ({cellValue})=>{
-        return rootData.rolesList[cellValue]
-      }
-    },
     {field: 'module', title: '操作模块', minWidth: 100},
     {field: 'operate', title: '操作内容', minWidth: 100},
     {field: 'details', title: '详细内容', minWidth: 200},

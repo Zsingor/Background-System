@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -45,26 +46,29 @@ public class UserServiceImpl implements UserService {
         }
         else
         {
-            Roles roles=rolesMapper.rolesqueryPrimary(user1.getRoleid());
-
-            List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
             List<Routes> menuList=new ArrayList<Routes>();
-            if(!routesIds.isEmpty())
+
+            List<String> roleLists=userRolesMapper.queryUserRoles(user1.getId());
+            if(!roleLists.isEmpty())
             {
-                List<Routes> routesList=routesMapper.routesquery(routesIds);
-                menuList = RoutesServiceImpl.Routeprocess(routesList);
+                List<String> routesIds=rolesRoutesMapper.queryRolesRoutes(roleLists);
+                //列表去重
+                routesIds=routesIds.stream().distinct().collect(Collectors.toList());
+                if(!routesIds.isEmpty())
+                {
+                    List<Routes> routesList=routesMapper.routesquery(routesIds);
+                    menuList = RoutesServiceImpl.Routeprocess(routesList);
+                }
             }
+
 
             Map<String, Object> claims=new HashMap<>();
             claims.put("user_id",user1.getId());
             claims.put("user_name",user1.getName());
-            claims.put("user_role",roles.getName());
-            claims.put("role_id",roles.getId());
             String token= JwtUtils.generateJWT(claims);
 
             response.put("menuList", menuList);
             response.put("user_name", user.getName());
-            response.put("role_id", roles.getId());
             response.put("token", token);
         }
         return response;
@@ -76,6 +80,7 @@ public class UserServiceImpl implements UserService {
         try {
             user.setId(UUIDUtils.getUUID());
             userMapper.useradd(user);
+            userAssignRole(user);
             return 1;
         }
         catch (Exception error)
@@ -94,6 +99,8 @@ public class UserServiceImpl implements UserService {
         int pageSize=jsonObject.getInteger("pageSize");
 
         List<User> data=userMapper.userquery(user);
+        //列表去重
+        data=data.stream().distinct().collect(Collectors.toList());
 
         return QueryResult.getResult(data,currentPage,pageSize);
     }
@@ -102,6 +109,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public int userdelete(List<String> userlist) {
         try {
+            userRolesMapper.deleteUsersRoles(userlist);
             userMapper.userdelete(userlist);
             return 1;
         }
@@ -117,6 +125,7 @@ public class UserServiceImpl implements UserService {
     public int userupdate(User user) {
         try {
             userMapper.userupdate(user);
+            userAssignRole(user);
             return 1;
         }
         catch (Exception error)
@@ -149,5 +158,10 @@ public class UserServiceImpl implements UserService {
         {
             return 0;
         }
+    }
+
+    @Override
+    public List<String> queryUserRoles(User user) {
+        return userRolesMapper.queryUserRoles(user.getId());
     }
 }

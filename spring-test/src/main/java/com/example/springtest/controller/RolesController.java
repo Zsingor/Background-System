@@ -25,6 +25,8 @@ public class RolesController {
     @Autowired
     private RolesService rolesService;
 
+
+    //添加角色
     @AutoLog(module = "角色管理",operate = "添加角色")
     @PostMapping("/add")
     public Result rolesadd(@RequestBody Roles roles)
@@ -39,6 +41,8 @@ public class RolesController {
         }
     }
 
+
+    //查询所有角色
     @PostMapping("/queryAll")
     public Result rolesqueryAll()
     {
@@ -63,6 +67,8 @@ public class RolesController {
         }
     }
 
+
+    //删除角色
     @AutoLog(module = "角色管理",operate = "删除角色")
     @PostMapping("/delete")
     public Result rolesdelete(@RequestBody List<String> rolelist)
@@ -83,6 +89,8 @@ public class RolesController {
         }
     }
 
+
+    //更新角色信息
     @AutoLog(module = "角色管理",operate = "更新角色信息")
     @PostMapping("/update")
     public Result rolesupdate(@RequestBody Roles roles)

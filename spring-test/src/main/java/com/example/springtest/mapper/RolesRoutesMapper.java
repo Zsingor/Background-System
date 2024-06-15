@@ -9,13 +9,23 @@ import java.util.List;
 
 @Mapper
 public interface RolesRoutesMapper {
+    //查询角色拥有的所有路由
     @Select("select routeid from test.roles_routes where roleid=#{id}")
     List<String> queryRoleRoutes(Roles roles);
 
+    //删除某个角色所有的对应信息
     @Delete("delete from test.roles_routes where roleid=#{id}")
     void deleteRoleRoutes(Roles roles);
 
-    void deleteRouteRoles(List<String> menulist);
+    //根据路由删除对应的信息
+    void deleteRoutesRoles(List<String> menulist);
 
+    //根据角色删除对应的信息
+    void deleteRolesRoutes(List<String> roleslist);
+
+    //为角色分配路由
     void addRoleRoutes(String roleid, List<String> routeids);
+
+    //查找多个角色拥有的所有路由
+    List<String> queryRolesRoutes(List<String> roleList);
 }

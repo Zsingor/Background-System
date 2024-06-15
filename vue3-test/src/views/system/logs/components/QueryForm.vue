@@ -4,14 +4,6 @@
       <el-input size="default" v-model="rootData.queryData.username" clearable placeholder="用户名" />
     </el-col>
     <el-col :span="6">
-      <el-select clearable placeholder="角色"
-                 v-model="rootData.queryData.roleid">
-        <el-option v-for="item in rootData.rolesMenu" :key="item.id"
-                   :label="item.name" :value="item.id">
-        </el-option>
-      </el-select>
-    </el-col>
-    <el-col :span="6">
       <el-input size="default" v-model="rootData.queryData.module" clearable placeholder="操作模块" />
     </el-col>
     <el-col :span="6">

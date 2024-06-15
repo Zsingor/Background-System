@@ -19,4 +19,6 @@ public interface UserService {
     int userupdate(User user);
 
     int userAssignRole(User user);
+
+    List<String> queryUserRoles(User user);
 }

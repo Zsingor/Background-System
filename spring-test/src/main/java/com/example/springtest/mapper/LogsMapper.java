@@ -9,14 +9,14 @@ import java.util.List;
 
 @Mapper
 public interface LogsMapper {
-    @Insert("insert into test.logs(id,userid,username,roleid,module,operate,details,ip,operatedate)"+
-            "values(#{id},#{userid},#{username},#{roleid},#{module},#{operate},#{details},#{ip},#{operatedate})")
+    //添加日志
+    @Insert("insert into test.logs(id,userid,username,module,operate,details,ip,operatedate)"+
+            "values(#{id},#{userid},#{username},#{module},#{operate},#{details},#{ip},#{operatedate})")
     void logsadd(Logs logs);
 
-    @Delete("delete from test.logs where id=#{id}")
-    void logsdelete(Logs logs);
-
+    //日志查询
     List<Logs> logsquery(Logs logs);
 
+    //删除日志
     void logsdelete(List<String> logslist);
 }

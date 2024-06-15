@@ -21,7 +21,6 @@ public class LogsServiceImpl implements LogsService {
 
     @Override
     public JSONObject logsquery(String json) {
-        System.out.println(json);
         JSONObject jsonObject= JSON.parseObject(json);
         Logs logs=jsonObject.getObject("queryForm",Logs.class);
         System.out.println(logs);
@@ -35,18 +34,6 @@ public class LogsServiceImpl implements LogsService {
     public int logsadd(Logs logs) {
         try {
             logsMapper.logsadd(logs);
-            return 1;
-        }
-        catch (Exception error)
-        {
-            return 0;
-        }
-    }
-
-    @Override
-    public int logsdelete(Logs logs) {
-        try {
-            logsMapper.logsdelete(logs);
             return 1;
         }
         catch (Exception error)

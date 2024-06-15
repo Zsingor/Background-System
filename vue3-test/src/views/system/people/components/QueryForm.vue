@@ -9,8 +9,8 @@
       </el-select>
     </el-col>
     <el-col :span="6">
-      <el-select clearable placeholder="角色"
-                 v-model="rootData.queryData.roleid">
+      <el-select clearable multiple placeholder="角色"
+                 v-model="rootData.queryData.rolesid">
         <el-option v-for="item in rootData.rolesMenu" :key="item.id"
                    :label="item.name" :value="item.id">
         </el-option>

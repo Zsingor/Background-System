@@ -21,6 +21,7 @@ public class LogsController {
     @Autowired
     private LogsService logsService;
 
+    //日志查询
     @PostMapping("/query")
     public Result logsquery(@RequestBody String json)
     {
@@ -33,6 +34,8 @@ public class LogsController {
         }
     }
 
+
+    //日志添加
     @PostMapping("/delete")
     public Result logsdelete(@RequestBody List<String> logslist)
     {

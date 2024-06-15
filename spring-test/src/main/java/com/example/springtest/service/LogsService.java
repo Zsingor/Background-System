@@ -10,7 +10,5 @@ public interface LogsService {
 
     int logsadd(Logs logs);
 
-    int logsdelete(Logs logs);
-
     int logsdelete(List<String> logslist);
 }

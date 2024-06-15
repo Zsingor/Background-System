@@ -74,7 +74,7 @@ public class RoutesServiceImpl implements RoutesService {
     @Override
     public int routesdelete(List<String> menulist) {
         try {
-            rolesRoutesMapper.deleteRouteRoles(menulist);
+            rolesRoutesMapper.deleteRoutesRoles(menulist);
             routesMapper.routesdelete(menulist);
             return 1;
         }

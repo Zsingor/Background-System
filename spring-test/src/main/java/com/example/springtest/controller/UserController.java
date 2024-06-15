@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.Roles;
+import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
 import com.example.springtest.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +40,7 @@ public class UserController {
             }
             return Result.success(data);
         }catch (Exception e){
+            System.out.println(e);
             return Result.error("查询失败");
         }
     }
@@ -68,6 +70,18 @@ public class UserController {
         }
         catch (Exception error){
             return Result.error("获取数据失败:"+error);
+        }
+    }
+
+    //查询用户所拥有的路由
+    @PostMapping("/queryRoles")
+    public Result queryUserRoles(@RequestBody User user)
+    {
+        try {
+            List<String> data=userService.queryUserRoles(user);
+            return Result.success(data);
+        }catch (Exception e){
+            return Result.error("查询失败");
         }
     }
 

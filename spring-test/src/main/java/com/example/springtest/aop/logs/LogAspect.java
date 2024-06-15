@@ -65,15 +65,16 @@ public class LogAspect {
             }
             else
             {
+                System.out.println(result);
                 JSONObject data=(JSONObject) result.getData();
+                System.out.println(data);
                 token=data.getString("token");
             }
             DecodedJWT verify=JwtUtils.parseJWT(token);
             String userid=verify.getClaim("user_id").toString().replace("\"", "");;
             String username=verify.getClaim("user_name").toString().replace("\"", "");
-            String roleid=verify.getClaim("role_id").toString().replace("\"", "");
 
-            Logs logs=new Logs(id,userid,username,roleid,module,operate,details,ip,operatetime,null,null);
+            Logs logs=new Logs(id,userid,username,module,operate,details,ip,operatetime,null,null);
             logsService.logsadd(logs);
 
             return result;
@@ -106,8 +107,8 @@ public class LogAspect {
      * @return 方法
      */
     private Method currentMethod(ProceedingJoinPoint joinPoint, String methodName) {
-        /**
-         * 获取目标类的所有方法，找到当前要执行的方法
+        /*
+          获取目标类的所有方法，找到当前要执行的方法
          */
         Method[] methods = joinPoint.getTarget().getClass().getMethods();
         Method resultMethod = null;

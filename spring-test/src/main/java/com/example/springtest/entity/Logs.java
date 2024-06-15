@@ -13,7 +13,6 @@ public class Logs {
     private String id;
     private String userid;
     private String username;
-    private String roleid;
     private String module;
     private String operate;
     private String details;

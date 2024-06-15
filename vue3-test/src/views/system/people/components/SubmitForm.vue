@@ -30,12 +30,18 @@
               </el-form-item>
             </el-col>
             <el-col :span="18">
-              <el-form-item label="角色分配:" prop="roleid">
-                <el-select clearable filterable placeholder="选择角色"
-                           size="large"
-                           v-model="rootData.formData.roleid">
-                  <el-option v-for="item in rootData.rolesMenu" :key="item.id"
-                             :label="item.name" :value="item.id">
+              <el-form-item label="角色分配:" prop="rolesid">
+                <el-select
+                    clearable filterable placeholder="选择角色"
+                    v-model="rootData.formData.rolesid"
+                    multiple
+                    size="large">
+                  <el-option
+                      v-for="item in rootData.rolesMenu"
+                      :key="item.id"
+                      :label="item.name"
+                      :value="item.id"
+                  >
                     <span style="float: left">{{ item.name }}</span>
                     <span style="float: right">{{ item.description }}</span>
                   </el-option>
@@ -112,7 +118,8 @@ const resetForm = () => {
     email:"",
     roleid:-1,
     description:"",
-    status:""
+    status:"",
+    rolesid:[]
   })
   formRef.value.resetFields()
 }

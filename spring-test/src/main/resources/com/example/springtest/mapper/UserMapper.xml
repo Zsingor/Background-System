@@ -5,23 +5,41 @@
 
 <mapper namespace="com.example.springtest.mapper.UserMapper">
 
-    <select id="userquery" parameterType="com.example.springtest.entity.User" resultType="com.example.springtest.entity.User">
-        SELECT * FROM test.user
+    <resultMap id="UserResultMap" type="com.example.springtest.entity.User">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="password" column="password" />
+        <result property="email" column="email" />
+        <result property="description" column="description" />
+        <result property="status" column="status" />
+        <collection property="rolesid" ofType="java.lang.String" select="selectUserRoles" column="id"/>
+    </resultMap>
+
+    <select id="selectUserRoles" resultType="java.lang.String">
+        SELECT roleid FROM test.user_roles WHERE userid = #{id}
+    </select>
+
+    <select id="userquery" parameterType="com.example.springtest.entity.User" resultMap="UserResultMap">
+        SELECT u.* FROM test.user u
+        LEFT JOIN test.user_roles ur ON u.id = ur.userid
         WHERE 1=1
         <if test="name != null and name != ''">
-            AND name LIKE CONCAT('%', #{name}, '%')
+            AND u.name LIKE CONCAT('%', #{name}, '%')
         </if>
         <if test="email != null and email != ''">
-            AND email LIKE CONCAT('%', #{email}, '%')
+            AND u.email LIKE CONCAT('%', #{email}, '%')
         </if>
         <if test="description != null and description != ''">
-            AND description LIKE CONCAT('%', #{description}, '%')
-        </if>
-        <if test="roleid != null and roleid != ''">
-            AND roleid = #{roleid}
+            AND u.description LIKE CONCAT('%', #{description}, '%')
         </if>
         <if test="status != null and status != ''">
-            AND status = #{status}
+            AND u.status = #{status}
+        </if>
+        <if test="rolesid != null and !rolesid.isEmpty()">
+            AND ur.roleid IN
+            <foreach item="roleid" collection="rolesid" open="(" separator="," close=")">
+                #{roleid}
+            </foreach>
         </if>
     </select>
 
@@ -31,12 +49,5 @@
             #{item}
         </foreach>
     </delete>
-
-    <update id="userUpdateRole" parameterType="java.util.List">
-        update test.user set roleid = null where roleid in
-        <foreach item="item" collection="rolelist" open="(" separator="," close=")">
-            #{item}
-        </foreach>
-    </update>
 
 </mapper>
