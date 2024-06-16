@@ -5,10 +5,10 @@
 
 <mapper namespace="com.example.springtest.mapper.RolesRoutesMapper">
     <insert id="addRoleRoutes">
-        insert into test.roles_routes(roleid, routeid)
+        insert into test.roles_routes(roleid, routeid,routetype)
         values 
         <foreach collection="routeids" item="routeid" separator=",">
-            (#{roleid}, #{routeid})
+            (#{roleid}, #{routeid},#{routetype})
         </foreach>
     </insert>
 

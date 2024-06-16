@@ -36,7 +36,7 @@ export function getTableConfig() {
             {field: 'email', minWidth:120,title: '邮箱'},
             {field: 'description', minWidth:120,title: '账号描述'},
             {field: 'status', minWidth:120,title: '状态',slots: {default: 'status'}},
-            {title: '操作', minWidth: 140, fixed: 'right', slots: {default: 'operate'}}
+            {title: '操作', minWidth: 200, fixed: 'right', slots: {default: 'operate'}}
         ],
         queryData:{
             name:"",

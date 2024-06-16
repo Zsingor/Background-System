@@ -51,15 +51,28 @@ const submit=()=>{
   unref(treeRef).getCheckedNodes(false, true).forEach(item => {
     ids.push(item.id)
   })
-  //const routesid=ids.join(',')
-  request.post("/roles/assignRoute", {id:rootData.rolesMenus.id,routesid:ids}).then(res => {
-    message('菜单分配成功')
-    rootData.showDialog = false
-  }).catch(e=>{
-    message("菜单分配失败",error)
-  }).finally(() => {
-    rootData.submitLoading = false
-  })
+  if(rootData.routesType==="1")
+  {
+    request.post("/roles/assignRoute", {id:rootData.rolesMenus.id,routesid:ids}).then(res => {
+      message('菜单分配成功')
+      rootData.showDialog = false
+    }).catch(e=>{
+      message("菜单分配失败",error)
+    }).finally(() => {
+      rootData.submitLoading = false
+    })
+  }
+  else
+  {
+    request.post("/roles/assignAuthority", {id:rootData.rolesMenus.id,routesid:ids}).then(res => {
+      message('菜单分配成功')
+      rootData.showDialog = false
+    }).catch(e=>{
+      message("菜单分配失败",error)
+    }).finally(() => {
+      rootData.submitLoading = false
+    })
+  }
 }
 
 // 当打开dialog时手动挂载用户菜单，关闭则清除

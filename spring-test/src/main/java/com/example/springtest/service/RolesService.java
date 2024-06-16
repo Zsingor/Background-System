@@ -18,4 +18,6 @@ public interface RolesService {
     int rolesupdate(Roles roles);
 
     int rolesAssignRoute(Roles roles);
+
+    int rolesAssignAuthority(Roles roles);
 }

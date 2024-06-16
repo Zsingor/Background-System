@@ -111,14 +111,16 @@ const disableSelectParentMenu = computed(() => {
 const submitForm = () => {
   formRef.value.validate((valid) => {
     if (valid) {
-      const menu = rootData.parentMenus.find(item => item.id === rootData.formData.parentid);
-      console.log("menu",menu)
-      if(rootData.formData.type!==menu.type)
+      if(rootData.formData.parentid)
       {
-        message("该菜单类型与父菜单类型不匹配","error")
-        return
+        const menu = rootData.parentMenus.find(item => item.id === rootData.formData.parentid);
+        if(rootData.formData.type!==menu.type)
+        {
+          message("该菜单类型与父菜单类型不匹配","error")
+          return
+        }
       }
-      console.log("rootData.formData",rootData.formData)
+      rootData.formData.children=[]
       rootData.submitLoading = true
       if (rootData.selectRow){
         request.post("/routes/update", rootData.formData).then(res => {

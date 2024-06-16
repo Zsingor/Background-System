@@ -19,13 +19,13 @@ public interface RoutesMapper {
     List<Routes> routesParentquery();
 
     //添加新路由
-    @Insert("insert into test.routes(id,name,title,path,level,status,icon,parentid,position)"+
-            "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid},#{position})")
+    @Insert("insert into test.routes(id,name,title,path,level,status,icon,parentid,position,type)"+
+            "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid},#{position},#{type})")
     void routesadd(Routes routes);
 
     //修改路由
     @Update("update test.routes set name=#{name},title=#{title},path=#{path},level=#{level},"+
-            "status=#{status},icon=#{icon},parentid=#{parentid},position=#{position} where id=#{id}")
+            "status=#{status},icon=#{icon},parentid=#{parentid},position=#{position},type=#{type} where id=#{id}")
     void routesupdate(Routes routes);
 
     //删除路由

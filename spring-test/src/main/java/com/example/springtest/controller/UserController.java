@@ -47,8 +47,9 @@ public class UserController {
     }
 
     //用户添加
-    @AutoLog(module = "用户管理",operate = "添加用户")
     @PostMapping("/add")
+    @PreAuthorize("/user/add")
+    @AutoLog(module = "用户管理",operate = "添加用户")
     public Result useradd(@RequestBody User user)
     {
         int flag=userService.useradd(user);
@@ -88,6 +89,7 @@ public class UserController {
 
     //用户删除
     @PostMapping("/delete")
+    @PreAuthorize("/user/delete")
     @AutoLog(module = "用户管理",operate = "删除用户")
     public Result userdelete(@RequestBody List<String> userlist)
     {
@@ -125,6 +127,7 @@ public class UserController {
     }
 
     //角色路由添加
+    @PreAuthorize("/user/assignRole")
     @AutoLog(module = "用户管理",operate = "更新用户角色")
     @PostMapping("/assignRole")
     public Result userAssignRole(@RequestBody User user)

@@ -91,11 +91,36 @@ public class RolesServiceImpl implements RolesService {
                 resultSet.addAll(whitelist);
                 List<String> resultList = new ArrayList<>(resultSet);
                 rolesRoutesMapper.deleteRoleRoutes(roles);
-                rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList);
+                rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList,"1");
             }
             else {
                 rolesRoutesMapper.deleteRoleRoutes(roles);
-                rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList);
+                rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList,"1");
+            }
+            return 1;
+        }
+        catch (Exception error)
+        {
+            return 0;
+        }
+    }
+
+    @Override
+    public int rolesAssignAuthority(Roles roles) {
+        try {
+            List<String> routeList=roles.getRoutesid();
+            if(Objects.equals(roles.getId(), "1"))
+            {
+                List<String> whitelist=new ArrayList<>(Arrays.asList("6","7"));
+                Set<String> resultSet = new HashSet<>(routeList);
+                resultSet.addAll(whitelist);
+                List<String> resultList = new ArrayList<>(resultSet);
+                rolesRoutesMapper.deleteAuthority(roles);
+                rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList,"2");
+            }
+            else {
+                rolesRoutesMapper.deleteAuthority(roles);
+                rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList,"2");
             }
             return 1;
         }

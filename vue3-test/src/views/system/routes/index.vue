@@ -135,7 +135,6 @@ const addmessage = () => {
 //编辑路由
 const updaterow = (row) => {
   Object.assign(rootData.formData, row)
-  console.log("rootData.formData", rootData.formData)
   rootData.name = "修改信息"
   rootData.selectRow = row
   const parentMenuUrl = Object.assign({}, toRaw(rootData.parentMenus.filter(item => {

@@ -2,6 +2,7 @@ package com.example.springtest.controller;
 
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.aop.authorize.PreAuthorize;
 import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.Roles;
@@ -29,6 +30,7 @@ public class RolesController {
     //添加角色
     @AutoLog(module = "角色管理",operate = "添加角色")
     @PostMapping("/add")
+    @PreAuthorize("/roles/add")
     public Result rolesadd(@RequestBody Roles roles)
     {
         int flag=rolesService.rolesadd(roles);
@@ -71,6 +73,7 @@ public class RolesController {
     //删除角色
     @AutoLog(module = "角色管理",operate = "删除角色")
     @PostMapping("/delete")
+    @PreAuthorize("/roles/delete")
     public Result rolesdelete(@RequestBody List<String> rolelist)
     {
         List<String> whitelist=new ArrayList<>(List.of("1"));
@@ -93,6 +96,7 @@ public class RolesController {
     //更新角色信息
     @AutoLog(module = "角色管理",operate = "更新角色信息")
     @PostMapping("/update")
+    @PreAuthorize("/roles/update")
     public Result rolesupdate(@RequestBody Roles roles)
     {
         System.out.println(roles);
@@ -109,9 +113,26 @@ public class RolesController {
     //角色路由添加
     @AutoLog(module = "角色管理",operate = "更新角色路由")
     @PostMapping("/assignRoute")
+    @PreAuthorize("/roles/assignRoute")
     public Result rolesAssignRoute(@RequestBody Roles roles)
     {
         int flag=rolesService.rolesAssignRoute(roles);
+        if (flag==1)
+        {
+            return Result.success();
+        }
+        else {
+            return Result.error("添加失败");
+        }
+    }
+
+    //角色权限添加
+    @AutoLog(module = "角色管理",operate = "更新角色权限")
+    @PostMapping("/assignAuthority")
+    @PreAuthorize("/roles/assignAuthority")
+    public Result rolesAssignAuthority(@RequestBody Roles roles)
+    {
+        int flag=rolesService.rolesAssignAuthority(roles);
         if (flag==1)
         {
             return Result.success();

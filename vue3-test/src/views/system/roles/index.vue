@@ -4,10 +4,39 @@
       <template #toolbar_buttons>
         <vxe-button status="primary" @click="addmessage">新增角色</vxe-button>
       </template>
+      <!--  操作按钮组    -->
       <template #operate="{ row }">
-        <el-button type="primary" @click="updaterow(row)">编辑</el-button>
-        <el-button type="danger" @click="deleteTableData(xGrid,'/roles/delete',false,row)">删除</el-button>
-        <el-button type="info" @click="assignRoute(row)">分配路由</el-button>
+        <vxe-button title="编辑" circle @click="updaterow(row)">
+          <el-icon>
+            <Edit/>
+          </el-icon>
+        </vxe-button>
+        <vxe-button title="删除" circle @click="deleteTableData(xGrid,'/roles/delete',false,row)">
+          <el-icon>
+            <Delete/>
+          </el-icon>
+        </vxe-button>
+        <el-dropdown trigger="click" style="margin-left: 10px">
+          <vxe-button title="更多操作" circle>
+            <el-icon>
+              <More/>
+            </el-icon>
+          </vxe-button>
+          <template #dropdown>
+            <el-dropdown-menu>
+              <el-dropdown-item @click="assignRoute(row,'1')">
+                <el-button type="text">
+                  分配路由
+                </el-button>
+              </el-dropdown-item>
+              <el-dropdown-item @click="assignRoute(row,'2')">
+                <el-button type="text">
+                  分配权限
+                </el-button>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </template>
+        </el-dropdown>
       </template>
     </vxe-grid>
 
@@ -80,6 +109,7 @@ const rootData = reactive({
   },
   formRules: Object.assign({}, formRules),
   menuDatas: [],
+  routesType:"1",
   rolesMenus: {// 角色拥有的菜单数据
     id: 0,
     menus: []
@@ -103,9 +133,10 @@ const updaterow=(row)=>{
 }
 
 //分配路由
-const assignRoute=(row)=>{
+const assignRoute=(row,type)=>{
+  rootData.routesType=type
   rootData.rolesMenus.id = row.id
-  let queryForm={}
+  let queryForm={type:rootData.routesType}
   // 发送两个请求：1.获取所有菜单  2.获取角色拥有的菜单
   axios.all([
     request.post('/routes/queryAll',queryForm),

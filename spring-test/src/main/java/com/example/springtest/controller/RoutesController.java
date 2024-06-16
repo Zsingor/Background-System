@@ -1,6 +1,7 @@
 package com.example.springtest.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.aop.authorize.PreAuthorize;
 import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.Roles;
@@ -63,6 +64,7 @@ public class RoutesController {
     //添加路由
     @AutoLog(module = "路由管理",operate = "添加路由")
     @PostMapping("/add")
+    @PreAuthorize("/routes/add")
     public Result routesadd(@RequestBody Routes routes)
     {
         int flag=routesService.routesadd(routes);
@@ -84,6 +86,7 @@ public class RoutesController {
     //更新路由信息
     @AutoLog(module = "路由管理",operate = "更新路由信息")
     @PostMapping("/update")
+    @PreAuthorize("/routes/update")
     public Result routesupdate(@RequestBody Routes routes)
     {
         int flag=routesService.routesupdate(routes);
@@ -100,6 +103,7 @@ public class RoutesController {
     //删除路由
     @AutoLog(module = "路由管理",operate = "删除路由")
     @PostMapping("/delete")
+    @PreAuthorize("/routes/delete")
     public Result routesdelete(@RequestBody List<String> menulist)
     {
         List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));

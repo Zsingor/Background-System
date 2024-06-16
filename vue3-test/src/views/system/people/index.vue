@@ -29,32 +29,9 @@
       </template>
       <!--  操作按钮组    -->
       <template #operate="{ row }">
-        <vxe-button title="编辑" circle @click="updaterow(row)">
-          <el-icon>
-            <Edit/>
-          </el-icon>
-        </vxe-button>
-        <vxe-button title="删除" circle @click="deleteTableData(xGrid,'/user/delete',false,row)">
-          <el-icon>
-            <Delete/>
-          </el-icon>
-        </vxe-button>
-        <el-dropdown trigger="click" style="margin-left: 10px">
-          <vxe-button title="更多操作" circle>
-            <el-icon>
-              <More/>
-            </el-icon>
-          </vxe-button>
-          <template #dropdown>
-            <el-dropdown-menu>
-              <el-dropdown-item @click="assignRole(row)">
-                <el-button type="text">
-                  分配角色
-                </el-button>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </template>
-        </el-dropdown>
+        <el-button type="primary" @click="updaterow(row)">编辑</el-button>
+        <el-button type="danger" @click="deleteTableData(xGrid,'/user/delete',false,row)">删除</el-button>
+        <el-button type="info" @click="assignRole(row)">分配角色</el-button>
       </template>
     </vxe-grid>
 
