@@ -19,5 +19,6 @@ public class Routes {
     String icon;
     String parentid;
     Integer position;
+    String type;
     List<Routes> children;
 }

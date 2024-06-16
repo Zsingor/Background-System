@@ -5,6 +5,7 @@ import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.springtest.entity.User;
+import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RoutesService;
 import com.example.springtest.service.UserService;
@@ -15,8 +16,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.*;
 
-//@SpringBootTest
+@SpringBootTest
 class SpringTestApplicationTests {
+
+    @Autowired
+    private RoutesMapper routesMapper;
 
     @Test
     void contextLoads() {
@@ -45,6 +49,12 @@ class SpringTestApplicationTests {
 //        String uuid = UUID.randomUUID().toString().replace("-", "");
 //        System.out.println(uuid);
 //        System.out.println(uuid.length());
+    }
+
+    @Test
+    void test1() {
+        List<String> rou=new ArrayList<>(Arrays.asList("1", "2", "55"));
+        System.out.println(routesMapper.queryAuthority(rou));
     }
 
 }

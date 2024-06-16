@@ -20,5 +20,7 @@ public interface UserService {
 
     int userAssignRole(User user);
 
-    List<String> queryUserRoles(User user);
+    List<String> queryUserRoles(String userid);
+
+    List<String> queryUserAuthority(String userid);
 }

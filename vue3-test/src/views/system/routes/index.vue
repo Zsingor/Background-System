@@ -6,6 +6,11 @@
           <vxe-button status="primary" @click="addmessage">新增菜单</vxe-button>
           <vxe-button status="danger" @click="deleteTableData(xGrid,'/routes/delete',true)">批量删除</vxe-button>
         </template>
+        <template #queryType="{ data }">
+          <vxe-select v-model="data.type" transfer placeholder="菜单类别">
+            <vxe-option v-for="item in typeList" :key="item.value" :value="item.value" :label="item.label"></vxe-option>
+          </vxe-select>
+        </template>
         <template #menuicon="{ row }">
           <el-icon size="large">
             <component :is="row.icon"></component>
@@ -31,6 +36,14 @@
           </div>
           <div v-else>
             <span style="color:#67C23A">二级菜单</span>
+          </div>
+        </template>
+        <template #menutype="{ row }">
+          <div v-if="row.type==='1'">
+            <span style="color:#16aad8">路由</span>
+          </div>
+          <div v-else>
+            <span style="color:#67C23A">接口</span>
           </div>
         </template>
         <template #operate="{ row }">
@@ -63,6 +76,7 @@ import _ from "lodash";
 import useClipboard from 'vue-clipboard3';
 import {message} from "@/utils/message.js";
 import {persistentConfig} from "@/layout/layout.js";
+import axios from "axios";
 const { toClipboard } = useClipboard();
 
 //定义界面的name，用于使用keep-alive
@@ -90,19 +104,15 @@ const rootData = reactive({
   showForm: false,
   submitLoading: false,
   selectRow: null,
-  formData: {
-    name: "",
-    title: "",
-    path: "",
-    level: 1,
-    status: "1",
-    icon: "",
-    parentid: "",
-    parentMenuPath: ""
-  },
+  formData: {},
   formRules: Object.assign({}, formRules),
   parentMenus: []
 })
+
+const typeList = ref([
+  {label: '路由', value: '1'},
+  {label: '接口', value: '2'}
+])
 
 const addmessage = () => {
   Object.assign(rootData.formData, {
@@ -114,6 +124,7 @@ const addmessage = () => {
     status: "1",
     icon: "",
     parentid: "",
+    type:"1",
     parentMenuPath: ""
   })
   rootData.name = "添加信息"
@@ -175,6 +186,38 @@ const gridOptions = reactive({
   treeConfig: {
     children: 'children'
   },
+  formConfig: {
+    items: [
+      {
+        field: 'type',
+        span: 4,
+        itemRender: {},
+        slots: { default: 'queryType' }
+      },
+      {
+        span: 6,
+        align: 'left',
+        itemRender: {
+          name: '$buttons',
+          children: [
+            {
+              props: {
+                type: 'submit',
+                content: '搜索',
+                status: 'primary'
+              }
+            },
+            {
+              props: {
+                type: 'reset',
+                content: '重置'
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
   columns: [
     {
       type: 'checkbox',
@@ -208,21 +251,28 @@ const gridOptions = reactive({
       width: 100,
       slots: {default: 'menulevel'}
     },
+    {
+      field: 'type',
+      title: '菜单类别',
+      width: 100,
+      slots: {default: 'menutype'}
+    },
     {title: '操作', minWidth: 150, fixed: 'right', slots: {default: 'operate'}}
   ],
   proxyConfig: {
     form: true,
     ajax: {
-      query: () => {
+      query: ({form}) => {
         return new Promise((resolve, reject) => {
-          xGrid.value.clearCheckboxRow()
-          request.post("/routes/queryAll").then(res => {
-            resolve(res.data)
-          }).catch(() => {
+          axios.all([
+            request.post("/routes/queryAll",form),
+            request.post("/routes/parents"),
+          ]).then(axios.spread((res1, res2) => {
+            xGrid.value.clearCheckboxRow()
+            resolve(res1.data)
+            rootData.parentMenus = res2.data
+          })).catch(() => {
             reject()
-          })
-          request.post("/routes/parents").then(res => {
-            rootData.parentMenus = res.data
           })
         })
       }

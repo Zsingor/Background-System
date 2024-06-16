@@ -38,17 +38,17 @@ public class RoutesController {
 
     //查询全部路由
     @PostMapping("/queryAll")
-    public Result routesqueryAll()
+    public Result routesqueryAll(@RequestBody Routes routes)
     {
         try {
-            List<Routes> data=routesService.routesall();
+            List<Routes> data=routesService.routesall(routes);
             return Result.success(data);
         }catch (Exception e){
             return Result.error("查询失败");
         }
     }
 
-    //查询所有的父路由
+    //查询所有路由的父菜单
     @PostMapping("/parents")
     public Result routesparents()
     {
@@ -59,7 +59,6 @@ public class RoutesController {
             return Result.error("查询失败");
         }
     }
-
 
     //添加路由
     @AutoLog(module = "路由管理",operate = "添加路由")

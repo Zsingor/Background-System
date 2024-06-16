@@ -11,7 +11,7 @@ public interface RoutesService {
 
     List<Routes> routesquery(Roles roles);
 
-    List<Routes> routesall();
+    List<Routes> routesall(Routes routes);
 
     List<Routes> routesParentquery();
 

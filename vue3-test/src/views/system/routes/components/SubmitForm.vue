@@ -14,6 +14,15 @@
           <el-form-item label="菜单标题:" prop="title">
             <el-input size="large" v-model="rootData.formData.title"/>
           </el-form-item>
+          <el-form-item label="菜单类别:" prop="type">
+            <el-select filterable placeholder="选择菜单类别"
+                       size="large"
+                       v-model="rootData.formData.type">
+              <el-option v-for="item in typeList" :key="item.value"
+                         :label="item.label" :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item label="菜单级别:">
             <el-input-number size="large" v-model="rootData.formData.level" :min="1" :max="2"/>
           </el-form-item>
@@ -27,6 +36,8 @@
               <el-option v-for="item in rootData.parentMenus" :key="item.id"
                          :label="item.title" :value="item.id">
                 <span style="float: left">{{ item.title }}</span>
+                <span style="float: right;color:#16aad8" v-if="item.type==='1'">路由</span>
+                <span style="float: right;color:#67C23A" v-else>接口</span>
               </el-option>
             </el-select>
           </el-form-item>
@@ -78,6 +89,11 @@ import {persistentConfig} from "@/layout/layout.js";
 const rootData = inject("rootData")
 const xGrid = inject("xGrid")
 
+const typeList = ref([
+  {label: '路由', value: '1'},
+  {label: '接口', value: '2'}
+])
+
 const formRef = ref()
 const showIconDialog = ref(false)
 
@@ -95,8 +111,15 @@ const disableSelectParentMenu = computed(() => {
 const submitForm = () => {
   formRef.value.validate((valid) => {
     if (valid) {
+      const menu = rootData.parentMenus.find(item => item.id === rootData.formData.parentid);
+      console.log("menu",menu)
+      if(rootData.formData.type!==menu.type)
+      {
+        message("该菜单类型与父菜单类型不匹配","error")
+        return
+      }
+      console.log("rootData.formData",rootData.formData)
       rootData.submitLoading = true
-      console.log(rootData.formData)
       if (rootData.selectRow){
         request.post("/routes/update", rootData.formData).then(res => {
           if(res.code===1)
@@ -119,7 +142,6 @@ const submitForm = () => {
       else
       {
         request.post("/routes/add", rootData.formData).then(res => {
-          console.log("res",res)
           if (res.code === 0) {
             message(res.msg,"error")
           }
@@ -150,7 +172,8 @@ const resetForm = () => {
     position:0,
     status: "1",
     icon: "",
-    parentid: ""
+    parentid: "",
+    type:"1",
   })
   formRef.value.resetFields()
 }
@@ -195,6 +218,9 @@ const  pasteEvent=async (event) => {
     }
     if (!_.isUndefined(menuObj.status)) {
       rootData.formData.status = menuObj.status
+    }
+    if (!_.isUndefined(menuObj.type)) {
+      rootData.formData.type = menuObj.type
     }
     if (!_.isUndefined(menuObj.level)) {
       rootData.formData.level = menuObj.level

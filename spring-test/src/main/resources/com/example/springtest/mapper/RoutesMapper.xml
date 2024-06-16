@@ -4,11 +4,30 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.example.springtest.mapper.RoutesMapper">
+
+    <select id="routesAllquery" parameterType="com.example.springtest.entity.Routes" resultType="com.example.springtest.entity.Routes">
+        SELECT * FROM test.routes
+        WHERE 1=1
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        ORDER BY position DESC
+    </select>
+
     <select id="routesquery" parameterType="java.util.List" resultType="com.example.springtest.entity.Routes">
         SELECT * FROM test.routes WHERE id IN
         <foreach item="item" collection="routesid" open="(" separator="," close=")">
             #{item}
         </foreach>
+        ORDER BY position DESC
+    </select>
+
+    <select id="queryAuthority" parameterType="java.util.List" resultType="com.example.springtest.entity.Routes">
+        SELECT * FROM test.routes WHERE id IN
+        <foreach item="item" collection="routesIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        And type = '2'
         ORDER BY position DESC
     </select>
 

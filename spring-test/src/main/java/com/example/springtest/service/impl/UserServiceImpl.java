@@ -32,10 +32,12 @@ public class UserServiceImpl implements UserService {
     private UserRolesMapper userRolesMapper;
 
 
+    //用户登录
     @Override
     public JSONObject userlogin(User user) {
         User user1 = userMapper.userPrimaryquery(user);
         JSONObject response = new JSONObject();
+        //如果当前用户不存在或者密码错误
         if(user1==null)
         {
             response.put("token", "0");
@@ -47,10 +49,11 @@ public class UserServiceImpl implements UserService {
         else
         {
             List<Routes> menuList=new ArrayList<Routes>();
-
+            //拿到用户的所有角色信息
             List<String> roleLists=userRolesMapper.queryUserRoles(user1.getId());
             if(!roleLists.isEmpty())
             {
+                //拿到用户拥有的所有路由
                 List<String> routesIds=rolesRoutesMapper.queryRolesRoutes(roleLists);
                 //列表去重
                 routesIds=routesIds.stream().distinct().collect(Collectors.toList());
@@ -161,7 +164,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<String> queryUserRoles(User user) {
-        return userRolesMapper.queryUserRoles(user.getId());
+    public List<String> queryUserRoles(String userid) {
+        return userRolesMapper.queryUserRoles(userid);
+    }
+
+    @Override
+    public List<String> queryUserAuthority(String userid) {
+        //拿到用户的所有角色信息
+        List<String> roleLists=userRolesMapper.queryUserRoles(userid);
+        //拿到用户拥有的所有路由
+        List<String> routesIds=rolesRoutesMapper.queryRolesRoutes(roleLists);
+        //列表去重
+        routesIds=routesIds.stream().distinct().collect(Collectors.toList());
+
+        List<Routes> authorityList=routesMapper.queryAuthority(routesIds);
+
+        List<String> result=RoutesServiceImpl.authorityProcess(authorityList);
+        return result;
     }
 }

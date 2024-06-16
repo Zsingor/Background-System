@@ -8,12 +8,11 @@ import java.util.List;
 
 @Mapper
 public interface RoutesMapper {
-    //查询用户拥有的路由id
+    //查询用户拥有的路由
     List<Routes> routesquery(List<String> routesid);
 
     //查询所有路由信息
-    @Select("select * from test.routes order by position DESC ")
-    List<Routes> routesAllquery();
+    List<Routes> routesAllquery(Routes routes);
 
     //查询所有父路由
     @Select("select * from test.routes where level=1 order by position DESC")
@@ -32,7 +31,6 @@ public interface RoutesMapper {
     //删除路由
     void routesdelete(List<String> menulist);
 
-    //查询路由的父id
-    @Select("select parentid from test.routes where id=#{id}")
-    String parentIdquery(String id);
+    //查询用户拥有的所有权限
+    List<Routes> queryAuthority(List<String> routesIds);
 }

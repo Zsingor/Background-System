@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -29,8 +30,8 @@ public class RoutesServiceImpl implements RoutesService {
     }
 
     @Override
-    public List<Routes> routesall() {
-        List<Routes> routesList=routesMapper.routesAllquery();
+    public List<Routes> routesall(Routes routes) {
+        List<Routes> routesList=routesMapper.routesAllquery(routes);
         return Routeprocess(routesList);
     }
 
@@ -43,7 +44,8 @@ public class RoutesServiceImpl implements RoutesService {
     @Override
     public int routesadd(Routes routes) {
         try {
-            List<Routes> routesall = routesMapper.routesAllquery();
+            Routes newr=new Routes();
+            List<Routes> routesall = routesMapper.routesAllquery(newr);
             String name = routes.getName();
             if (routesall.stream().anyMatch(route -> Objects.equals(route.getName(), name))) {
                 return 2;
@@ -103,5 +105,30 @@ public class RoutesServiceImpl implements RoutesService {
         }
 
         return parentRoutes;
+    }
+
+    public static List<String> authorityProcess(List<Routes> routesList){
+        // 分类一级路由和二级路由
+        List<Routes> parentAuthority = routesList.stream()
+                .filter(route -> route.getLevel() == 1)
+                .toList();
+
+        List<Routes> childAuthority = routesList.stream()
+                .filter(route -> route.getLevel() == 2)
+                .toList();
+
+        // 将 parentAuthority 转换为 Map<id, path>
+        Map<String, String> parentMap = parentAuthority.stream()
+                .collect(Collectors.toMap(Routes::getId, Routes::getPath));
+
+        // 创建 resultList 并拼接路径
+        List<String> resultList = childAuthority.stream()
+                .map(child -> {
+                    String parentPath = parentMap.get(child.getParentid());
+                    return parentPath + child.getPath();
+                })
+                .collect(Collectors.toList());
+        
+        return resultList;
     }
 }

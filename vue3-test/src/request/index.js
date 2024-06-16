@@ -43,6 +43,12 @@ request.interceptors.response.use(response=>{
     {
         onceMessage.error(result.msg)
         router.push("/login")
+        return Promise.reject();
+    }
+    if (result.code===5002)
+    {
+        onceMessage.error(result.msg)
+        return Promise.reject();
     }
     return result
 },error => {

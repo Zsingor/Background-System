@@ -65,13 +65,11 @@ public class LogAspect {
             }
             else
             {
-                System.out.println(result);
                 JSONObject data=(JSONObject) result.getData();
-                System.out.println(data);
                 token=data.getString("token");
             }
             DecodedJWT verify=JwtUtils.parseJWT(token);
-            String userid=verify.getClaim("user_id").toString().replace("\"", "");;
+            String userid=verify.getClaim("user_id").toString().replace("\"", "");
             String username=verify.getClaim("user_name").toString().replace("\"", "");
 
             Logs logs=new Logs(id,userid,username,module,operate,details,ip,operatetime,null,null);

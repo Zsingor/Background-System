@@ -1,6 +1,7 @@
 package com.example.springtest.controller;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.aop.authorize.PreAuthorize;
 import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.Roles;
@@ -78,7 +79,7 @@ public class UserController {
     public Result queryUserRoles(@RequestBody User user)
     {
         try {
-            List<String> data=userService.queryUserRoles(user);
+            List<String> data=userService.queryUserRoles(user.getId());
             return Result.success(data);
         }catch (Exception e){
             return Result.error("查询失败");
@@ -108,6 +109,7 @@ public class UserController {
 
     //用户修改
     @PostMapping("/update")
+    @PreAuthorize("/user/update")
     @AutoLog(module = "用户管理",operate = "更新用户信息")
     public Result update(@RequestBody User user)
     {
