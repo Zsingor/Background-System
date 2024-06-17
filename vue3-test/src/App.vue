@@ -1,6 +1,6 @@
 <template>
   <el-config-provider :locale="locale">
-    <router-view v-slot="{ Component }">
+    <router-view v-slot="{ Component }" >
       <component :is="Component" :style="{
       '--aside-bg': persistentConfig.theme.aside.bgColor,
       '--header-bg': persistentConfig.theme.header.bgColor,

@@ -74,12 +74,24 @@ watch(
 onMounted(() => {
   if (!persistentConfig.closeWaterMark) {
     const canvas = document.getElementById("canvas-watermark");
-    drawWaterMark(
-        canvas,
-        userInfo.baseInfo.user_name+" "+ parseDate(Date.now()),
-        16,
-        56
-    );
+    if(isEmpty(userInfo.baseInfo))
+    {
+      drawWaterMark(
+          canvas,
+          "游客 "+ parseDate(Date.now()),
+          16,
+          56
+      );
+    }
+    else
+    {
+      drawWaterMark(
+          canvas,
+          userInfo.baseInfo.user_name+" "+ parseDate(Date.now()),
+          16,
+          56
+      );
+    }
   }
 });
 

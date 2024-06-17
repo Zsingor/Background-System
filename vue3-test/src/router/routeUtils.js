@@ -1,6 +1,6 @@
 import {isReactive, isRef, toRaw, unref} from "vue";
 import router from "@/router/index.js";
-import {routeMenus} from "@/layout/user.js";
+import {routeMenus, userInfo} from "@/layout/user.js";
 import layoutRoutes from "@/router/routes/LayoutRoutes.js";
 import {isEmpty} from "@/utils/commons.js";
 
@@ -22,12 +22,20 @@ function getSourceRouteJson(userRouteJson) {
  * @param routeJson
  */
 export function createRouteAndMenu(routeJson) {
-    const routes = createRoutes(routeJson);
-    routes.forEach(route => {
-        // 往layout路由中动态添加路由
-        router.addRoute("admin", route);
-    });
-    routeMenus.value=createLayoutRouteMenu(layoutRoutes).concat(createMenus(routeJson));
+    if(!isEmpty(routeJson))
+    {
+        const routes = createRoutes(routeJson);
+        routes.forEach(route => {
+            // 往layout路由中动态添加路由
+            router.addRoute("admin", route);
+            userInfo.routeNames.push(route.name);
+        });
+        routeMenus.value=createLayoutRouteMenu(layoutRoutes).concat(createMenus(routeJson));
+    }
+    else
+    {
+        routeMenus.value=createLayoutRouteMenu(layoutRoutes)
+    }
 }
 
 /**

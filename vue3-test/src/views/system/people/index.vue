@@ -75,8 +75,6 @@ import {getTableConfig} from "@/views/system/people/config.js";
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import axios from "axios";
 import {message} from "@/utils/message.js";
-import {isEmpty} from "@/utils/commons.js";
-import {routeMenus} from "@/layout/user.js";
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
@@ -140,6 +138,7 @@ const submitRoles=()=>{
   request.post("/user/assignRole", {id:rootData.userMenus.id,rolesid:rootData.userMenus.menus}).then(res => {
     message('角色分配成功')
     rootData.showDialog = false
+    xGrid.value.commitProxy('query')
   }).catch(e=>{
     message("角色分配失败",error)
   }).finally(() => {

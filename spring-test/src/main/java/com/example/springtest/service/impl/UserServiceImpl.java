@@ -54,7 +54,7 @@ public class UserServiceImpl implements UserService {
             if(!roleLists.isEmpty())
             {
                 //拿到用户拥有的所有路由
-                List<String> routesIds=rolesRoutesMapper.queryRolesRoutes(roleLists);
+                List<String> routesIds=rolesRoutesMapper.queryRolesRoutes(roleLists,"1");
                 //列表去重
                 routesIds=routesIds.stream().distinct().collect(Collectors.toList());
                 if(!routesIds.isEmpty())
@@ -172,8 +172,8 @@ public class UserServiceImpl implements UserService {
     public List<String> queryUserAuthority(String userid) {
         //拿到用户的所有角色信息
         List<String> roleLists=userRolesMapper.queryUserRoles(userid);
-        //拿到用户拥有的所有路由
-        List<String> routesIds=rolesRoutesMapper.queryRolesRoutes(roleLists);
+        //拿到用户拥有的所有权限
+        List<String> routesIds=rolesRoutesMapper.queryRolesRoutes(roleLists,"2");
         //列表去重
         routesIds=routesIds.stream().distinct().collect(Collectors.toList());
 

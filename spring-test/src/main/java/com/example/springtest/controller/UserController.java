@@ -126,7 +126,7 @@ public class UserController {
         }
     }
 
-    //角色路由添加
+    //为用户分配角色
     @PreAuthorize("/user/assignRole")
     @AutoLog(module = "用户管理",operate = "更新用户角色")
     @PostMapping("/assignRole")

@@ -35,4 +35,8 @@ export function loadConfig() {
             createRouteAndMenu(userInfo.baseInfo.menuList)
         }
     }
+    else
+    {
+        createRouteAndMenu()
+    }
 }

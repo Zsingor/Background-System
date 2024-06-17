@@ -22,20 +22,25 @@
         <el-icon style="font-size: 20px;" title="清空缓存"><Brush /></el-icon>
       </div>
       <div class="user-info">
-        <el-dropdown trigger="click">
+        <el-dropdown v-if="hasUsername()" trigger="click">
           <div class="user-info-text el-dropdown-link">
             我的
             <el-icon><ArrowDown /></el-icon>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="login">
+              <el-dropdown-item @click="logout">
                 <el-icon><SwitchButton /></el-icon>
                 退出登录
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
+
+        <div v-else @click="logout" class="user-info-text el-dropdown-link">
+          登录
+        </div>
+
       </div>
     </div>
     <GlobalSetting/>
@@ -46,15 +51,17 @@
 import GlobalSetting from "@/layout/pageheader/components/setting/index.vue"
 import {projectName} from "@/setup.js";
 import {persistentConfig} from "@/layout/layout.js";
-import axios from "axios";
 import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {reloadPage} from "@/layout/tags/tag.js";
-import {provide, reactive} from "vue";
+import {provide, reactive, ref} from "vue";
 import { useRouter } from 'vue-router'
 import request from "@/request/index.js";
-import {userInfo} from "@/layout/user.js";
+import {logout, userInfo} from "@/layout/user.js";
+import {isEmpty} from "@/utils/commons.js";
 
 const router = useRouter()
+
+const username=ref("")
 
 const controls = reactive({
   showUserForm: false,
@@ -68,8 +75,17 @@ const refreshpage=()=>{
   reloadPage()
 }
 
-const login=()=>{
-  router.push("/login");
+const hasUsername = () => {
+  userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))
+  if(!isEmpty(userInfo.baseInfo))
+  {
+    username.value=userInfo.baseInfo.user_name
+    return true
+  }
+  else
+  {
+    return false
+  }
 }
 
 provide("controls",controls)
@@ -77,21 +93,8 @@ provide("controls",controls)
 </script>
 
 <style >
-.topview{
-  width: 100%;
-  height: 48px;
-}
 
 /* 菜单栏的样式 */
-.el-menu-demo {
-  display: flex;
-  width: 100%;
-  height: 100%;
-}
-
-.el-menu{
-  border: 0;
-}
 
 .el-dropdown-link {
   cursor: pointer;

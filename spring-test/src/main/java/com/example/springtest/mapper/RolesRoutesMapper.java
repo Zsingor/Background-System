@@ -9,7 +9,7 @@ import java.util.List;
 
 @Mapper
 public interface RolesRoutesMapper {
-    //查询角色拥有的所有路由
+    //查询角色拥有的所有路由(为角色分配角色或权限时使用)
     @Select("select routeid from test.roles_routes where roleid=#{id}")
     List<String> queryRoleRoutes(Roles roles);
 
@@ -30,6 +30,6 @@ public interface RolesRoutesMapper {
     //为角色分配路由
     void addRoleRoutes(String roleid, List<String> routeids,String routetype);
 
-    //查找多个角色拥有的所有路由
-    List<String> queryRolesRoutes(List<String> roleList);
+    //查找多个角色拥有的所有路由/权限
+    List<String> queryRolesRoutes(List<String> roleList,String routetype);
 }

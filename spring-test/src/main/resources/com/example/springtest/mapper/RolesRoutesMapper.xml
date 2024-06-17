@@ -31,5 +31,6 @@
         <foreach item="item" collection="roleList" open="(" separator="," close=")">
             #{item}
         </foreach>
+        and routetype = #{routetype}
     </select>
 </mapper>

@@ -20,7 +20,12 @@
     height: 100%;
 }
 
+.el-card{
+    border: none;
+}
+
 .el-card__body{
+    padding: 10px;
     width: 100%;
     height: 100%;
 }

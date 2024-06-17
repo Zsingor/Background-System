@@ -53,7 +53,6 @@ public class AuthorizeAspect {
         DecodedJWT verify= JwtUtils.parseJWT(token);
         String userid=verify.getClaim("user_id").toString().replace("\"", "");
         List<String> authorityList=userService.queryUserAuthority(userid);
-        System.out.println("authorityList"+authorityList);
 
         String pemission=preAuthorize.value();
 

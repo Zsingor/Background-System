@@ -62,7 +62,7 @@ public class RoutesController {
     }
 
     //添加路由
-    @AutoLog(module = "路由管理",operate = "添加路由")
+    @AutoLog(module = "菜单管理",operate = "添加菜单")
     @PostMapping("/add")
     @PreAuthorize("/routes/add")
     public Result routesadd(@RequestBody Routes routes)
@@ -84,7 +84,7 @@ public class RoutesController {
 
 
     //更新路由信息
-    @AutoLog(module = "路由管理",operate = "更新路由信息")
+    @AutoLog(module = "菜单管理",operate = "更新菜单信息")
     @PostMapping("/update")
     @PreAuthorize("/routes/update")
     public Result routesupdate(@RequestBody Routes routes)
@@ -101,7 +101,7 @@ public class RoutesController {
 
 
     //删除路由
-    @AutoLog(module = "路由管理",operate = "删除路由")
+    @AutoLog(module = "菜单管理",operate = "删除菜单")
     @PostMapping("/delete")
     @PreAuthorize("/routes/delete")
     public Result routesdelete(@RequestBody List<String> menulist)
