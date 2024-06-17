@@ -15,6 +15,7 @@ import "@/styles/vxe-table.css"
 const app = createApp(App)
 //关闭警告信息
 app.config.warnHandler = () => null;
+app.config.globalProperties.$baseUrl=import.meta.env.VITE_BASE_API;
 
 //初始化配置信息
 loadConfig()

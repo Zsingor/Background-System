@@ -18,6 +18,7 @@ public class WebConfig implements WebMvcConfigurer {
         //配置白名单
         List<String> whileList = new ArrayList<>();
         whileList.add("/user/login");
+        whileList.add("/resource/**");
         //配置黑名单
         List<String> blackList = new ArrayList<>();
         blackList.add("/**");

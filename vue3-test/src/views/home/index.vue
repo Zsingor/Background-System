@@ -1,81 +1,68 @@
 <template>
-  <div>
-    <el-row :gutter="20">
-      <el-col :span="8">
-        <div class="grid-content bg-purple">
-          <!-- 首页user信息 -->
-          <el-card shadow= 'always'>
-            <div class="userCard">
-              <el-avatar :size="150" :src=imgUrl></el-avatar>
-              <div class="userInfo">
-                <p class="important-font">Admin</p>
-                <p class="secondary-font">管理员</p>
-              </div>
-            </div>
-<!--            <div class="login-info">-->
-<!--              <p>上次登录时间: 2022/07/06 18:16</p>-->
-<!--            </div>-->
-          </el-card>
-          <!-- 首页表格 -->
-          <el-card shadow= 'always' class="tableInfo">
-            <div slot="header">
-              <span class="important-font">客户信息</span>
-            </div>
-            <div>
-              <el-table
-                  :data="tableData"
-                  stripe
-                  border
-                  height="450px"
-                  style="width: 100%">
-                <el-table-column
-                    prop="date"
-                    label="日期"
-                    width="120">
-                </el-table-column>
-                <el-table-column
-                    prop="name"
-                    label="姓名"
-                    width="80">
-                </el-table-column>
-                <el-table-column
-                    prop="address"
-                    label="地址">
-                </el-table-column>
-              </el-table>
-            </div>
-          </el-card>
+  <div class="background">
+    <div class="background-left">
+      <el-card shadow="always" class="user-card">
+        <div class="user-div">
+          <el-image class="userAvatar" :src="getImageUrl('avatar.png')" :fit="'cover'"/>
+          <div class="userInfo">
+            <p class="important-font">{{ user.name }}</p>
+            <p class="secondary-font">{{ user.description }}</p>
+          </div>
         </div>
-      </el-col>
-      <el-col :span="16">
-        <!-- 六个订单信息 -->
-        <div class="num">
-          <el-card shadow= 'hover' v-for="item in countData" :key="item.name" :body-style="{ display: 'flex',padding: 0 }" class="OrderCard">
-            <el-icon class="icon" :style="{ background: item.color}"><SuccessFilled /></el-icon>
-            <div class="OrderCard-item">
-              <p class="important-font">￥{{item.value}}</p>
-              <p class="secondary-font">{{item.name}}</p>
-            </div>
-          </el-card>
+      </el-card>
+      <el-card class="table-card">
+        <div slot="header">
+          <span class="important-font">客户信息</span>
         </div>
-        <!-- 柱状图 -->
-        <el-card style="height: 280px">
-          <div style="height:280px;" id="barEcharts" ref="barEcharts"></div>
+        <div class="card-table">
+          <el-table
+              :data="tableData"
+              stripe
+              border
+              style="width: 100%;height: 100%">
+            <el-table-column
+                prop="date"
+                label="日期"
+                width="120">
+            </el-table-column>
+            <el-table-column
+                prop="name"
+                label="姓名"
+                width="80">
+            </el-table-column>
+            <el-table-column
+                prop="address"
+                label="地址">
+            </el-table-column>
+          </el-table>
+        </div>
+      </el-card>
+    </div>
+    <div class="background-right">
+      <div class="background-rightTop">
+        <el-card style="width: 34%;height: 100%;margin-right: 1%">
+          <div style="width: 100%;height: 100%;" id="pieEcharts" ref="pieEcharts"></div>
         </el-card>
-        <div class= "num graph">
-          <el-card style="width: 34%;height: 265px;marginRight: 1%">
-            <div style="width: 100%;height: 265px;" id="pieEcharts" ref="pieEcharts"></div>
-          </el-card>
-          <el-card style="width:65%;height: 265px"><div style="height: 265px"><el-calendar class="calendar" v-model="value"></el-calendar></div></el-card>
-        </div>
-      </el-col>
-    </el-row>
+      </div>
+      <div class="background-rightBottom">
+        <el-card style="width:100%;height: 100%">
+          <div style="height: 100%">
+            <el-calendar class="calendar" v-model="dateValue"></el-calendar>
+          </div>
+        </el-card>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup>
 
 import {inject, onMounted, ref} from "vue";
+import {userInfo} from "@/layout/user.js";
+import {isEmpty} from "@/utils/commons.js";
+import request from "@/request/index.js";
+import {message} from "@/utils/message.js";
+import {getImageUrl} from "@/utils/resource.js";
 
 defineOptions({
   name: 'people'
@@ -83,9 +70,30 @@ defineOptions({
 
 const echarts = inject('echarts');
 
-const value=new Date()
+const dateValue = ref(new Date())
+const user = ref({
+  name: ""
+})
 
-const tableData=ref([{
+const isLogin = () => {
+  userInfo.baseInfo = JSON.parse(localStorage.getItem("User_Info"))
+  if (!isEmpty(userInfo.baseInfo)) {
+    user.name = userInfo.baseInfo.user_name
+    request.post("/user/querymsssage", user).then(res => {
+      user.value = res.data
+      console.log(user.value)
+    }).catch(error => {
+      message(error, "error")
+    })
+    return true
+  } else {
+    user.value.name = "游客"
+    user.value.description = "暂无描述"
+    return false
+  }
+}
+
+const tableData = ref([{
   date: '2016-05-03',
   name: '王小虎',
   address: '上海市普陀区金沙江路 1518 弄'
@@ -113,86 +121,46 @@ const tableData=ref([{
   date: '2016-05-06',
   name: '王小虎',
   address: '上海市普陀区金沙江路 1518 弄'
-}])
-
-const countData=ref([
-  {
-    name: '今日支付订单',
-    value: 1200,
-    icon: 'success',
-    color: '#2ec7c9'
-  },
-  {
-    name: '今日收藏订单',
-    value: 1200,
-    icon: 'star-on',
-    color: '#ffb980'
-  },
-  {
-    name: '今日取消订单',
-    value: 1200,
-    icon: 's-goods',
-    color: '#5ab1ef'
-  },
-  {
-    name: '今日退款订单',
-    value: 1200,
-    icon: 'success',
-    color: '#2ec7c9'
-  },
-  {
-    name: '本月支付订单',
-    value: 1200,
-    icon: 'star-on',
-    color: '#ffb980'
-  },
-  {
-    name: '本月退款订单',
-    value: 1200,
-    icon: 's-goods',
-    color: '#5ab1ef'
-  }
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}, {
+  date: '2016-05-06',
+  name: '王小虎',
+  address: '上海市普陀区金沙江路 1518 弄'
+}
 ])
 
-
-//柱状图
-const initBarEcharts=()=>{
-  let dom = document.getElementById('barEcharts');
-  const myChart = echarts.init(dom);
-  let option = {
-    title: {
-      text: '销售表'
-    },
-    tooltip: {},
-    legend: {
-      data: ['今日销量','昨日销量']
-    },
-    xAxis: {
-      data: ['华为', 'vivo', 'oppo', 'ipone', '小米', '三星']
-    },
-    yAxis: {},
-    series: [
-      {
-        name: '今日销量',
-        type: 'bar',
-        data: [5, 20, 36, 10, 10, 20]
-      },
-      {
-        name: '昨日销量',
-        type: 'bar',
-        data: [10, 18, 34, 8, 12, 21]
-      }
-    ]
-  }
-  // 使用刚指定的配置项和数据显示图表。
-  myChart.setOption(option);
-}
-
 //饼图
-const initPieEcharts=()=>{
+const initPieEcharts = () => {
   let dom = document.getElementById('pieEcharts');
   const myChart = echarts.init(dom);
-  let option= {
+  let option = {
     tooltip: {
       trigger: 'item'
     },
@@ -214,11 +182,11 @@ const initPieEcharts=()=>{
           show: false,
         },
         data: [
-          { value: 1048, name: '成交订单量' },
-          { value: 735, name: '退款订单量' },
-          { value: 580, name: '浏览量' },
-          { value: 484, name: '加购量' },
-          { value: 300, name: '预购量' }
+          {value: 1048, name: '成交订单量'},
+          {value: 735, name: '退款订单量'},
+          {value: 580, name: '浏览量'},
+          {value: 484, name: '加购量'},
+          {value: 300, name: '预购量'}
         ]
       }
     ]
@@ -227,67 +195,110 @@ const initPieEcharts=()=>{
 }
 
 
-onMounted(()=>{
+onMounted(() => {
+  isLogin()
   initPieEcharts()
-  initBarEcharts()
 })
 </script>
 
 <style scoped>
-.userCard{
+.background {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+.background-left {
+  height: 99%;
+  width: 35%;
+  float: left;
+  margin-right: 1%;
+}
+
+.background-right {
+  height: 99%;
+  width: 73%;
+  float: right;
+}
+
+.user-card {
+  height: 25%;
+}
+
+.user-div {
+  height: 100%;
+  display: flex;
+  border-bottom: 2px solid #DCDFE6;
+  border-radius: 4px;
+}
+
+.important-font {
+  font-weight: 900;
+  font-size: 25px;
+}
+
+.secondary-font {
+  color: #909399;
+}
+
+.userAvatar {
+  width: 30%;
+  height: 90%;
+  border-radius: 50%;
+}
+
+.userInfo {
+  width: 70%;
+  padding: 6% 0 0 6%;
+  overflow: hidden;
+}
+
+.table-card {
+  margin-top: 3%;
+  height: 72%;
+}
+
+.card-table {
+  margin-top: 20px;
+  height: 90%;
+}
+
+.background-rightTop {
+  width: 100%;
+  height: 30%;
+}
+
+.background-rightBottom {
+  width: 100%;
+  margin-top: 1%;
+  height: 68%;
+}
+
+
+.userCard {
   height: 180px;
   display: flex;
   border-bottom: 2px solid #DCDFE6;
   border-radius: 2px;
 }
-.userInfo{
-  width: auto;
-  padding: 6% 0 0 6%;
-}
-.important-font{
-  font-weight: 900;
-  font-size: 25px;
-}
-.secondary-font{
-  color: #909399;
-}
-.login-info{
-  height: 40px;
-  text-align: left;
-  color: #909399;
-}
-.tableInfo{
+
+
+.tableInfo {
   margin: 20px 0 0 0;
 }
-.OrderCard{
-  margin: 0 0 30px 30px;
-  border: #DCDFE6 1px solid;
-  border-radius: 10px;
-  height: 100px;
-  .icon{
-    width: 30%;
-    height:100%;
-    line-height: 120px;
-    font-size: 30px;
-    color:#fff
-  }
-  .OrderCard-item{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    width: 300px;
-  }
-}
 
-.num{
+.num {
   display: flex;
   flex-wrap: wrap;
 }
-.graph{
+
+.graph {
   margin: 15px 0 0 0;
 }
-.calendar{
-  height: 265px ;
+
+.calendar {
+  height: 200px;
+  width: 100%;
 }
+
 </style>

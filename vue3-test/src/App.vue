@@ -20,8 +20,8 @@
 
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import {computed, onMounted, ref, watchEffect} from "vue";
-import zhCn from '@/utils/language/zh-cn.js'
-import en from '@/utils/language/en.js'
+import zhCn from '@/plugins/language/zh-cn.js'
+import en from '@/plugins/language/en.js'
 
 const language = ref('zh-cn')
 const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))

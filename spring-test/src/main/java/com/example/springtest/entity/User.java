@@ -17,5 +17,5 @@ public class User
     private String email;
     private String description;
     private String status;
-    List<String> rolesid;
+    private List<String> rolesid;
 }

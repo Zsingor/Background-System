@@ -25,8 +25,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private RoutesMapper routesMapper;
     @Autowired
-    private RolesMapper rolesMapper;
-    @Autowired
     private RolesRoutesMapper rolesRoutesMapper;
     @Autowired
     private UserRolesMapper userRolesMapper;
@@ -75,6 +73,11 @@ public class UserServiceImpl implements UserService {
             response.put("token", token);
         }
         return response;
+    }
+
+    @Override
+    public User userQueryMsssage(User user) {
+        return userMapper.userPrimaryquery(user);
     }
 
     // 用户注册

@@ -22,7 +22,7 @@
         <el-icon style="font-size: 20px;" title="清空缓存"><Brush /></el-icon>
       </div>
       <div class="user-info">
-        <el-dropdown v-if="hasUsername()" trigger="click">
+        <el-dropdown v-if="isLogin()" trigger="click">
           <div class="user-info-text el-dropdown-link">
             我的
             <el-icon><ArrowDown /></el-icon>
@@ -75,7 +75,7 @@ const refreshpage=()=>{
   reloadPage()
 }
 
-const hasUsername = () => {
+const isLogin = () => {
   userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))
   if(!isEmpty(userInfo.baseInfo))
   {

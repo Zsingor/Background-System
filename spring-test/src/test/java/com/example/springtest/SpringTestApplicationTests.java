@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.File;
 import java.util.*;
 
 @SpringBootTest
@@ -53,8 +54,8 @@ class SpringTestApplicationTests {
 
     @Test
     void test1() {
-        List<String> rou=new ArrayList<>(Arrays.asList("1", "2", "55"));
-        System.out.println(routesMapper.queryAuthority(rou));
+        String ROOT_PATH=System.getProperty("user.dir")+ File.separator+"files";
+        System.out.println(ROOT_PATH);
     }
 
 }

@@ -41,7 +41,18 @@ public class UserController {
             }
             return Result.success(data);
         }catch (Exception e){
-            System.out.println(e);
+            return Result.error("查询失败");
+        }
+    }
+
+    //查询用户的基本信息，用于首页信息显示
+    @PostMapping("/querymsssage")
+    public Result userQueryMsssage(@RequestBody User user)
+    {
+        try {
+            User data=userService.userQueryMsssage(user);
+            return Result.success(data);
+        }catch (Exception e){
             return Result.error("查询失败");
         }
     }
