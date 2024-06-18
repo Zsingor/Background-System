@@ -112,47 +112,47 @@ export function createMenus(userRouteJson) {
 export function createLayoutRouteMenu(layoutRoute) {
     const routeMenus = [];
     layoutRoute.children.forEach(route => {
-        const routeMenu = {
-            title: route.meta.title,
-            path: "/"+route.path,
-            children: []
-        };
-        if (!isEmpty(route.icon)) {
-            routeMenu.icon = route.icon;
+        if (verifyRoute(route)) {
+            const routeMenu = {
+                title: route.meta.title,
+                path: "/"+route.path,
+                children: []
+            };
+            if (!isEmpty(route.icon)) {
+                routeMenu.icon = route.icon;
+            }
+            if (!isEmpty(route.children)) {
+                route.children.forEach(child => {
+                    const childMenu = {
+                        title: child.meta.title,
+                        path: routeMenu.path+'/'+ child.path,
+                        children: []
+                    };
+                    if (!isEmpty(child.icon)) {
+                        childMenu.icon = child.icon;
+                    }
+                    routeMenu.children.push(childMenu);
+                });
+            }
+            routeMenus.push(routeMenu);
         }
-        if (!isEmpty(route.children)) {
-            route.children.forEach(child => {
-                const childMenu = {
-                    title: child.meta.title,
-                    path: routeMenu.path+'/'+ child.path,
-                    children: []
-                };
-                if (!isEmpty(child.icon)) {
-                    childMenu.icon = child.icon;
-                }
-                routeMenu.children.push(childMenu);
-            });
-        }
-        routeMenus.push(routeMenu);
-        // if (verifyRouteRole(route) && verifyRoute(route)) {
-        //
-        // }
     });
     return routeMenus;
 }
 
-// export function verifyRoute(route) {
-//     if (route.meta.hidden !== undefined && route.meta.hidden === true) {
-//         return false;
-//     } else {
-//         if (route.meta.title === undefined && route.meta.title === "") {
-//             console.error("路由没有设置title属性，无法创建菜单");
-//             return false;
-//         } else {
-//             return true;
-//         }
-//     }
-// }
+export function verifyRoute(route) {
+    if (route.meta.hidden !== undefined && route.meta.hidden === true) {
+        return false;
+    } else {
+        if (route.meta.title === undefined && route.meta.title === "") {
+            console.error("路由没有设置title属性，无法创建菜单");
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
 //
 // /**
 //  * 验证用户角色是否匹配路由

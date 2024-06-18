@@ -70,6 +70,7 @@ public class UserServiceImpl implements UserService {
 
             response.put("menuList", menuList);
             response.put("user_name", user.getName());
+            response.put("user_id", user.getId());
             response.put("token", token);
         }
         return response;

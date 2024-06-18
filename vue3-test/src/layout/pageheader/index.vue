@@ -18,8 +18,8 @@
       <div class="operate-button" @click="controls.showGlobalSetting=true">
         <el-icon style="font-size: 20px;" title="设置"><Setting /></el-icon>
       </div>
-      <div class="operate-button" >
-        <el-icon style="font-size: 20px;" title="清空缓存"><Brush /></el-icon>
+      <div class="operate-button" @click="skipMessage">
+        <el-icon style="font-size: 20px;" title="我的信息"><Message /></el-icon>
       </div>
       <div class="user-info">
         <el-dropdown v-if="isLogin()" trigger="click">
@@ -69,12 +69,20 @@ const controls = reactive({
   showGlobalSetting: false,
 });
 
+
+//刷新界面
 const refreshpage=()=>{
   userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))
   createRouteAndMenu(userInfo.baseInfo.menuList)
   reloadPage()
 }
 
+//跳转至站内信
+const skipMessage=()=>{
+  router.push("/admin/message")
+}
+
+//判断是否登录
 const isLogin = () => {
   userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))
   if(!isEmpty(userInfo.baseInfo))

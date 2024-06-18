@@ -1,4 +1,5 @@
 import home from "@/views/home/index.vue";
+import message from "@/views/message/index.vue"
 
 
 const layoutRoutes = {
@@ -17,6 +18,17 @@ const layoutRoutes = {
             icon: "House",
             component: home
         },
+        {
+            path: 'message',
+            title:"我的信息",
+            meta:{
+                title:"我的信息",
+                hidden:true
+            },
+            name: 'message',
+            icon: "Message",
+            component: message
+        }
     ]
 };
 
