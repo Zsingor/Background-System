@@ -57,7 +57,7 @@
 
 <script setup>
 
-import {inject, onMounted, ref} from "vue";
+import {inject, onMounted, reactive, ref} from "vue";
 import {userInfo} from "@/layout/user.js";
 import {isEmpty} from "@/utils/commons.js";
 import request from "@/request/index.js";
@@ -70,6 +70,8 @@ defineOptions({
 
 var myChart
 
+const loginFlag=ref(false)
+
 const echarts = inject('echarts');
 
 const dateValue = ref(new Date())
@@ -77,21 +79,20 @@ const user = ref({
   name: ""
 })
 
-const isLogin = () => {
-  userInfo.baseInfo = JSON.parse(localStorage.getItem("User_Info"))
-  if (!isEmpty(userInfo.baseInfo)) {
-    user.name = userInfo.baseInfo.user_name
-    request.post("/user/querymsssage", user).then(res => {
+const initUser=()=>{
+  if(loginFlag.value)
+  {
+    user.value.name = userInfo.baseInfo.user_name
+    request.post("/user/querymsssage", user.value).then(res => {
       user.value = res.data
-      console.log(user.value)
     }).catch(error => {
       message(error, "error")
     })
-    return true
-  } else {
+  }
+  else
+  {
     user.value.name = "游客"
     user.value.description = "暂无描述"
-    return false
   }
 }
 
@@ -198,7 +199,10 @@ const initPieEcharts = () => {
 
 
 onMounted(() => {
-  isLogin()
+  userInfo.baseInfo = JSON.parse(localStorage.getItem("User_Info"))
+  loginFlag.value = !isEmpty(userInfo.baseInfo);
+
+  initUser()
   initPieEcharts()
 
   // 在事件触发时，调用图表实例的 resize 方法

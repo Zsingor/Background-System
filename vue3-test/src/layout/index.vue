@@ -10,9 +10,11 @@
     <div class="mainview" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}">
       <router-view v-slot="{ Component }">
         <transition name="route-fade" mode="out-in" :key="reloadCurrentRoute">
-          <keep-alive :include="includeRoutes">
-            <component ref="childRouteRef" :is="Component" />
-          </keep-alive>
+          <Suspense>
+            <keep-alive :include="includeRoutes">
+              <component ref="childRouteRef" :is="Component" />
+            </keep-alive>
+          </Suspense>
         </transition>
       </router-view>
     </div>
