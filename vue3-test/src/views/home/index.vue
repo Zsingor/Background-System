@@ -68,6 +68,8 @@ defineOptions({
   name: 'people'
 })
 
+var myChart
+
 const echarts = inject('echarts');
 
 const dateValue = ref(new Date())
@@ -159,7 +161,7 @@ const tableData = ref([{
 //饼图
 const initPieEcharts = () => {
   let dom = document.getElementById('pieEcharts');
-  const myChart = echarts.init(dom);
+  myChart = echarts.init(dom);
   let option = {
     tooltip: {
       trigger: 'item'
@@ -198,7 +200,14 @@ const initPieEcharts = () => {
 onMounted(() => {
   isLogin()
   initPieEcharts()
+
+  // 在事件触发时，调用图表实例的 resize 方法
+  window.addEventListener("resize", function () {
+    myChart.resize();
+  });
 })
+
+
 </script>
 
 <style scoped>

@@ -42,6 +42,7 @@ import request from "@/request/index.js";
 import {reactive, ref} from "vue";
 import {userInfo} from "@/layout/user.js";
 import {message} from "@/utils/message.js";
+import websocket from "@/utils/WebSocket.js";
 
 const router = useRouter()
 const loginRef = ref(null);
@@ -72,6 +73,7 @@ const login=()=>{
           localStorage.setItem("User_Info", JSON.stringify(res.data)); //存储用户数据
           persistentConfig.routeTags = [];
           createRouteAndMenu(userInfo.baseInfo.menuList)
+          websocket.Init(userInfo.baseInfo.user_name)
           message("登录成功")
           router.push("/");
         }

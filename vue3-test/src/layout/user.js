@@ -2,6 +2,7 @@ import {reactive, ref} from "vue";
 import {includeRoutes, persistentConfig} from "@/layout/layout.js";
 import router from "@/router/index.js";
 import _ from "lodash";
+import websocket from "@/utils/WebSocket.js";
 
 export const routeMenus = ref([]);            // 路由菜单集合
 
@@ -23,6 +24,7 @@ export const logout=()=>{
     localStorage.removeItem("Global_Config")
     persistentConfig.routeTags = [];
     skipLogin()
+    websocket.Close()
 }
 
 //跳转登录页
