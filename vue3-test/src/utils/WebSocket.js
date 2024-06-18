@@ -48,7 +48,6 @@ const websocket = {
             if (e.data === 'ok') {
                 return
             }
-
             // 调用回调函数处理接收到的消息
             if (websocket.onMessageCallback) {
                 websocket.onMessageCallback(e.data)

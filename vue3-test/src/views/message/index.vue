@@ -33,21 +33,21 @@
           </el-scrollbar>
         </div>
         <div class="background-rightBottom">
-          <el-input id="input-text" class="input-text" type="textarea" resize="none" v-model="userMessage.message"></el-input>
-          <div class="input-right">
-            <el-select
-                v-model="userMessage.to"
-                placeholder="Select"
-                style="width: 240px"
-            >
-              <el-option
-                  v-for="item in userList"
-                  :key="item.id"
-                  :label="item.name"
-                  :value="item.id"
-              />
-            </el-select>
-            <el-button>发送</el-button>
+          <el-select
+              size="large"
+              v-model="userMessage.to"
+              placeholder="请选择接收人"
+              style="width: 15%">
+            <el-option
+                v-for="item in userList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+            />
+          </el-select>
+          <input class="inputs" v-model="userMessage.message" @keyup.enter="sendText" />
+          <div class="send boxinput" @click="sendText">
+            <el-icon style="width: 100%;font-size: 25px"><TopRight /></el-icon>
           </div>
         </div>
       </div>
@@ -57,8 +57,12 @@
 </template>
 
 <script setup>
-import {ref} from "vue";
+import {onMounted, ref} from "vue";
 import {handlePaste} from "@/utils/clipboard.js";
+import {message} from "@/utils/message.js";
+import {sendMessageAll, sendMessageToService} from "@/request/api/websocket.js";
+import {isEmpty} from "@/utils/commons.js";
+import websocket from "@/utils/WebSocket.js";
 
 const listArr=ref(["全体信息","个人信息"])
 let activeVar=ref(0)
@@ -73,12 +77,12 @@ let userMessage=ref({
 
 let userList=ref([
   {
-    id:1,
-    name:"张三",
+    id:"root",
+    name:"root",
   },
   {
-    id:2,
-    name:"李四",
+    id:"test",
+    name:"test",
   },
 ])
 
@@ -105,6 +109,39 @@ let msgList=ref([
 const activeFun=(item,index)=>{
   activeVar.value=index
 }
+
+const getMessageCallback = (message) => {
+  let obj={
+    id:1,
+    from:"张三",
+    to:"李四",
+    message:message,
+    isall:"0",
+    creatdate:"2023-05-06 12:00:00",
+  }
+  msgList.value.push(obj)
+}
+
+// 发送消息
+const sendText = async () => {
+  const username = userMessage.value.to
+  const message = userMessage.value.message
+  userMessage.value.message=""
+
+  if(isEmpty(username))
+  {
+    await sendMessageAll(message)
+  }
+  else
+  {
+    // 调用发送消息的接口
+    await sendMessageToService({ username, message })
+  }
+}
+
+onMounted(()=>{
+  websocket.setMessageCallback(getMessageCallback)
+})
 </script>
 
 <style scoped>
@@ -192,7 +229,7 @@ const activeFun=(item,index)=>{
 
 .background-rightTop{
   width: 100%;
-  height: 75%;
+  height: 85%;
   padding-top: 1%;
 }
 
@@ -217,7 +254,7 @@ const activeFun=(item,index)=>{
 
 .background-rightBottom{
   width: 100%;
-  height: 25%;
+  height: 15%;
   background-color: white;
   border-radius: 10px;
   overflow: hidden;
@@ -225,20 +262,49 @@ const activeFun=(item,index)=>{
   justify-content: center;
   align-items: center;
 }
+/*
+.input_select :deep(.el-input__inner)
+{
+  height: 200px;
+}*/
 
-.input-right{
-  width: 20%;
-  height: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  padding-left: 10px;
+.inputs {
+  width: 70%;
+  height: 50px;
+  background-color: #FFFFFFFF;
+  border-radius: 15px;
+  border: 2px solid rgb(34, 135, 225);
+  padding: 10px;
+  box-sizing: border-box;
+  transition: 0.2s;
+  font-size: 20px;
+  color: #151515;
+  font-weight: 100;
+  margin: 0 20px;
+  &:focus {
+    outline: none;
+  }
 }
 
-.background-rightBottom :deep(#input-text)
-{
-  width: 100%;
-  height: 150px;
-  font-size:18px;
+.boxinput {
+  width: 50px;
+  height: 50px;
+  background-color: #505567;
+  border-radius: 15px;
+  border: 1px solid #505567;
+  position: relative;
+  cursor: pointer;
+}
+
+.send {
+  background-color: #D1DEF0;
+  border: 0;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  box-shadow: 0px 0px 5px 0px #0A88F6;
+  &:hover {
+    box-shadow: 0px 0px 10px 0px #0A88F6;
+  }
 }
 </style>
