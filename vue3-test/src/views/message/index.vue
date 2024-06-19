@@ -6,9 +6,12 @@
           <p class="left-title">我的信息</p>
         </div>
         <div class="background-leftBottom">
-          <div class="left-item" v-for="(item,index) in listArr" :key="index"
+          <div class="left-item" v-for="(item,index) in userList" :key="index"
                :class="{'activeCss':activeVar===index }" @click="activeFun(item,index)">
-            <p class="left-message">{{item}}</p>
+            <div class="user-content">
+              <p class="user-title">{{item.name}}</p>
+              <p class="user-description">{{item.description}}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -17,16 +20,16 @@
           <el-scrollbar>
             <div v-for="(item,index) in msgList">
               <!-- 我方发的信息 -->
-              <div class="msg-item" v-if="item.from===userId">
+              <div class="msg-item" v-if="item.senderId===userId">
                 <div></div>
                 <!-- 文字内容 -->
                 <div class="msg-content">
-                  {{item.message}}
+                  {{item.content}}
                 </div>
               </div>
               <div class="msg-item" v-else>
                 <div class="msg-content">
-                  {{item.message}}
+                  {{item.content}}
                 </div>
               </div>
             </div>
@@ -45,7 +48,7 @@
                 :value="item.id"
             />
           </el-select>
-          <input class="inputs" v-model="userMessage.message" @keyup.enter="sendText" />
+          <input class="inputs" v-model="userMessage.content" @keyup.enter="sendText" />
           <div class="send boxinput" @click="sendText">
             <el-icon style="width: 100%;font-size: 25px"><TopRight /></el-icon>
           </div>
@@ -58,89 +61,79 @@
 
 <script setup>
 import {onMounted, ref} from "vue";
-import {handlePaste} from "@/utils/clipboard.js";
-import {message} from "@/utils/message.js";
-import {sendMessageAll, sendMessageToService} from "@/request/api/websocket.js";
+import {message, notification} from "@/utils/message.js";
+import {getAllUser, getMessage, sendMessageAll, sendMessageToService} from "@/request/api/websocket.js";
 import {isEmpty} from "@/utils/commons.js";
 import websocket from "@/utils/WebSocket.js";
+import {userInfo} from "@/layout/user.js";
+import {ElNotification} from "element-plus";
+import {persistentConfig} from "@/layout/layout.js";
 
-const listArr=ref(["全体信息","个人信息"])
-let activeVar=ref(0)
+let activeVar=ref(-1)
 
-let userId=ref("张三")
+let userId=userInfo.baseInfo.user_id
 let userMessage=ref({
-  from:"",
-  to:"",
-  message:""
+  senderId:userInfo.baseInfo.user_id,
+  receiverId:"",
+  content:""
 })
 
 
-let userList=ref([
-  {
-    id:"root",
-    name:"root",
-  },
-  {
-    id:"test",
-    name:"test",
-  },
-])
+let userList=ref([])
 
-let msgList=ref([
-  {
-    id:1,
-    from:"张三",
-    to:"李四",
-    message:"你好，李四，我是张三，很高兴认识你jabdgufabfh汇报给i圣彼得堡撕逼看比赛本刊表示的法国队克里夫第三笔！",
-    isall:"0",
-    creatdate:"2023-05-06 12:00:00",
-  },
-  {
-    id:1,
-    username:"张三",
-    from:"李四",
-    to:"张三",
-    message:"你好，李四，我是张三，很高兴认识你jabdgufabfh汇报给i圣彼得堡撕逼看比赛本刊表示的法国队克里夫第三笔！",
-    isall:"0",
-    creatdate:"2023-05-06 12:00:00",
-  },
-])
+let msgList=ref([])
 
-const activeFun=(item,index)=>{
-  activeVar.value=index
+const activeFun=async (item, index) => {
+  activeVar.value = index
+  userMessage.value.receiverId = item.id
+  const res2 = await getMessage(userMessage.value.senderId, userMessage.value.receiverId)
+  msgList.value = res2.data
 }
 
-const getMessageCallback = (message) => {
-  let obj={
-    id:1,
-    from:"张三",
-    to:"李四",
-    message:message,
-    isall:"0",
-    creatdate:"2023-05-06 12:00:00",
-  }
-  msgList.value.push(obj)
+const getMessageCallback = async (content) => {
+  //notification("您有新的消息", content, 0)
+  ElNotification({
+    title: "您有新的消息",
+    message: content,
+    duration:0,
+    position: persistentConfig.notiPosition,
+  })
+  const res2 = await getMessage(userMessage.value.senderId, userMessage.value.receiverId)
+  msgList.value = res2.data
 }
 
 // 发送消息
 const sendText = async () => {
-  const username = userMessage.value.to
-  const message = userMessage.value.message
-  userMessage.value.message=""
-
-  if(isEmpty(username))
+  let res
+  if(!isEmpty(userMessage.value.receiverId))
   {
-    await sendMessageAll(message)
+    console.log(userMessage.value)
+    // 调用发送消息的接口
+    res=await sendMessageToService(userMessage.value)
   }
   else
   {
-    // 调用发送消息的接口
-    await sendMessageToService({ username, message })
+    message("未选择接收者","error")
+    //res=await sendMessageAll(userMessage.value)
   }
+
+  if(res.code===1)
+  {
+    userMessage.value.content=""
+    const res2 = await getMessage(userMessage.value.senderId, userMessage.value.receiverId)
+    msgList.value = res2.data
+  }
+  else
+  {
+    message("消息发送失败","error")
+  }
+
 }
 
-onMounted(()=>{
+onMounted(async () => {
   websocket.setMessageCallback(getMessageCallback)
+  const res = await getAllUser()
+  userList.value=res.data
 })
 </script>
 
@@ -193,10 +186,10 @@ onMounted(()=>{
 }
 
 .left-item{
+  padding-left: 10%;
   width: 100%;
   height: 10%;
   display: flex;
-  justify-content: center;
   align-items: center;
 }
 
@@ -212,10 +205,22 @@ onMounted(()=>{
   background-color: #D1DEF0;
 }
 
-.left-message{
+.user-content{
+  width: 100%;
+  overflow: hidden;
+}
+
+.user-title{
+  width: 100%;
   font-size: 20px;
-  letter-spacing: 5px;
+  letter-spacing: 3px;
   color: #4C5D6E;
+}
+
+.user-description{
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #7e92a5;
 }
 
 .background-right {

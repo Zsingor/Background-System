@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor //无参构造
 @AllArgsConstructor //全参构造
 public class WebSocketMsg {
-    private String username;
+    private String userid;
     private Session session;
 }

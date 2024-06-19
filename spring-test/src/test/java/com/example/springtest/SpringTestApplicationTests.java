@@ -4,7 +4,9 @@ import com.auth0.jwt.exceptions.AlgorithmMismatchException;
 import com.auth0.jwt.exceptions.SignatureVerificationException;
 import com.auth0.jwt.exceptions.TokenExpiredException;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.example.springtest.entity.Message;
 import com.example.springtest.entity.User;
+import com.example.springtest.mapper.MessageMapper;
 import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.mapper.UserMapper;
 import com.example.springtest.service.RoutesService;
@@ -22,6 +24,9 @@ class SpringTestApplicationTests {
 
     @Autowired
     private RoutesMapper routesMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Test
     void contextLoads() {
@@ -54,8 +59,12 @@ class SpringTestApplicationTests {
 
     @Test
     void test1() {
-        String ROOT_PATH=System.getProperty("user.dir")+ File.separator+"files";
-        System.out.println(ROOT_PATH);
+        Message message=new Message();
+        message.setSenderId("123");
+        message.setContent("5555");
+        Date createtime=new Date(System.currentTimeMillis());
+        message.setCreateTime(createtime);
+        messageMapper.addMessage(message);
     }
 
 }

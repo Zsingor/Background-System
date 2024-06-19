@@ -69,12 +69,18 @@ public class UserServiceImpl implements UserService {
             String token= JwtUtils.generateJWT(claims);
 
             response.put("menuList", menuList);
-            response.put("user_name", user.getName());
-            response.put("user_id", user.getId());
+            response.put("user_name", user1.getName());
+            response.put("user_id", user1.getId());
             response.put("token", token);
         }
         return response;
     }
+
+    @Override
+    public List<User> queryMessageUser() {
+        return userMapper.queryMessageUser();
+    }
+
 
     @Override
     public User userQueryMsssage(User user) {
@@ -167,11 +173,13 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //查询用户的角色
     @Override
     public List<String> queryUserRoles(String userid) {
         return userRolesMapper.queryUserRoles(userid);
     }
 
+    //获得用户拥有的权限
     @Override
     public List<String> queryUserAuthority(String userid) {
         //拿到用户的所有角色信息

@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 @Slf4j
-@ServerEndpoint(value = "/webSocket/{username}")
+@ServerEndpoint(value = "/webSocket/{userid}")
 public class WebSocketUtil {
     /**
      * 登录连接数
@@ -27,15 +27,15 @@ public class WebSocketUtil {
     private static final Map<String, WebSocketMsg> userMap = new ConcurrentHashMap<>();
 
     @OnOpen
-    public void onOpen(@PathParam("username") String username, Session session, EndpointConfig config) {
+    public void onOpen(@PathParam("userid") String userid, Session session, EndpointConfig config) {
         WebSocketMsg webSocketMsg = new WebSocketMsg();
-        webSocketMsg.setUsername(username);
+        webSocketMsg.setUserid(userid);
         webSocketMsg.setSession(session);
-        boolean containsKey = userMap.containsKey(username);
+        boolean containsKey = userMap.containsKey(userid);
         if (!containsKey) {
             // 添加登录用户数量
             addLoginCount();
-            userMap.put(username, webSocketMsg);
+            userMap.put(userid, webSocketMsg);
         }
         System.out.println("WebSocket 连接已经建立。");
     }
@@ -47,11 +47,11 @@ public class WebSocketUtil {
     }
 
     @OnClose
-    public void onClose(@PathParam("username") String username, Session session, CloseReason closeReason) {
-        boolean containsKey = userMap.containsKey(username);
+    public void onClose(@PathParam("userid") String userid, Session session, CloseReason closeReason) {
+        boolean containsKey = userMap.containsKey(userid);
         if (containsKey) {
             // 删除map中用户
-            userMap.remove(username);
+            userMap.remove(userid);
             // 减少断开连接的用户
             reduceLoginCount();
         }
@@ -74,25 +74,25 @@ public class WebSocketUtil {
 
     /**
      * @Description: 发送指定用户信息
-     * @Param [ username：用户,message：信息]
+     * @Param [ username：用户,Message：信息]
      * @Return: void
      **/
-    public void sendMessageTo(String username, String message) throws IOException {
+    public void sendMessageTo(String userid, String content) throws IOException {
         for (WebSocketMsg item : userMap.values()) {
-            if (item.getUsername().equals(username)) {
-                item.getSession().getAsyncRemote().sendText(message);
+            if (item.getUserid().equals(userid)) {
+                item.getSession().getAsyncRemote().sendText(content);
             }
         }
     }
 
     /**
      * @Description: 发给所有人
-     * @Param [message：信息]
+     * @Param [Message：信息]
      * @Return: void
      **/
-    public void sendMessageAll(String message) throws IOException {
+    public void sendMessageAll(String content) throws IOException {
         for (WebSocketMsg item : userMap.values()) {
-            item.getSession().getAsyncRemote().sendText(message);
+            item.getSession().getAsyncRemote().sendText(content);
         }
     }
 

@@ -65,6 +65,7 @@ export const persistentConfig = reactive({
     openKeepalive: true,          //是否开启缓存
     defaultPageSize:25,           // 表格默认分页大小
     drawerPosition:"rtl",         //抽屉的位置
+    notiPosition:"top-right",     //通知的位置
     scroll: {                     // 全局滚动条
         openCustom: true,           // 开启自定义
         size: "small"               // 尺寸

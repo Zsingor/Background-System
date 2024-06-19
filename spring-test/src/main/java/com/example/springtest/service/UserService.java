@@ -10,6 +10,8 @@ public interface UserService {
 
     JSONObject userlogin(User user);
 
+    List<User> queryMessageUser();
+
     User userQueryMsssage(User user);
 
     int useradd(User user);

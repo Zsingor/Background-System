@@ -73,7 +73,7 @@ const login=()=>{
           localStorage.setItem("User_Info", JSON.stringify(res.data)); //存储用户数据
           persistentConfig.routeTags = [];
           createRouteAndMenu(userInfo.baseInfo.menuList)
-          websocket.Init(userInfo.baseInfo.user_name)
+          websocket.Init(userInfo.baseInfo.user_id)
           message("登录成功")
           router.push("/");
         }

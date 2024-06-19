@@ -15,6 +15,9 @@ public interface UserMapper {
     //查询用户信息
     List<User> userquery(User user);
 
+    @Select("select id,name,description from test.user")
+    List<User> queryMessageUser();
+
 
     //根据对应的主键查询用户
     @Select("select * from test.user where name=#{name}")

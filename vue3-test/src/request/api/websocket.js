@@ -1,21 +1,26 @@
 // 获取用户信息
 import request from "@/request/index.js";
 
+//获取在线的用户列表
 export const getUserService = () => request.get('/webSocket/getUser')
 
-// 发送指定消息
-export const sendMessageToService = ({ username, message }) => {
+//获取所有的用户信息
+export const getAllUser=()=> request.get('/webSocket/getAllUser')
+
+export const getMessage=(senderId,receiverId)=> {
     const params = {
-        username,
-        message
+        senderId,
+        receiverId
     }
-    return request.get('/webSocket/sendMessageTo', { params })
+    return request.get('/message/getMessage',{params})
+}
+
+// 发送指定消息
+export const sendMessageToService = (userMessage) => {
+    return request.post('/webSocket/sendMessageTo', userMessage )
 }
 
 // 发送全部消息
-export const sendMessageAll = (message) => {
-    const params = {
-        message
-    }
-    return request.get('/webSocket/sendMessageAll', { params })
+export const sendMessageAll = (userMessage) => {
+    return request.post('/webSocket/sendMessageAll',  userMessage)
 }

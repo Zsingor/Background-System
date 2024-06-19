@@ -1,5 +1,6 @@
 //消息工具类
-import {ElMessage} from "element-plus";
+import {ElMessage, ElNotification} from "element-plus";
+import {persistentConfig} from "@/layout/layout.js";
 
 
 /**
@@ -14,6 +15,16 @@ export function message(text, type) {
         duration: 2000,
         showClose: true
     });
+}
+
+export function notification(title,content,duration, type){
+    ElNotification({
+        title: title,
+        message: content || null,
+        duration:duration || 1,
+        position: persistentConfig.notiPosition,
+        type:type || null
+    })
 }
 
 const showMessage = Symbol('showMessage')

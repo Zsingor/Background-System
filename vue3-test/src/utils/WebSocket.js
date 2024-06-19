@@ -17,7 +17,7 @@ let isReconnecting = false
 // WebSocket对象
 const websocket = {
     // WebSocket建立连接
-    Init(username) {
+    Init(userid) {
         // 判断浏览器是否支持WebSocket
         if (!('WebSocket' in window)) {
             onceMessage.error("您的浏览器不支持 WebSocket")
@@ -25,7 +25,7 @@ const websocket = {
         }
 
         // 创建WebSocket实例
-        ws = new WebSocket(url + username)
+        ws = new WebSocket(url + userid)
 
         // 监听WebSocket连接
         ws.onopen = () => {
@@ -43,6 +43,7 @@ const websocket = {
 
         // 监听WebSocket接收消息
         ws.onmessage = (e) => {
+            console.log(e)
             console.log('WebSocket接收后端消息:' + e.data)
             // 心跳消息不做处理
             if (e.data === 'ok') {
@@ -97,13 +98,13 @@ window.onbeforeunload = function () {
 if (performance.getEntriesByType('navigation')[0].type === 'reload') {
     if(!isEmpty(localStorage.getItem("User_Info")))
     {
-        const username=JSON.parse(localStorage.getItem("User_Info")).user_name
+        const userid=JSON.parse(localStorage.getItem("User_Info")).user_id
         // 延迟一定时间再执行 WebSocket 初始化，确保页面完全加载后再进行连接
         setTimeout(() => {
             console.log('WebSocket执行刷新后重连...')
             // 刷新后重连
             // 获取username（假设为测试username写死，现在是动态获取）
-            websocket.Init(username)
+            websocket.Init(userid)
         }, 200) // 适当调整延迟时间
     }
 }
@@ -119,8 +120,8 @@ function reconnect() {
     reconnectTimer && clearTimeout(reconnectTimer)
     reconnectTimer = setTimeout(function () {
         console.log('WebSocket执行断线重连...')
-        const username=JSON.parse(localStorage.getItem("User_Info")).user_name
-        websocket.Init(username)
+        const userid=JSON.parse(localStorage.getItem("User_Info")).user_id
+        websocket.Init(userid)
         isReconnecting = false
     }, 4000)
 }
