@@ -6,48 +6,43 @@
           <p class="left-title">我的信息</p>
         </div>
         <div class="background-leftBottom">
-          <div class="left-item" v-for="(item,index) in userList" :key="index"
-               :class="{'activeCss':activeVar===index }" @click="activeFun(item,index)">
-            <div class="user-content">
-              <p class="user-title">{{item.name}}</p>
-              <p class="user-description">{{item.description}}</p>
+          <el-scrollbar>
+            <div class="left-item" v-for="(item,index) in userList" :key="index"
+                 :class="{'activeCss':activeVar===index }" @click="activeFun(index)">
+              <div class="user-content">
+                <p class="user-title">{{item.name}}</p>
+                <p class="user-description">{{item.description}}</p>
+              </div>
             </div>
-          </div>
+          </el-scrollbar>
         </div>
       </div>
       <div class="background-right">
         <div class="background-rightTop">
-          <el-scrollbar>
-            <div v-for="(item,index) in msgList">
-              <!-- 我方发的信息 -->
-              <div class="msg-item" v-if="item.senderId===userId">
-                <div></div>
-                <!-- 文字内容 -->
-                <div class="msg-content">
-                  {{item.content}}
+          {{receiverName}}
+        </div>
+        <div class="background-rightMid">
+          <el-scrollbar ref="scrollbarRef" class="scroller">
+            <div ref="innerRef">
+              <div v-for="(item,index) in msgList">
+                <!-- 我方发的信息 -->
+                <div class="msg-item" v-if="item.senderId===userId">
+                  <div></div>
+                  <!-- 文字内容 -->
+                  <div class="msg-content">
+                    {{item.content}}
+                  </div>
                 </div>
-              </div>
-              <div class="msg-item" v-else>
-                <div class="msg-content">
-                  {{item.content}}
+                <div class="msg-item" v-else>
+                  <div class="msg-content">
+                    {{item.content}}
+                  </div>
                 </div>
               </div>
             </div>
           </el-scrollbar>
         </div>
         <div class="background-rightBottom">
-          <el-select
-              size="large"
-              v-model="userMessage.to"
-              placeholder="请选择接收人"
-              style="width: 15%">
-            <el-option
-                v-for="item in userList"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-            />
-          </el-select>
           <input class="inputs" v-model="userMessage.content" @keyup.enter="sendText" />
           <div class="send boxinput" @click="sendText">
             <el-icon style="width: 100%;font-size: 25px"><TopRight /></el-icon>
@@ -60,46 +55,58 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {nextTick, onMounted, ref, watch} from "vue";
 import {message, notification} from "@/utils/message.js";
 import {getAllUser, getMessage, sendMessageAll, sendMessageToService} from "@/request/api/websocket.js";
 import {isEmpty} from "@/utils/commons.js";
 import websocket from "@/utils/WebSocket.js";
 import {userInfo} from "@/layout/user.js";
-import {ElNotification} from "element-plus";
-import {persistentConfig} from "@/layout/layout.js";
+import {useRoute} from "vue-router";
+import _ from "lodash"
+
+// defineOptions({
+//   name: 'message'
+// })
+
+const route=useRoute()
+
+const scrollbarRef = ref() // 滚动条实例
+const innerRef = ref() // 内容实例
 
 let activeVar=ref(-1)
-
 let userId=userInfo.baseInfo.user_id
+let receiverName=ref("")
 let userMessage=ref({
   senderId:userInfo.baseInfo.user_id,
+  senderName:userInfo.baseInfo.user_name,
   receiverId:"",
   content:""
 })
 
-
 let userList=ref([])
-
 let msgList=ref([])
 
-const activeFun=async (item, index) => {
-  activeVar.value = index
-  userMessage.value.receiverId = item.id
-  const res2 = await getMessage(userMessage.value.senderId, userMessage.value.receiverId)
-  msgList.value = res2.data
+//滚动条滑动到最底部
+const scrollerToBottom=()=>{
+  nextTick(() => {
+    scrollbarRef.value.setScrollTop(innerRef.value.clientHeight)
+  })
 }
 
-const getMessageCallback = async (content) => {
-  //notification("您有新的消息", content, 0)
-  ElNotification({
-    title: "您有新的消息",
-    message: content,
-    duration:0,
-    position: persistentConfig.notiPosition,
-  })
+const activeFun=async (index) => {
+  activeVar.value = index
+  receiverName.value=userList.value[index].name
+  userMessage.value.receiverId = userList.value[index].id
   const res2 = await getMessage(userMessage.value.senderId, userMessage.value.receiverId)
   msgList.value = res2.data
+  scrollerToBottom()
+}
+
+const getMessageCallback = async (message) => {
+  if(activeVar.value!==-1)
+  {
+    msgList.value.push(message)
+  }
 }
 
 // 发送消息
@@ -107,7 +114,6 @@ const sendText = async () => {
   let res
   if(!isEmpty(userMessage.value.receiverId))
   {
-    console.log(userMessage.value)
     // 调用发送消息的接口
     res=await sendMessageToService(userMessage.value)
   }
@@ -119,9 +125,10 @@ const sendText = async () => {
 
   if(res.code===1)
   {
+    let sendMessage=_.cloneDeep(userMessage.value)
+    msgList.value.push(sendMessage)
     userMessage.value.content=""
-    const res2 = await getMessage(userMessage.value.senderId, userMessage.value.receiverId)
-    msgList.value = res2.data
+    scrollerToBottom()
   }
   else
   {
@@ -134,6 +141,12 @@ onMounted(async () => {
   websocket.setMessageCallback(getMessageCallback)
   const res = await getAllUser()
   userList.value=res.data
+  let temp=route.query
+  if(!isEmpty(temp))
+  {
+    const index = userList.value.findIndex(user => user.id === temp.senderId);
+    await activeFun(index)
+  }
 })
 </script>
 
@@ -187,10 +200,11 @@ onMounted(async () => {
 
 .left-item{
   padding-left: 10%;
-  width: 100%;
-  height: 10%;
+  width: 97%;
+  height: 80px;
   display: flex;
   align-items: center;
+  border-bottom: 2px solid #e1e4ea;
 }
 
 .left-item{
@@ -229,13 +243,27 @@ onMounted(async () => {
   float: right;
   background-color: #F6F6F7;
   border-radius: 2%;
-  padding: 1%;
+  padding: 0 1% 1% 1%;
 }
 
 .background-rightTop{
   width: 100%;
-  height: 85%;
-  padding-top: 1%;
+  height: 8%;
+  border-bottom: 2px solid #DCDFE6;
+  margin-bottom: 1%;
+  display: flex;
+  align-items: center;
+  font-size: 25px;
+  letter-spacing: 2px;
+}
+
+.background-rightMid{
+  width: 100%;
+  height: 76%;
+}
+
+.scroller{
+  padding-right: 10px;
 }
 
 .msg-item{
@@ -258,7 +286,7 @@ onMounted(async () => {
 }
 
 .background-rightBottom{
-  width: 100%;
+  width: 99%;
   height: 15%;
   background-color: white;
   border-radius: 10px;
@@ -274,7 +302,7 @@ onMounted(async () => {
 }*/
 
 .inputs {
-  width: 70%;
+  width: 80%;
   height: 50px;
   background-color: #FFFFFFFF;
   border-radius: 15px;

@@ -1,6 +1,9 @@
 package com.example.springtest.config.websocket;
 
+import com.example.springtest.entity.Message;
 import com.example.springtest.entity.WebSocketMsg;
+import com.example.springtest.utils.ClassToString;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -74,13 +77,13 @@ public class WebSocketUtil {
 
     /**
      * @Description: 发送指定用户信息
-     * @Param [ username：用户,Message：信息]
+     * @Param [ userid：用户,message：信息]
      * @Return: void
      **/
-    public void sendMessageTo(String userid, String content) throws IOException {
+    public void sendMessageTo(String userid, Message message) throws IOException {
         for (WebSocketMsg item : userMap.values()) {
             if (item.getUserid().equals(userid)) {
-                item.getSession().getAsyncRemote().sendText(content);
+                item.getSession().getAsyncRemote().sendText(ClassToString.toString(message));
             }
         }
     }
@@ -90,9 +93,9 @@ public class WebSocketUtil {
      * @Param [Message：信息]
      * @Return: void
      **/
-    public void sendMessageAll(String content) throws IOException {
+    public void sendMessageAll(Message message) throws IOException {
         for (WebSocketMsg item : userMap.values()) {
-            item.getSession().getAsyncRemote().sendText(content);
+            item.getSession().getAsyncRemote().sendText(ClassToString.toString(message));
         }
     }
 

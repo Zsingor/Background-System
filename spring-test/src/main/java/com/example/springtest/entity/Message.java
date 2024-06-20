@@ -15,7 +15,7 @@ public class Message {
 
     @JsonProperty(value = "senderId")
     String senderId;
-
+    String senderName;
     String receiverId;
     String content;
     Date createTime;

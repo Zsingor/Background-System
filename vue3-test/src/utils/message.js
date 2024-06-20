@@ -19,7 +19,7 @@ export function message(text, type) {
 
 export function notification(title,content,duration, type){
     ElNotification({
-        title: title,
+        title: title || null,
         message: content || null,
         duration:duration || 1,
         position: persistentConfig.notiPosition,

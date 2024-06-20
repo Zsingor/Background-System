@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface MessageMapper {
 
-    @Insert("insert into test.message (sender_id,receiver_id, content,create_time) values (#{senderId},#{receiverId}, #{content},#{createTime})")
+    @Insert("insert into test.message (sender_id,sender_name,receiver_id, content,create_time) values (#{senderId},#{senderName},#{receiverId}, #{content},#{createTime})")
     void addMessage(Message message);
 
     @Select("SELECT * FROM test.message " +

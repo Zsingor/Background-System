@@ -55,7 +55,7 @@ public class WebSocketController {
     @PostMapping( "/sendMessageAll")
     public Result sendMessageAll(@RequestBody Message message) {
         try {
-            webSocketUtil.sendMessageAll(message.getContent());
+            webSocketUtil.sendMessageAll(message);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,7 +67,7 @@ public class WebSocketController {
     public Result sendMessageTo(@RequestBody Message message) {
         System.out.println(message);
         try {
-            webSocketUtil.sendMessageTo(message.getReceiverId(),message.getContent());
+            webSocketUtil.sendMessageTo(message.getReceiverId(),message);
             messageService.addMessage(message);
         } catch (IOException e) {
             e.printStackTrace();

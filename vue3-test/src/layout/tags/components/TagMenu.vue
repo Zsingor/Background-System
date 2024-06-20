@@ -2,9 +2,9 @@
 <template>
   <ul class="tag-menu" v-show="tagMenu.showMenu"
       :style="{left:tagMenu.menuLeft+'px',top:tagMenu.menuTop+'px'}">
+    <li class="tag-li" @click="reloadPage">刷新页面</li>
     <li class="tag-li" @click="closeTag(tagMenu.selectIndex,route.path)">关闭页面</li>
     <li class="tag-li" @click="closeOtherTag">关闭其他</li>
-    <li class="tag-li" @click="reloadPage">刷新页面</li>
   </ul>
 </template>
 

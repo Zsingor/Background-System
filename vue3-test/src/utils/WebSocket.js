@@ -1,9 +1,16 @@
 // 信息提示
 import {onceMessage} from "@/utils/message.js";
 import {isEmpty} from "@/utils/commons.js";
+import {ElNotification} from "element-plus";
+import {persistentConfig} from "@/layout/layout.js";
+import {useRouter} from "vue-router";
+import router from "@/router/index.js";
 
 // WebSocket地址
 const url = 'ws://127.0.0.1:7070/webSocket/'
+
+//路由实例
+// const router=useRouter()
 
 // WebSocket实例
 let ws
@@ -43,15 +50,26 @@ const websocket = {
 
         // 监听WebSocket接收消息
         ws.onmessage = (e) => {
-            console.log(e)
-            console.log('WebSocket接收后端消息:' + e.data)
+            let message=JSON.parse(e.data)
+            console.log('WebSocket接收后端消息:' + message)
+            ElNotification({
+                title: message.senderName,
+                message: message.content,
+                duration:0,
+                position: persistentConfig.notiPosition,
+                type: 'info',
+                onClick(){
+                    ElNotification.closeAll();
+                    router.push({path:'/admin/message', query:{senderId:message.senderId}})
+                }
+            })
             // 心跳消息不做处理
             if (e.data === 'ok') {
                 return
             }
             // 调用回调函数处理接收到的消息
             if (websocket.onMessageCallback) {
-                websocket.onMessageCallback(e.data)
+                websocket.onMessageCallback(message)
             }
         }
     },
