@@ -11,12 +11,12 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Message {
-    Integer id;
+    private Integer id;
 
     @JsonProperty(value = "senderId")
-    String senderId;
-    String senderName;
-    String receiverId;
-    String content;
-    Date createTime;
+    private String senderId;
+    private String senderName;
+    private String receiverId;
+    private String content;
+    private Date createTime;
 }

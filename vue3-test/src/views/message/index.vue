@@ -3,7 +3,24 @@
     <el-card class="card-background">
       <div class="background-left">
         <div class="background-leftTop">
-          <p class="left-title">我的信息</p>
+<!--          <p class="left-title">我的信息</p>-->
+          <el-select
+              v-model="selectUser"
+              filterable
+              remote
+              reserve-keyword
+              clearable
+              placeholder="搜索"
+              style="width: 70%"
+              @change="chooseUser"
+          >
+            <el-option
+                v-for="item in allList"
+                :key="item.id"
+                :label="item.name"
+                :value="item.id"
+            />
+          </el-select>
         </div>
         <div class="background-leftBottom">
           <el-scrollbar>
@@ -57,16 +74,22 @@
 <script setup>
 import {nextTick, onMounted, ref, watch} from "vue";
 import {message, notification} from "@/utils/message.js";
-import {getAllUser, getMessage, sendMessageAll, sendMessageToService} from "@/request/api/websocket.js";
+import {
+  getAllUser,
+  getConversation,
+  getMessage,
+  sendMessageAll,
+  sendMessageToService
+} from "@/request/api/websocket.js";
 import {isEmpty} from "@/utils/commons.js";
 import websocket from "@/utils/WebSocket.js";
 import {userInfo} from "@/layout/user.js";
 import {useRoute} from "vue-router";
 import _ from "lodash"
 
-// defineOptions({
-//   name: 'message'
-// })
+defineOptions({
+  name: 'message'
+})
 
 const route=useRoute()
 
@@ -83,8 +106,25 @@ let userMessage=ref({
   content:""
 })
 
+//拥有的用户列表
 let userList=ref([])
+//全部的用户列表
+let allList=ref([])
+//消息列表
 let msgList=ref([])
+//搜索的用户
+let selectUser=ref()
+
+const chooseUser=async () => {
+  if (isEmpty(selectUser.value)) {
+    const res1 = await getConversation(userInfo.baseInfo.user_id)
+    userList.value = res1.data
+  } else {
+    let lis=[]
+    lis.push(allList.value.find(user => user.id === selectUser.value))
+    userList.value=lis;
+  }
+}
 
 //滚动条滑动到最底部
 const scrollerToBottom=()=>{
@@ -138,11 +178,16 @@ const sendText = async () => {
 }
 
 onMounted(async () => {
+  console.log("mounted")
   websocket.setMessageCallback(getMessageCallback)
   const res = await getAllUser()
-  userList.value=res.data
+  allList.value=res.data
+
+  const res1=await getConversation(userInfo.baseInfo.user_id)
+  userList.value=res1.data
+
   let temp=route.query
-  if(!isEmpty(temp))
+  if(!_.isEmpty(temp))
   {
     const index = userList.value.findIndex(user => user.id === temp.senderId);
     await activeFun(index)

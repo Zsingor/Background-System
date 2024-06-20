@@ -14,6 +14,9 @@ export const reloadCurrentRoute = ref(null);
 // 缓存的路由
 export const includeRoutes = ref([]);
 
+// 排除的路由
+export const excludeRoute = ref(['message']);
+
 export const defaultTheme = {
     global: {
         primary: "#16aad8",

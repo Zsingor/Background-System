@@ -53,13 +53,14 @@ import {projectName} from "@/setup.js";
 import {persistentConfig} from "@/layout/layout.js";
 import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {reloadPage} from "@/layout/tags/tag.js";
-import {provide, reactive, ref} from "vue";
+import {onMounted, provide, reactive, ref} from "vue";
 import { useRouter } from 'vue-router'
 import request from "@/request/index.js";
 import {logout, userInfo} from "@/layout/user.js";
 import {isEmpty} from "@/utils/commons.js";
+import router from "@/router/index.js";
 
-const router = useRouter()
+const userouter = useRouter()
 
 const username=ref("")
 
@@ -79,7 +80,7 @@ const refreshpage=()=>{
 
 //跳转至站内信
 const skipMessage=()=>{
-  router.push("/admin/message")
+  userouter.push("/admin/message")
 }
 
 //判断是否登录

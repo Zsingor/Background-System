@@ -1,7 +1,6 @@
 package com.example.springtest.mapper;
 
 import com.example.springtest.entity.Message;
-import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,7 +9,6 @@ import java.util.List;
 @Mapper
 public interface MessageMapper {
 
-    @Insert("insert into test.message (sender_id,sender_name,receiver_id, content,create_time) values (#{senderId},#{senderName},#{receiverId}, #{content},#{createTime})")
     void addMessage(Message message);
 
     @Select("SELECT * FROM test.message " +

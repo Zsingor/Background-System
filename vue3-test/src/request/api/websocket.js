@@ -15,6 +15,13 @@ export const getMessage=(senderId,receiverId)=> {
     return request.get('/message/getMessage',{params})
 }
 
+export const getConversation=(userId)=>{
+    const params = {
+        userId
+    }
+    return request.get('/webSocket/getConversations',{params})
+}
+
 // 发送指定消息
 export const sendMessageToService = (userMessage) => {
     return request.post('/webSocket/sendMessageTo', userMessage )

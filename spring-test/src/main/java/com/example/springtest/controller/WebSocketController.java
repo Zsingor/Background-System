@@ -6,6 +6,7 @@ import com.example.springtest.entity.Message;
 import com.example.springtest.entity.Result;
 import com.example.springtest.entity.User;
 import com.example.springtest.entity.WebSocketMsg;
+import com.example.springtest.service.ConversationsService;
 import com.example.springtest.service.MessageService;
 import com.example.springtest.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,9 @@ public class WebSocketController {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private ConversationsService conversationsService;
+
     //获取在线用户信息
     @GetMapping(value = "/getUser")
     public Result getUser() {
@@ -45,6 +49,17 @@ public class WebSocketController {
     public Result getAllUser() {
         try {
             List<User> data=userService.queryMessageUser();
+            return Result.success(data);
+        }catch (Exception e){
+            return Result.error("获取用户数据失败");
+        }
+    }
+
+    @GetMapping("/getConversations")
+    public Result getConversations(@RequestParam String userId)
+    {
+        try {
+            List<User> data=conversationsService.getContacts(userId);
             return Result.success(data);
         }catch (Exception e){
             return Result.error("获取用户数据失败");

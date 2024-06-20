@@ -10,15 +10,15 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Routes {
-    String id;
-    String name;
-    String title;
-    String path;
-    Integer level;
-    String status;
-    String icon;
-    String parentid;
-    Integer position;
-    String type;
-    List<Routes> children;
+    private String id;
+    private String name;
+    private String title;
+    private String path;
+    private Integer level;
+    private String status;
+    private String icon;
+    private String parentid;
+    private Integer position;
+    private String type;
+    private List<Routes> children;
 }

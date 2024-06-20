@@ -11,7 +11,7 @@
       <router-view v-slot="{ Component }">
         <transition name="route-fade" mode="out-in" :key="reloadCurrentRoute">
           <Suspense>
-            <keep-alive :include="includeRoutes">
+            <keep-alive :include="includeRoutes" :exclude="excludeRoute">
               <component ref="childRouteRef" :is="Component" />
             </keep-alive>
           </Suspense>
@@ -38,7 +38,7 @@ import {onMounted, ref, watch} from 'vue'
 import router from "@/router/index.js";
 import {addRouteTag} from "@/layout/tags/tag.js";
 import {useRoute} from "vue-router";
-import {includeRoutes, persistentConfig, reloadCurrentRoute, sidebarWidth} from "@/layout/layout.js";
+import {excludeRoute, includeRoutes, persistentConfig, reloadCurrentRoute, sidebarWidth} from "@/layout/layout.js";
 import {isEmpty, parseDate} from "@/utils/commons.js";
 import {drawWaterMark} from "@/utils/project.js";
 import {userInfo} from "@/layout/user.js";
