@@ -39,7 +39,7 @@ import { useRouter } from 'vue-router'
 import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {persistentConfig} from "@/layout/layout.js";
 import request from "@/request/index.js";
-import {onMounted, reactive, ref} from "vue";
+import {reactive, ref} from "vue";
 import {userInfo} from "@/layout/user.js";
 import {message} from "@/utils/message.js";
 import websocket from "@/utils/WebSocket.js";
@@ -86,11 +86,6 @@ const login=()=>{
     }
   })
 }
-
-onMounted(()=>{
-  persistentConfig.routeTags = []
-  userInfo.user_menus=[]
-})
 </script>
 
 <style scoped>

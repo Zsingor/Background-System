@@ -1,5 +1,6 @@
 import router from "@/router/index.js"
 import {userInfo} from "@/layout/user.js";
+import {persistentConfig} from "@/layout/layout.js";
 
 const whiteList=['/login']
 
@@ -16,6 +17,8 @@ router.beforeEach((to, from, next) => {
         next();
     }
     else {
+        persistentConfig.routeTags = []
+        userInfo.user_menus=[]
         next("/login");
     }
 });

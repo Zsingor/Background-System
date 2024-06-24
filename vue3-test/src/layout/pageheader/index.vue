@@ -4,16 +4,21 @@
       <div class="collapse-button"
            @click="persistentConfig.isCollapse=!persistentConfig.isCollapse">
         <el-icon style="font-size: 20px;">
-          <component :is="persistentConfig.isCollapse?'Expand':'Fold'" />
+          <component :is="persistentConfig.isCollapse?'Expand':'Fold'"/>
         </el-icon>
       </div>
-      <div class="app-logo" >
+      <div class="app-logo">
         {{ projectName }}
       </div>
     </div>
     <div class="navbar-right">
-      <div class="header-search">
-        <div class="search-select" :class="{'select-hide':activeHide }">
+      <div class="header-search" :class="{'select-hide':activeHide }">
+        <div class="operate-button" @click="search">
+          <el-icon style="font-size: 20px;" title="搜索">
+            <Search/>
+          </el-icon>
+        </div>
+        <div class="search-select">
           <el-select
               v-model="selectPath"
               filterable
@@ -30,32 +35,41 @@
             />
           </el-select>
         </div>
-        <div class="operate-button" @click="search">
-          <el-icon style="font-size: 20px;" title="搜索"><Search /></el-icon>
-        </div>
       </div>
       <div class="operate-button" @click="refreshpage">
-        <el-icon style="font-size: 20px;" title="刷新页面"><RefreshRight /></el-icon>
+        <el-icon style="font-size: 20px;" title="刷新页面">
+          <RefreshRight/>
+        </el-icon>
       </div>
       <div class="operate-button" @click="controls.showGlobalSetting=true">
-        <el-icon style="font-size: 20px;" title="设置"><Setting /></el-icon>
+        <el-icon style="font-size: 20px;" title="设置">
+          <Setting/>
+        </el-icon>
       </div>
       <div class="operate-button" @click="skipMessage">
         <el-badge v-if="unread_count!==0" class="item-button" :value="unread_count" :max="99">
-          <el-icon style="font-size: 20px;" title="我的信息"><Message /></el-icon>
+          <el-icon style="font-size: 20px;" title="我的信息">
+            <Message/>
+          </el-icon>
         </el-badge>
-        <el-icon v-else style="font-size: 20px;" title="我的信息"><Message /></el-icon>
+        <el-icon v-else style="font-size: 20px;" title="我的信息">
+          <Message/>
+        </el-icon>
       </div>
       <div class="user-info">
         <el-dropdown v-if="isLogin()" trigger="click">
           <div class="user-info-text el-dropdown-link">
             我的
-            <el-icon><ArrowDown /></el-icon>
+            <el-icon>
+              <ArrowDown/>
+            </el-icon>
           </div>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="logout">
-                <el-icon><SwitchButton /></el-icon>
+                <el-icon>
+                  <SwitchButton/>
+                </el-icon>
                 退出登录
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -79,7 +93,7 @@ import {persistentConfig} from "@/layout/layout.js";
 import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {reloadPage} from "@/layout/tags/tag.js";
 import {onMounted, provide, reactive, ref} from "vue";
-import { useRouter } from 'vue-router'
+import {useRouter} from 'vue-router'
 import {logout, userInfo} from "@/layout/user.js";
 import {isEmpty} from "@/utils/commons.js";
 import request from "@/request/index.js";
@@ -87,11 +101,11 @@ import {ElNotification} from "element-plus";
 
 const userouter = useRouter()
 
-const username=ref("")
-const selectPath=ref("")
-let options=ref([])
+const username = ref("")
+const selectPath = ref("")
+let options = ref([])
 //控制下拉框显示与否
-let activeHide=ref(true)
+let activeHide = ref(true)
 
 const controls = reactive({
   showUserForm: false,
@@ -100,89 +114,80 @@ const controls = reactive({
 });
 
 //选择路由跳转
-const choosePath=()=>{
-  activeHide.value=true
+const choosePath = () => {
+  activeHide.value = true
   if (!isEmpty(selectPath.value)) {
     userouter.push(`/admin${selectPath.value}`)
   } else {
 
   }
-  selectPath.value=""
+  selectPath.value = ""
 }
 
 //搜索下拉框显示
-const remoteMethod=(query)=>{
-  if(query)
-  {
+const remoteMethod = (query) => {
+  if (query) {
     options.value = userInfo.user_menus.filter((item) => {
       return item.title.toLowerCase().includes(query.toLowerCase())
     })
-  }
-  else
-  {
+  } else {
     options.value = []
   }
 
 }
 
-const search=()=>{
-  activeHide.value=!activeHide.value
+const search = () => {
+  activeHide.value = !activeHide.value
 }
 
 
 //刷新界面
-const refreshpage=()=>{
-  userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))
+const refreshpage = () => {
+  userInfo.baseInfo = JSON.parse(localStorage.getItem("User_Info"))
   createRouteAndMenu(userInfo.baseInfo.menuList)
   reloadPage()
 }
 
 //跳转至站内信
-const skipMessage=()=>{
+const skipMessage = () => {
   userouter.push("/admin/message")
 }
 
 //判断是否登录
 const isLogin = () => {
-  userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))
-  if(!isEmpty(userInfo.baseInfo))
-  {
-    username.value=userInfo.baseInfo.user_name
+  userInfo.baseInfo = JSON.parse(localStorage.getItem("User_Info"))
+  if (!isEmpty(userInfo.baseInfo)) {
+    username.value = userInfo.baseInfo.user_name
     return true
-  }
-  else
-  {
+  } else {
     return false
   }
 }
 
-provide("controls",controls)
+provide("controls", controls)
 
-onMounted(()=>{
-  request.post("/conversations/getUnreadCount",{id:userInfo.baseInfo.user_id}).then(res => {
-    userInfo.unread_count=res.data
-    if(userInfo.unread_count>0)
-    {
+onMounted(() => {
+  request.post("/conversations/getUnreadCount", {id: userInfo.baseInfo.user_id}).then(res => {
+    userInfo.unread_count = res.data
+    if (userInfo.unread_count > 0) {
       ElNotification({
         title: "未读消息",
         message: `您有${userInfo.unread_count}条未读消息，请尽快处理`,
-        duration:0,
+        duration: 0,
         position: persistentConfig.notiPosition,
         type: 'info',
-        onClick(){
+        onClick() {
           ElNotification.closeAll();
-          userouter.push({path:'/admin/message'})
+          userouter.push({path: '/admin/message'})
         }
       })
     }
   })
-
-  console.log(userInfo.user_menus)
 })
 
 </script>
 
-<style >
+<style>
 
 /* 菜单栏的样式 */
 
@@ -194,8 +199,8 @@ onMounted(()=>{
 #app-navbar {
   width: 100%;
   height: 48px;
-  background: var(--header-bg,#F1F4F3FF);
-  color: var(--header-font-color,#000000FF);
+  background: var(--header-bg, #F1F4F3FF);
+  color: var(--header-font-color, #000000FF);
   padding-right: 18px;
   position: fixed;
   top: 0;
@@ -218,7 +223,7 @@ onMounted(()=>{
 
       &:hover {
         cursor: pointer;
-        background: var(--header-bg1,#C7D1CEFF);
+        background: var(--header-bg1, #C7D1CEFF);
       }
     }
 
@@ -236,8 +241,16 @@ onMounted(()=>{
     display: flex;
     align-items: center;
 
-    .header-search{
+    .header-search {
       display: flex;
+      justify-content: space-between;
+      transition: 0.3s;
+      overflow: hidden;
+      width: 240px;
+    }
+
+    .select-hide {
+      width: 38px;
     }
 
     .search-select{
@@ -245,16 +258,10 @@ onMounted(()=>{
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-right: 10px;
-    }
-
-    .select-hide{
-      width: 0;
-      display: none;
     }
 
     .operate-button {
-      width: 38px;
+      min-width: 38px;
       height: 38px;
       border-radius: 50%;
       display: flex;
@@ -263,11 +270,11 @@ onMounted(()=>{
 
       &:not(.disable):hover {
         cursor: pointer;
-        background: var(--header-bg1,#C7D1CEFF);
+        background: var(--header-bg1, #C7D1CEFF);
       }
     }
 
-    .item-button{
+    .item-button {
       margin-top: 5px;
     }
 
@@ -278,7 +285,7 @@ onMounted(()=>{
 
       &:hover {
         cursor: pointer;
-        background: var(--header-bg1,#C7D1CEFF);
+        background: var(--header-bg1, #C7D1CEFF);
       }
 
       .user-info-text {
@@ -288,7 +295,7 @@ onMounted(()=>{
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--header-font-color,#000000FF);
+        color: var(--header-font-color, #000000FF);
       }
     }
   }
