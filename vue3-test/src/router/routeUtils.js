@@ -48,7 +48,6 @@ export function createRoutes(userRouteJson) {
     routeJson.forEach(item => {
         if(item.children && item.children.length > 0){
             item.children.forEach(r => {
-                let routepath=`@/views${r.path}/index.vue`
                 routes.push({
                     path: `/admin${item.path}${r.path}`,
                     meta: {title: r.title},
@@ -98,7 +97,12 @@ export function createMenus(userRouteJson) {
                     childMenu.icon = child.icon;
                 }
                 routeMenu.children.push(childMenu);
+                userInfo.user_menus.push({path: routeMenu.path + child.path, title: item.title+' > '+child.title})
             });
+        }
+        else
+        {
+            userInfo.user_menus.push({path: item.path, title: item.title})
         }
         routeMenus.push(routeMenu);
     });
@@ -132,7 +136,12 @@ export function createLayoutRouteMenu(layoutRoute) {
                         childMenu.icon = child.icon;
                     }
                     routeMenu.children.push(childMenu);
+                    userInfo.user_menus.push({path: routeMenu.path+'/'+ child.path, title: route.meta.title+' > '+child.meta.title})
                 });
+            }
+            else
+            {
+                userInfo.user_menus.push({path: "/"+route.path, title: route.meta.title})
             }
             routeMenus.push(routeMenu);
         }

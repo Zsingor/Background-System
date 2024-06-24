@@ -12,6 +12,28 @@
       </div>
     </div>
     <div class="navbar-right">
+      <div class="header-search">
+        <div class="search-select" :class="{'select-hide':activeHide }">
+          <el-select
+              v-model="selectPath"
+              filterable
+              remote
+              :remote-method="remoteMethod"
+              placeholder="搜索菜单"
+              @change="choosePath"
+          >
+            <el-option
+                v-for="item in options"
+                :key="item.path"
+                :label="item.title"
+                :value="item.path"
+            />
+          </el-select>
+        </div>
+        <div class="operate-button" @click="search">
+          <el-icon style="font-size: 20px;" title="搜索"><Search /></el-icon>
+        </div>
+      </div>
       <div class="operate-button" @click="refreshpage">
         <el-icon style="font-size: 20px;" title="刷新页面"><RefreshRight /></el-icon>
       </div>
@@ -19,7 +41,10 @@
         <el-icon style="font-size: 20px;" title="设置"><Setting /></el-icon>
       </div>
       <div class="operate-button" @click="skipMessage">
-        <el-icon style="font-size: 20px;" title="我的信息"><Message /></el-icon>
+        <el-badge v-if="unread_count!==0" class="item-button" :value="unread_count" :max="99">
+          <el-icon style="font-size: 20px;" title="我的信息"><Message /></el-icon>
+        </el-badge>
+        <el-icon v-else style="font-size: 20px;" title="我的信息"><Message /></el-icon>
       </div>
       <div class="user-info">
         <el-dropdown v-if="isLogin()" trigger="click">
@@ -55,20 +80,54 @@ import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {reloadPage} from "@/layout/tags/tag.js";
 import {onMounted, provide, reactive, ref} from "vue";
 import { useRouter } from 'vue-router'
-import request from "@/request/index.js";
 import {logout, userInfo} from "@/layout/user.js";
 import {isEmpty} from "@/utils/commons.js";
-import router from "@/router/index.js";
+import request from "@/request/index.js";
+import {ElNotification} from "element-plus";
 
 const userouter = useRouter()
 
 const username=ref("")
+const selectPath=ref("")
+let options=ref([])
+//控制下拉框显示与否
+let activeHide=ref(true)
 
 const controls = reactive({
   showUserForm: false,
   showPasswordForm: false,
   showGlobalSetting: false,
 });
+
+//选择路由跳转
+const choosePath=()=>{
+  activeHide.value=true
+  if (!isEmpty(selectPath.value)) {
+    userouter.push(`/admin${selectPath.value}`)
+  } else {
+
+  }
+  selectPath.value=""
+}
+
+//搜索下拉框显示
+const remoteMethod=(query)=>{
+  if(query)
+  {
+    options.value = userInfo.user_menus.filter((item) => {
+      return item.title.toLowerCase().includes(query.toLowerCase())
+    })
+  }
+  else
+  {
+    options.value = []
+  }
+
+}
+
+const search=()=>{
+  activeHide.value=!activeHide.value
+}
 
 
 //刷新界面
@@ -98,6 +157,28 @@ const isLogin = () => {
 }
 
 provide("controls",controls)
+
+onMounted(()=>{
+  request.post("/conversations/getUnreadCount",{id:userInfo.baseInfo.user_id}).then(res => {
+    userInfo.unread_count=res.data
+    if(userInfo.unread_count>0)
+    {
+      ElNotification({
+        title: "未读消息",
+        message: `您有${userInfo.unread_count}条未读消息，请尽快处理`,
+        duration:0,
+        position: persistentConfig.notiPosition,
+        type: 'info',
+        onClick(){
+          ElNotification.closeAll();
+          userouter.push({path:'/admin/message'})
+        }
+      })
+    }
+  })
+
+  console.log(userInfo.user_menus)
+})
 
 </script>
 
@@ -155,6 +236,23 @@ provide("controls",controls)
     display: flex;
     align-items: center;
 
+    .header-search{
+      display: flex;
+    }
+
+    .search-select{
+      width: 200px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 10px;
+    }
+
+    .select-hide{
+      width: 0;
+      display: none;
+    }
+
     .operate-button {
       width: 38px;
       height: 38px;
@@ -167,6 +265,10 @@ provide("controls",controls)
         cursor: pointer;
         background: var(--header-bg1,#C7D1CEFF);
       }
+    }
+
+    .item-button{
+      margin-top: 5px;
     }
 
     .user-info {

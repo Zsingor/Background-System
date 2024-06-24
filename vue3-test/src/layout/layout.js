@@ -44,6 +44,7 @@ export const defaultTheme = {
     }
 };
 
+//窗口的全局设置
 export const windowConfig = reactive({
     isPc: true,       // 根据终端窗口大小(1024px)判断当前环境是否是pc端，如果为true，sidebar将以drawer形式展示
     breakpoint: "",   // 窗口断点，这里仅划分三档：xs(windows<=600) sm(600<windows<=1024) lg(windows>1024)
@@ -61,6 +62,7 @@ export const windowConfig = reactive({
     })
 });
 
+//全局设置
 export const persistentConfig = reactive({
     routeTags: [],                // 路由标签集合
     closeWaterMark:false,          //关闭水印

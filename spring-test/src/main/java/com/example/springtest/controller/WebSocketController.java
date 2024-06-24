@@ -82,8 +82,9 @@ public class WebSocketController {
     public Result sendMessageTo(@RequestBody Message message) {
         System.out.println(message);
         try {
-            webSocketUtil.sendMessageTo(message.getReceiverId(),message);
             messageService.addMessage(message);
+            conversationsService.addUnreadCount(message.getReceiverId(),message.getSenderId());
+            webSocketUtil.sendMessageTo(message.getReceiverId(),message);
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -86,7 +86,7 @@ const initUser=()=>{
     request.post("/user/querymsssage", user.value).then(res => {
       user.value = res.data
     }).catch(error => {
-      message(error, "error")
+      console.log(error)
     })
   }
   else

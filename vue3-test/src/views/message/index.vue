@@ -3,12 +3,9 @@
     <el-card class="card-background">
       <div class="background-left">
         <div class="background-leftTop">
-<!--          <p class="left-title">我的信息</p>-->
           <el-select
               v-model="selectUser"
               filterable
-              remote
-              reserve-keyword
               clearable
               placeholder="搜索"
               style="width: 70%"
@@ -27,8 +24,13 @@
             <div class="left-item" v-for="(item,index) in userList" :key="index"
                  :class="{'activeCss':activeVar===index }" @click="activeFun(index)">
               <div class="user-content">
-                <p class="user-title">{{item.name}}</p>
-                <p class="user-description">{{item.description}}</p>
+                <div class="content-left">
+                  <p class="user-title">{{item.name}}</p>
+                  <p class="user-description">{{item.description}}</p>
+                </div>
+                <div class="content-right">
+                  <el-badge v-if="item.unreadCount!==0" :value="item.unreadCount" :max="99"></el-badge>
+                </div>
               </div>
             </div>
           </el-scrollbar>
@@ -83,9 +85,10 @@ import {
 } from "@/request/api/websocket.js";
 import {isEmpty} from "@/utils/commons.js";
 import websocket from "@/utils/WebSocket.js";
-import {userInfo} from "@/layout/user.js";
+import { userInfo} from "@/layout/user.js";
 import {useRoute} from "vue-router";
 import _ from "lodash"
+import request from "@/request/index.js";
 
 defineOptions({
   name: 'message'
@@ -139,6 +142,12 @@ const activeFun=async (index) => {
   userMessage.value.receiverId = userList.value[index].id
   const res2 = await getMessage(userMessage.value.senderId, userMessage.value.receiverId)
   msgList.value = res2.data
+  request.post("/conversations/updateUnreadCount",
+      {userId:userInfo.baseInfo.user_id,contactId:userList.value[index].id}).then(res=>
+  {
+    userInfo.unread_count-=userList.value[index].unreadCount
+    userList.value[index].unreadCount=0
+  })
   scrollerToBottom()
 }
 
@@ -266,7 +275,21 @@ onMounted(async () => {
 
 .user-content{
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
   overflow: hidden;
+}
+
+.content-left{
+  width: 90%;
+  overflow: hidden;
+}
+
+.content-right{
+  width: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .user-title{

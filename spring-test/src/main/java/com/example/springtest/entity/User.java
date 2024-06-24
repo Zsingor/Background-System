@@ -17,5 +17,7 @@ public class User
     private String email;
     private String description;
     private String status;
+
     private List<String> rolesid;
+    private Integer unreadCount;
 }

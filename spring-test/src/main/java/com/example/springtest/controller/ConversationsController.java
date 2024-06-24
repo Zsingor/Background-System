@@ -1,7 +1,14 @@
 package com.example.springtest.controller;
 
 
+import com.example.springtest.entity.Conversation;
+import com.example.springtest.entity.Result;
+import com.example.springtest.entity.User;
+import com.example.springtest.service.ConversationsService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -9,5 +16,28 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/conversations")
 public class ConversationsController {
+    @Autowired
+    private ConversationsService conversationsService;
 
+    @PostMapping("/getUnreadCount")
+    public Result getUnreadCount(@RequestBody User user)
+    {
+        try {
+            Integer data=conversationsService.getUnreadCount(user.getId());
+            return Result.success(data);
+        } catch (Exception e) {
+            return Result.error("获取数据失败");
+        }
+    }
+
+    @PostMapping("/updateUnreadCount")
+    public Result updateUnreadCount(@RequestBody Conversation conversation)
+    {
+        try {
+            conversationsService.updateUnreadCount(conversation);
+            return Result.success();
+        } catch (Exception e) {
+            return Result.error("修改未读信息失败");
+        }
+    }
 }

@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.springtest.mapper.ConversationsMapper">
     <select id="getContactUser" resultType="com.example.springtest.entity.User">
-        select u.id,u.name,u.description
+        select u.id,u.name,u.description,c.unread_count
         from test.conversations c left join test.user u on c.contact_id = u.id
         where c.user_id=#{userId}
         order by c.update_time desc

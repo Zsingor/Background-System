@@ -24,6 +24,13 @@
           </el-option>
         </el-select>
       </el-form-item>
+      <el-form-item label="编辑通知位置：">
+        <el-select v-model="persistentConfig.notiPosition">
+          <el-option v-for="position in notiPositions" :key="position.value"
+                     :label="position.label" :value="position.value">
+          </el-option>
+        </el-select>
+      </el-form-item>
     </el-form>
     <el-divider content-position="left">
       <h3>滚动条设置</h3>
@@ -63,6 +70,25 @@ const drawerPositions = [
   {
     label: "下面",
     value: "btt"
+  }
+];
+
+const notiPositions = [
+  {
+    label: "右上方",
+    value: "top-right"
+  },
+  {
+    label: "右下方",
+    value: "bottom-right"
+  },
+  {
+    label: "左上方",
+    value: "top-left"
+  },
+  {
+    label: "左下方",
+    value: "bottom-left"
   }
 ];
 

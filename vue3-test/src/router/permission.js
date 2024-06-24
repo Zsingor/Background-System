@@ -11,17 +11,6 @@ router.beforeEach((to, from, next) => {
     {
         next();
     }
-    // userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"));
-    // if(!userInfo.baseInfo)
-    // {
-    //     if (to.path !== '/login') {
-    //         next('/login');
-    //     } else {
-    //         next();
-    //     }
-    //     return;
-    // }
-    // let token=userInfo.baseInfo.token
     let hasList=router.getRoutes()
     if(hasList.some(item => item.path === to.path)){
         next();

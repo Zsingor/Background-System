@@ -36,7 +36,7 @@ const websocket = {
 
         // 监听WebSocket连接
         ws.onopen = () => {
-            onceMessage.success("WebSocket连接成功")
+            //onceMessage.success("WebSocket连接成功")
         }
 
         // 监听WebSocket连接错误信息
@@ -79,7 +79,7 @@ const websocket = {
         // 关闭断开重连机制
         isReconnecting = true
         ws.close()
-        onceMessage.error('WebSocket断开连接')
+        //onceMessage.error('WebSocket断开连接')
     },
 
     // WebSocket发送信息方法
