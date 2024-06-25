@@ -69,7 +69,7 @@
 
 import {onActivated, onDeactivated, onMounted, provide, reactive, ref, toRaw} from "vue";
 import request from "@/request/index.js";
-import {dbclickHandler, deleteTableData, resetWatch} from "@/utils/tableconfig.js";
+import {dbclickHandler, deleteTableData, resetWatch} from "@/utils/VxeTableConfig.js";
 import SubmitForm from "@/views/system/routes/components/SubmitForm.vue";
 import {isEmpty} from "@/utils/commons.js";
 import _ from "lodash";

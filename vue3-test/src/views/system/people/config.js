@@ -1,5 +1,5 @@
 //表格配置
-import {getToolbarConfig} from "@/utils/tableconfig.js";
+import {getToolbarConfig} from "@/utils/VxeTableConfig.js";
 import {isEmpty} from "@/utils/commons.js";
 
 const checkEmail = (rule, value, callback) => {

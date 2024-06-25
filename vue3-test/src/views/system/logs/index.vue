@@ -31,7 +31,7 @@ import {
   resetWatch,
   deleteTableData,
   getToolbarConfig
-} from "@/utils/tableconfig";
+} from "@/utils/VxeTableConfig.js";
 import {persistentConfig} from "@/layout/layout.js";
 import {isEmpty, parseDate} from "@/utils/commons.js";
 import {message} from "@/utils/message.js";

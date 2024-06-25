@@ -70,7 +70,7 @@
 
 <script setup>
 
-import {dbclickHandler, deleteTableData, resetWatch, VxeTableCommonsConfig} from "@/utils/tableconfig.js";
+import {dbclickHandler, deleteTableData, resetWatch, VxeTableCommonsConfig} from "@/utils/VxeTableConfig.js";
 import {onActivated, onDeactivated, onMounted, provide, reactive, ref, toRaw} from "vue";
 import {isEmpty} from "@/utils/commons.js";
 import _ from "lodash";

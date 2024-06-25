@@ -6,7 +6,7 @@ import {unref, watch} from "vue";
 import {ElMessageBox} from "element-plus";
 import request from "@/request/index.js";
 
-export const pageSizes = [10, 25, 50, 100, 250, 500]
+export const pageSizes = [10, 25, 50, 100, 200]
 
 // Vxe高级表格常用配置
 export const VxeTableCommonsConfig = {
@@ -71,7 +71,7 @@ export const dbclickHandler = (event) => {
 }
 
 //获取分页数据，如果直接使用persistentConfig.defaultPageSize会有初始化问题
-function getDefaultPageSize() {
+export function getDefaultPageSize() {
     const appConfig = localStorage.getItem("Global_Config")
     if (appConfig && JSON.parse(appConfig).defaultPageSize) {
         return JSON.parse(appConfig).defaultPageSize

@@ -52,7 +52,7 @@
 
 <script setup>
 import {persistentConfig} from "@/layout/layout.js";
-import {pageSizes} from "@/utils/tableconfig.js";
+import {pageSizes} from "@/utils/VxeTableConfig.js";
 
 const drawerPositions = [
   {

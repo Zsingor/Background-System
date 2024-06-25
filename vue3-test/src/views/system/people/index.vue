@@ -69,7 +69,7 @@
 import {provide, reactive, ref, onMounted, onActivated, onDeactivated, unref} from 'vue'
 import QueryForm from "@/views/system/people/components/QueryForm.vue";
 import request from "@/request/index.js";
-import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from "@/utils/tableconfig";
+import {VxeTableCommonsConfig, dbclickHandler, resetWatch, deleteTableData} from "@/utils/VxeTableConfig.js";
 import SubmitForm from "@/views/system/people/components/SubmitForm.vue";
 import {getTableConfig} from "@/views/system/people/config.js";
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
