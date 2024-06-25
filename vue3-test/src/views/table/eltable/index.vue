@@ -53,12 +53,13 @@
 </template>
 <script setup>
 import {onMounted, provide, reactive, ref} from "vue";
-import {Delete, Edit, FullScreen, Plus, Refresh, Search, Upload} from "@element-plus/icons";
+import {Delete, Edit, Plus, Refresh, Search, Upload} from "@element-plus/icons";
 import request from "@/request/index.js";
 import {formatDate} from "@/utils/ElTableConfig.js";
 import {getDefaultPageSize, pageSizes} from "@/utils/VxeTableConfig.js";
 import QueryForm from "@/views/table/eltable/components/QueryForm.vue";
 import * as XLSX from 'xlsx';
+import {parseDate} from "@/utils/commons.js";
 
 defineOptions({
   name: 'eltable'
@@ -97,12 +98,33 @@ const handleCurrentChange=(val)=>{
 
 //导出数据
 const exportData=()=>{
-  const data = tableRef.value.getSelectionRows()
-  const filename = `data-${Date.now()}.xlsx`;
+  const tableHeader = ['用户名称', '操作模块', '操作内容', '详细内容', 'IP地址','操作时间'];   // 设置Excel表格的表头
+  const filterVal = ['username', 'module', 'operate', 'details', 'ip', 'operatedate'];  // 跟表格表头对应的绑定的prop
+  const list = filterTableData(JSON.parse(JSON.stringify(tableRef.value.getSelectionRows())))
+  let data = formatJson(filterVal, list);
+  const filename = `表格-${Date.now()}.xlsx`;
   const ws = XLSX.utils.json_to_sheet(data);
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
   XLSX.writeFile(wb, filename);
+}
+
+const formatJson=(filterVal, Data)=>{
+  return Data.map(item => {
+    // 获取所有在filterVal中的键值对
+    const filteredEntries = Object.entries(item).filter(([key]) => filterVal.includes(key));
+    // 使用Object.fromEntries将键值对数组转换回对象
+    return Object.fromEntries(filteredEntries);
+  })
+}
+
+//导出数据前对数据处理
+const filterTableData=(data)=>{
+  data.forEach(item => {
+    // 处理单元数据
+    item.operatedate=parseDate(item.operatedate)
+  })
+  return data;
 }
 
 //显示搜索
