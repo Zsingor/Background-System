@@ -18,7 +18,7 @@
             <Search/>
           </el-icon>
         </div>
-        <div class="search-select">
+        <div class="search-select" :class="{'hide':activeHide }">
           <el-select
               v-model="selectPath"
               filterable
@@ -36,6 +36,11 @@
           </el-select>
         </div>
       </div>
+      <div class="operate-button" @click="fullscreen">
+        <el-icon style="font-size: 20px;" title="全屏">
+          <FullScreen/>
+        </el-icon>
+      </div>
       <div class="operate-button" @click="refreshpage">
         <el-icon style="font-size: 20px;" title="刷新页面">
           <RefreshRight/>
@@ -47,7 +52,7 @@
         </el-icon>
       </div>
       <div class="operate-button" @click="skipMessage">
-        <el-badge v-if="unread_count!==0" class="item-button" :value="unread_count" :max="99">
+        <el-badge v-if="userInfo.unread_count!==0" class="item-button" :value="userInfo.unread_count" :max="99">
           <el-icon style="font-size: 20px;" title="我的信息">
             <Message/>
           </el-icon>
@@ -98,6 +103,7 @@ import {logout, userInfo} from "@/layout/user.js";
 import {isEmpty} from "@/utils/commons.js";
 import request from "@/request/index.js";
 import {ElNotification} from "element-plus";
+import screenfull from "screenfull";
 
 const userouter = useRouter()
 
@@ -106,6 +112,8 @@ const selectPath = ref("")
 let options = ref([])
 //控制下拉框显示与否
 let activeHide = ref(true)
+//判断当前是否全屏
+let isFull=ref(false)
 
 const controls = reactive({
   showUserForm: false,
@@ -133,13 +141,42 @@ const remoteMethod = (query) => {
   } else {
     options.value = []
   }
-
 }
 
 const search = () => {
   activeHide.value = !activeHide.value
 }
 
+//控制全屏与否
+const fullscreen=()=>{
+  if(isFull.value)
+  {
+    screenfull.exit();
+    //document.exitFullscreen()
+  }
+  else {
+    screenfull.request();
+    //document.documentElement.requestFullscreen()
+  }
+  isFull.value=!isFull.value
+}
+
+//用于处理esc退出全屏事件监听
+const fullScreenEsc=()=>{
+  if (!checkFull()) {
+    isFull.value = false
+  }
+}
+
+//判断界面是否全屏
+const checkFull=()=>{
+  let isFull =
+      document.fullscreenElement ||
+      document.mozFullScreenElement ||
+      document.webkitFullscreenElement;
+  if (isFull === undefined) isFull = false;
+  return isFull;
+}
 
 //刷新界面
 const refreshpage = () => {
@@ -167,23 +204,29 @@ const isLogin = () => {
 provide("controls", controls)
 
 onMounted(() => {
-  request.post("/conversations/getUnreadCount", {id: userInfo.baseInfo.user_id}).then(res => {
-    userInfo.unread_count = res.data
-    if (userInfo.unread_count > 0) {
-      ElNotification({
-        title: "未读消息",
-        message: `您有${userInfo.unread_count}条未读消息，请尽快处理`,
-        duration: 0,
-        position: persistentConfig.notiPosition,
-        type: 'info',
-        onClick() {
-          ElNotification.closeAll();
-          userouter.push({path: '/admin/message'})
-        }
-      })
-    }
-  })
+  document.addEventListener("fullscreenchange", fullScreenEsc)
+  if (!isEmpty(userInfo.baseInfo))
+  {
+    request.post("/conversations/getUnreadCount", {id: userInfo.baseInfo.user_id}).then(res => {
+      userInfo.unread_count = res.data
+      if (userInfo.unread_count > 0) {
+        ElNotification({
+          title: "未读消息",
+          message: `您有${userInfo.unread_count}条未读消息，请尽快处理`,
+          duration: 0,
+          position: persistentConfig.notiPosition,
+          type: 'info',
+          onClick() {
+            ElNotification.closeAll();
+            userouter.push({path: '/admin/message'})
+          }
+        })
+      }
+    })
+  }
 })
+
+
 
 </script>
 
@@ -258,6 +301,11 @@ onMounted(() => {
       display: flex;
       justify-content: center;
       align-items: center;
+    }
+
+    /*为了解决edge浏览器全屏后关闭开发者工具自动聚焦的问题*/
+    .hide{
+      display: none;
     }
 
     .operate-button {

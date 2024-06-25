@@ -35,7 +35,6 @@ import PageAside from "@/layout/pageaside/index.vue";
 import PageHeader from "@/layout/pageheader/index.vue";
 import TagView from "@/layout/tags/index.vue"
 import {onMounted, ref, watch} from 'vue'
-import router from "@/router/index.js";
 import {addRouteTag} from "@/layout/tags/tag.js";
 import {useRoute} from "vue-router";
 import {excludeRoute, includeRoutes, persistentConfig, reloadCurrentRoute, sidebarWidth} from "@/layout/layout.js";
