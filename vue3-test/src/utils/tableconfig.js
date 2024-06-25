@@ -123,6 +123,7 @@ export function getToolbarConfig() {
  */
 export function deleteTableData($grid, url, batch, row) {
     if (batch) {
+        //批量删除
         const datas = $grid.getCheckboxRecords();
         if (_.isArray(datas) && datas.length > 0) {
             ElMessageBox.confirm("您确定要删除吗？", "提示", {
@@ -149,6 +150,7 @@ export function deleteTableData($grid, url, batch, row) {
             message("请选择数据！", "warning");
         }
     } else {
+        //单个删除
         ElMessageBox.confirm("您确定要删除吗？", "提示", {
             type: "warning"
         }).then(() => {

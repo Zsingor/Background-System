@@ -23,7 +23,7 @@
         id="canvas-watermark"
         width="3000"
         height="1500"
-        style="opacity: 0.5;"
+        style="opacity: 0.3;"
     >
       Your browser does not support the HTML5 canvas tag.
     </canvas>
@@ -80,7 +80,7 @@ onMounted(() => {
       drawWaterMark(
           canvas,
           "游客 "+ parseDate(Date.now()),
-          16,
+          18,
           56
       );
     }
@@ -89,7 +89,7 @@ onMounted(() => {
       drawWaterMark(
           canvas,
           userInfo.baseInfo.user_name+" "+ parseDate(Date.now()),
-          16,
+          18,
           56
       );
     }
