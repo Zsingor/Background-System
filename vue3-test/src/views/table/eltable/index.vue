@@ -98,12 +98,29 @@ const handleCurrentChange=(val)=>{
 
 //导出数据
 const exportData=()=>{
+  tableRef.value.clearSelection()
   const tableHeader = ['用户名称', '操作模块', '操作内容', '详细内容', 'IP地址','操作时间'];   // 设置Excel表格的表头
+  const header_zh = {
+    username: '用户名称',
+    module: '操作模块',
+    operate: '操作内容',
+    details: '详细内容',
+    ip: 'IP地址',
+    operatedate: '操作时间',
+  }
   const filterVal = ['username', 'module', 'operate', 'details', 'ip', 'operatedate'];  // 跟表格表头对应的绑定的prop
   const list = filterTableData(JSON.parse(JSON.stringify(tableRef.value.getSelectionRows())))
   let data = formatJson(filterVal, list);
   const filename = `表格-${Date.now()}.xlsx`;
-  const ws = XLSX.utils.json_to_sheet(data);
+  //const ws = XLSX.utils.json_to_sheet(data);
+  const arrayWithHeader = [header_zh, ...data];
+  const ws = XLSX.utils.json_to_sheet(
+      arrayWithHeader,
+      {
+        header: filterVal,
+        skipHeader: true
+      }
+  )
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
   XLSX.writeFile(wb, filename);
