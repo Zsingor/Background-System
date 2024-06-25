@@ -20,6 +20,14 @@
               <el-form-item prop="password">
                 <el-input clearable size="large" show-password type="password" placeholder="请输入密码" v-model="user.password"></el-input>
               </el-form-item>
+              <el-form-item prop="validCode">
+                <div style="width: 100%;display: flex;">
+                  <el-input clearable size="large" style="width: 80%;" placeholder="请输入验证码" v-model="user.validCode"></el-input>
+                  <div style="left: 0;background-color: #F56C6C">
+                    <Identify ref="identifyRef" @identifyCode="getCode" />
+                  </div>
+                </div>
+              </el-form-item>
             </el-form>
           </div>
           <div style="width:100%;text-align: center;margin-bottom: 15px">
@@ -39,17 +47,27 @@ import { useRouter } from 'vue-router'
 import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {persistentConfig} from "@/layout/layout.js";
 import request from "@/request/index.js";
-import {reactive, ref} from "vue";
+import {onMounted, onUnmounted, reactive, ref} from "vue";
 import {userInfo} from "@/layout/user.js";
 import {message} from "@/utils/message.js";
 import websocket from "@/utils/WebSocket.js";
+import Identify from "@/components/Identify.vue";
 
 const router = useRouter()
+const identifyRef=ref(null)
+
 const loginRef = ref(null);
 var user=reactive({
   name:"",
-  password:""
+  password:"",
+  validCode:""
 })
+
+let identifyCode = ref("");
+
+const getCode=(data)=>{
+  identifyCode.value=data
+}
 
 const rules = ref({
   name:[
@@ -58,34 +76,62 @@ const rules = ref({
   password:[
     {required:true,message:"请输入密码",trigger:"blur"}
   ],
-  validcode: [
+  validCode: [
     {required:true,message:"请输入验证码",trigger:"blur" }
   ]
 })
 
+
 const login=()=>{
   loginRef.value.validate((valid) => {
     if (valid) {
-      request.post("/user/login",user).then(res => {
-        if(res.code===1)
-        {
-          userInfo.baseInfo=res.data
-          localStorage.setItem("User_Info", JSON.stringify(res.data)); //存储用户数据
-          persistentConfig.routeTags = [];
-          createRouteAndMenu(userInfo.baseInfo.menuList)
-          websocket.Init(userInfo.baseInfo.user_id)
-          message("登录成功")
-          router.push("/");
-        }
-        else {
-          message(res.msg,"error")
-        }
-      }).catch(error => {
-        console.log(error);
-      })
+      if(identifyCode.value.toLowerCase()===user.validCode.toLowerCase())
+      {
+        request.post("/user/login",user).then(res => {
+          if(res.code===1)
+          {
+            userInfo.baseInfo=res.data
+            localStorage.setItem("User_Info", JSON.stringify(res.data)); //存储用户数据
+            persistentConfig.routeTags = [];
+            createRouteAndMenu(userInfo.baseInfo.menuList)
+            websocket.Init(userInfo.baseInfo.user_id)
+            message("登录成功")
+            router.push("/");
+          }
+          else {
+            message(res.msg,"error")
+          }
+        }).catch(error => {
+          console.log(error);
+        })
+      }
+      else
+      {
+        message("验证码错误","error")
+        identifyRef.value.refreshCode()
+        user.validCode=""
+      }
     }
   })
 }
+
+
+//点击回车键登录
+const keyDown = (e) => {
+  if (e.keyCode === 13 || e.keyCode === 100) {
+    login()
+  }
+}
+
+onMounted(()=>{
+  //绑定监听事件
+  window.addEventListener('keydown', keyDown)
+})
+
+onUnmounted(()=>{
+  //销毁事件
+  window.removeEventListener('keydown', keyDown, false)
+})
 </script>
 
 <style scoped>
