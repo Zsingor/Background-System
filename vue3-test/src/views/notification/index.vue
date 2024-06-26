@@ -35,7 +35,7 @@
   <el-dialog
       :title="dialogTitle"
       v-model="dialogVisible"
-      :before-close="handleClose">
+      @closed="handleClose">
     <el-form ref="addForm" :model="notifyForm" label-width="100px" :rules="formRules">
       <el-form-item label="通知标题:" prop="title">
         <el-input v-model="notifyForm.title" />
@@ -44,6 +44,15 @@
         <el-input v-model="notifyForm.content" />
       </el-form-item>
     </el-form>
+    <template #footer>
+      <div class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" :loading="dialogLoading" @click="submit()">发 送</el-button>
+      </div>
+    </template>
+  </el-dialog>
+
+  <el-dialog>
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -137,7 +146,7 @@ const submit=()=>{
 
 //关闭弹窗
 const handleClose=()=>{
-  Object.assign(rootData.formData, {
+  Object.assign(notifyForm, {
     senderId:"",
     title:"",
     content:"",
