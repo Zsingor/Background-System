@@ -12,29 +12,25 @@
       </el-card>
       <el-card class="table-card">
         <div slot="header">
-          <span class="important-font">客户信息</span>
+          <span class="important-font">系统通知</span>
         </div>
-        <div class="card-table">
-          <el-table
-              :data="tableData"
-              stripe
-              border
-              style="width: 100%;height: 100%">
-            <el-table-column
-                prop="date"
-                label="日期"
-                width="120">
-            </el-table-column>
-            <el-table-column
-                prop="name"
-                label="姓名"
-                width="80">
-            </el-table-column>
-            <el-table-column
-                prop="address"
-                label="地址">
-            </el-table-column>
-          </el-table>
+        <div class="card-table" v-if="!isEmpty(notifications)">
+          <div v-for="(item,index) in notifications" :key="index" class="card-item">
+            <el-card shadow="hover">
+              <div class="card-top">
+                <div class="card-top-left">
+                  {{item.title}}
+                </div>
+                <div class="card-top-right">
+                  {{parseDate(item.createTime)}}
+                </div>
+              </div>
+              <div class="card-bottom">{{item.content}}</div>
+            </el-card>
+          </div>
+        </div>
+        <div v-else class="visitor-card">
+          暂无通知
         </div>
       </el-card>
     </div>
@@ -59,9 +55,8 @@
 
 import {inject, onMounted, reactive, ref} from "vue";
 import {userInfo} from "@/layout/user.js";
-import {isEmpty} from "@/utils/commons.js";
+import {isEmpty, parseDate} from "@/utils/commons.js";
 import request from "@/request/index.js";
-import {message} from "@/utils/message.js";
 import {getImageUrl} from "@/utils/resource.js";
 
 defineOptions({
@@ -70,7 +65,10 @@ defineOptions({
 
 var myChart
 
-const loginFlag=ref(false)
+//判断用户是否登录
+let loginFlag=ref(false)
+//系统通知
+let notifications=ref([])
 
 const echarts = inject('echarts');
 
@@ -79,6 +77,7 @@ const user = ref({
   name: ""
 })
 
+//初始化用户数据
 const initUser=()=>{
   if(loginFlag.value)
   {
@@ -96,68 +95,17 @@ const initUser=()=>{
   }
 }
 
-const tableData = ref([{
-  date: '2016-05-03',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-02',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-04',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-01',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-08',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
-}, {
-  date: '2016-05-06',
-  name: '王小虎',
-  address: '上海市普陀区金沙江路 1518 弄'
+//初始化系统通知
+const initSystemNotice=()=>{
+  if(loginFlag.value)
+  {
+    request.post("/notification/query").then(res => {
+      notifications.value = res.data
+    }).catch(err=>{
+
+    })
+  }
 }
-])
 
 //饼图
 const initPieEcharts = () => {
@@ -203,6 +151,7 @@ onMounted(() => {
   loginFlag.value = !isEmpty(userInfo.baseInfo);
 
   initUser()
+  initSystemNotice()
   initPieEcharts()
 
   // 在事件触发时，调用图表实例的 resize 方法
@@ -274,6 +223,53 @@ onMounted(() => {
 .card-table {
   margin-top: 20px;
   height: 90%;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+.card-item{
+  margin-bottom: 10px;
+  margin-top: 5px;
+  margin-left: 2%;
+  width: 96%;
+  border-bottom: 2px solid #e7eaef;
+  cursor: pointer;
+}
+
+.card-top{
+  margin-bottom: 5px;
+  display: flex;
+}
+
+.card-top-left{
+  overflow: hidden;
+  font-weight: bold;
+  font-size: 20px;
+  color: #28292b;
+  width: 70%;
+}
+
+.card-top-right{
+  overflow: hidden;
+  font-weight: lighter;
+  font-size: 12px;
+  color: #4d5559;
+  width: 30%;
+}
+
+.card-bottom{
+  font-size: 15px;
+  color: #343839;
+  overflow: hidden;
+}
+
+.visitor-card{
+  height: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  color: #79868f;
 }
 
 .background-rightTop {
@@ -287,31 +283,8 @@ onMounted(() => {
   height: 68%;
 }
 
-
-.userCard {
-  height: 180px;
-  display: flex;
-  border-bottom: 2px solid #DCDFE6;
-  border-radius: 2px;
-}
-
-
-.tableInfo {
-  margin: 20px 0 0 0;
-}
-
-.num {
-  display: flex;
-  flex-wrap: wrap;
-}
-
-.graph {
-  margin: 15px 0 0 0;
-}
-
 .calendar {
   height: 200px;
   width: 100%;
 }
-
 </style>

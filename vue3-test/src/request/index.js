@@ -3,6 +3,7 @@ import {message, onceMessage} from "@/utils/message.js";
 import {userInfo} from "@/layout/user.js";
 import router from "@/router/index.js";
 import websocket from "@/utils/WebSocket.js";
+import {persistentConfig} from "@/layout/layout.js";
 
 //创建一个新的axios对象
 const request=axios.create({
@@ -43,6 +44,8 @@ request.interceptors.response.use(response=>{
     if(result.code===5001)
     {
         onceMessage.error(result.msg)
+        localStorage.removeItem("User_Info")
+        userInfo.user_menus=[]
         router.push("/login")
         return Promise.reject();
     }

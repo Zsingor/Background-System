@@ -17,7 +17,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
     else {
-        persistentConfig.routeTags = []
+        localStorage.removeItem("User_Info")
         userInfo.user_menus=[]
         next("/login");
     }

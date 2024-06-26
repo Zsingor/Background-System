@@ -51,25 +51,37 @@ const websocket = {
         // 监听WebSocket接收消息
         ws.onmessage = (e) => {
             let message=JSON.parse(e.data)
-            console.log('WebSocket接收后端消息:' + message)
-            ElNotification({
-                title: message.senderName,
-                message: message.content,
-                duration:0,
-                position: persistentConfig.notiPosition,
-                type: 'info',
-                onClick(){
-                    ElNotification.closeAll();
-                    router.push({path:'/admin/message', query:{senderId:message.senderId}})
+            if(isEmpty(message.receiverId))
+            {
+                ElNotification({
+                    title: message.title,
+                    message: message.content,
+                    duration:0,
+                    position: persistentConfig.notiPosition,
+                    type: 'success',
+                })
+                if (websocket.onNotificationCallback)
+                {
+                    websocket.onNotificationCallback(message)
                 }
-            })
-            // 心跳消息不做处理
-            if (e.data === 'ok') {
-                return
             }
-            // 调用回调函数处理接收到的消息
-            if (websocket.onMessageCallback) {
-                websocket.onMessageCallback(message)
+            else
+            {
+                ElNotification({
+                    title: message.senderName,
+                    message: message.content,
+                    duration:0,
+                    position: persistentConfig.notiPosition,
+                    type: 'info',
+                    onClick(){
+                        ElNotification.closeAll();
+                        router.push({path:'/admin/message', query:{senderId:message.senderId}})
+                    }
+                })
+                // 调用回调函数处理接收到的消息
+                if (websocket.onMessageCallback) {
+                    websocket.onMessageCallback(message)
+                }
             }
         }
     },
@@ -97,10 +109,17 @@ const websocket = {
 
     // 新增回调函数用于处理收到的消息
     onMessageCallback: null,
+    // 新增回调函数用于处理收到的通知
+    onNotificationCallback: null,
 
     // 设置消息处理回调函数
     setMessageCallback(callback) {
         this.onMessageCallback = callback
+    },
+
+    // 设置通知处理回调函数
+    setNotificationCallback(callback) {
+        this.onNotificationCallback = callback
     }
 }
 

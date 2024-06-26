@@ -28,6 +28,6 @@ export const sendMessageToService = (userMessage) => {
 }
 
 // 发送全部消息
-export const sendMessageAll = (userMessage) => {
-    return request.post('/webSocket/sendMessageAll',  userMessage)
+export const sendNotification = (notification) => {
+    return request.post('/webSocket/sendNotification',  notification)
 }

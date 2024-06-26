@@ -2,12 +2,10 @@ package com.example.springtest.controller;
 
 
 import com.example.springtest.config.websocket.WebSocketUtil;
-import com.example.springtest.entity.Message;
-import com.example.springtest.entity.Result;
-import com.example.springtest.entity.User;
-import com.example.springtest.entity.WebSocketMsg;
+import com.example.springtest.entity.*;
 import com.example.springtest.service.ConversationsService;
 import com.example.springtest.service.MessageService;
+import com.example.springtest.service.NotificationService;
 import com.example.springtest.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +26,9 @@ public class WebSocketController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private NotificationService notificationService;
 
     @Autowired
     private MessageService messageService;
@@ -67,14 +68,17 @@ public class WebSocketController {
     }
 
     //发送全体消息
-    @PostMapping( "/sendMessageAll")
-    public Result sendMessageAll(@RequestBody Message message) {
+    @PostMapping( "/sendNotification")
+    public Result sendMessageAll(@RequestBody Notification notification) {
         try {
-            webSocketUtil.sendMessageAll(message);
-        } catch (IOException e) {
-            e.printStackTrace();
+            notificationService.addNotification(notification);
+            webSocketUtil.sendNotification(notification);
+            return Result.success();
         }
-        return Result.success("消息推送成功：" + message.getContent());
+        catch (IOException e) {
+            e.printStackTrace();
+            return Result.error(e.getMessage());
+        }
     }
 
     //发送消息给某人
@@ -85,9 +89,10 @@ public class WebSocketController {
             messageService.addMessage(message);
             conversationsService.addUnreadCount(message.getReceiverId(),message.getSenderId());
             webSocketUtil.sendMessageTo(message.getReceiverId(),message);
+            return Result.success();
         } catch (IOException e) {
             e.printStackTrace();
+            return Result.error(e.getMessage());
         }
-        return Result.success();
     }
 }

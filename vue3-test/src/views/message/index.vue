@@ -7,7 +7,7 @@
               v-model="selectUser"
               filterable
               clearable
-              placeholder="搜索"
+              placeholder="搜索用户"
               style="width: 70%"
               @change="chooseUser"
           >
@@ -80,8 +80,7 @@ import {
   getAllUser,
   getConversation,
   getMessage,
-  sendMessageAll,
-  sendMessageToService
+  sendMessageToService, sendNotification
 } from "@/request/api/websocket.js";
 import {isEmpty} from "@/utils/commons.js";
 import websocket from "@/utils/WebSocket.js";
@@ -160,30 +159,31 @@ const getMessageCallback = async (message) => {
 
 // 发送消息
 const sendText = async () => {
-  let res
-  if(!isEmpty(userMessage.value.receiverId))
-  {
-    // 调用发送消息的接口
-    res=await sendMessageToService(userMessage.value)
-  }
-  else
-  {
-    message("未选择接收者","error")
-    //res=await sendMessageAll(userMessage.value)
-  }
-
-  if(res.code===1)
-  {
-    let sendMessage=_.cloneDeep(userMessage.value)
-    msgList.value.push(sendMessage)
-    userMessage.value.content=""
-    scrollerToBottom()
-  }
-  else
-  {
+  try {
+    let res
+    if(!isEmpty(userMessage.value.receiverId))
+    {
+      // 调用发送消息的接口
+      res=await sendMessageToService(userMessage.value)
+    }
+    else
+    {
+      message("未选择接收者","error")
+    }
+    if(res.code===1)
+    {
+      let sendMessage=_.cloneDeep(userMessage.value)
+      msgList.value.push(sendMessage)
+      userMessage.value.content=""
+      scrollerToBottom()
+    }
+    else
+    {
+      message("消息发送失败","error")
+    }
+  } catch (error) {
     message("消息发送失败","error")
   }
-
 }
 
 onMounted(async () => {
@@ -196,6 +196,7 @@ onMounted(async () => {
   userList.value=res1.data
 
   let temp=route.query
+  console.log(temp)
   if(!_.isEmpty(temp))
   {
     const index = userList.value.findIndex(user => user.id === temp.senderId);

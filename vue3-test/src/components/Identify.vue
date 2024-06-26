@@ -112,7 +112,6 @@ const refreshCode = () => {
   for (let i = 0; i < 4; i++) {
     identifyCode.value += identifyCodes[randomNum(0, identifyCodes.length)];
   }
-  console.log('identifyCode222:', identifyCode.value)
   emit('identifyCode', identifyCode.value);
 };
 

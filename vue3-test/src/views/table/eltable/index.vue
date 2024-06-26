@@ -51,6 +51,7 @@
     </div>
   </div>
 </template>
+
 <script setup>
 import {onMounted, provide, reactive, ref} from "vue";
 import {Delete, Edit, Plus, Refresh, Search, Upload} from "@element-plus/icons";
@@ -98,7 +99,6 @@ const handleCurrentChange=(val)=>{
 
 //导出数据
 const exportData=()=>{
-  tableRef.value.clearSelection()
   const tableHeader = ['用户名称', '操作模块', '操作内容', '详细内容', 'IP地址','操作时间'];   // 设置Excel表格的表头
   const header_zh = {
     username: '用户名称',
@@ -124,8 +124,10 @@ const exportData=()=>{
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
   XLSX.writeFile(wb, filename);
+  tableRef.value.clearSelection()
 }
 
+//处理数据使之只导出固定列
 const formatJson=(filterVal, Data)=>{
   return Data.map(item => {
     // 获取所有在filterVal中的键值对
@@ -165,9 +167,10 @@ const getTableData=()=>{
   request.post("/logs/query", params).then(res=>{
     tableTotal.value=res.data.rowSum
     tableData.value=res.data.resultList
-    tableLoading.value=false
   }).catch(err=>{
 
+  }).finally(()=>{
+    tableLoading.value=false
   })
 }
 

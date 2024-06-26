@@ -1,6 +1,7 @@
 package com.example.springtest.config.websocket;
 
 import com.example.springtest.entity.Message;
+import com.example.springtest.entity.Notification;
 import com.example.springtest.entity.WebSocketMsg;
 import com.example.springtest.utils.ClassToString;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -93,9 +94,10 @@ public class WebSocketUtil {
      * @Param [Message：信息]
      * @Return: void
      **/
-    public void sendMessageAll(Message message) throws IOException {
+    public void sendNotification(Notification notification) throws IOException {
+        System.out.println(notification);
         for (WebSocketMsg item : userMap.values()) {
-            item.getSession().getAsyncRemote().sendText(ClassToString.toString(message));
+            item.getSession().getAsyncRemote().sendText(ClassToString.toString(notification));
         }
     }
 
