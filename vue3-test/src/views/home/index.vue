@@ -11,10 +11,11 @@
         </div>
       </el-card>
       <el-card class="table-card">
-        <div slot="header">
+        <div slot="header" style="display: flex;justify-content: space-between;padding-left:2%;padding-right: 2% ">
           <span class="important-font">系统通知</span>
+          <el-button :icon="RefreshRight" circle title="刷新" @click="initSystemNotice"/>
         </div>
-        <div class="card-table" v-if="!isEmpty(notifications)">
+        <div v-loading="notifyLoading" class="card-table" v-if="!isEmpty(notifications)">
           <div v-for="(item,index) in notifications" :key="index" class="card-item">
             <el-card shadow="hover">
               <div class="card-top">
@@ -58,9 +59,10 @@ import {userInfo} from "@/layout/user.js";
 import {isEmpty, parseDate} from "@/utils/commons.js";
 import request from "@/request/index.js";
 import {getImageUrl} from "@/utils/resource.js";
+import {RefreshRight} from "@element-plus/icons";
 
 defineOptions({
-  name: 'people'
+  name: 'home'
 })
 
 var myChart
@@ -71,6 +73,8 @@ let loginFlag=ref(false)
 let notifications=ref([])
 
 const echarts = inject('echarts');
+//处理通知的加载
+let notifyLoading=ref(false)
 
 const dateValue = ref(new Date())
 const user = ref({
@@ -99,10 +103,13 @@ const initUser=()=>{
 const initSystemNotice=()=>{
   if(loginFlag.value)
   {
+    notifyLoading.value=true
     request.post("/notification/query").then(res => {
       notifications.value = res.data
     }).catch(err=>{
 
+    }).finally(()=>{
+      notifyLoading.value=false
     })
   }
 }
@@ -245,7 +252,7 @@ onMounted(() => {
   overflow: hidden;
   font-weight: bold;
   font-size: 20px;
-  color: #28292b;
+  color: #50565e;
   width: 70%;
 }
 

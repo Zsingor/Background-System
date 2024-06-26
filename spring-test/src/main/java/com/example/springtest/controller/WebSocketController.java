@@ -1,6 +1,8 @@
 package com.example.springtest.controller;
 
 
+import com.example.springtest.aop.authorize.PreAuthorize;
+import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.config.websocket.WebSocketUtil;
 import com.example.springtest.entity.*;
 import com.example.springtest.service.ConversationsService;
@@ -64,20 +66,6 @@ public class WebSocketController {
             return Result.success(data);
         }catch (Exception e){
             return Result.error("获取用户数据失败");
-        }
-    }
-
-    //发送全体消息
-    @PostMapping( "/sendNotification")
-    public Result sendMessageAll(@RequestBody Notification notification) {
-        try {
-            notificationService.addNotification(notification);
-            webSocketUtil.sendNotification(notification);
-            return Result.success();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return Result.error(e.getMessage());
         }
     }
 

@@ -35,7 +35,7 @@ public class LogsController {
     }
 
 
-    //日志添加
+    //日志删除
     @PostMapping("/delete")
     public Result logsdelete(@RequestBody List<String> logslist)
     {

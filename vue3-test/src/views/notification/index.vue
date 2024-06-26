@@ -104,11 +104,11 @@ import {onMounted, reactive, ref} from "vue";
 import {Plus, Refresh, Upload} from "@element-plus/icons";
 import request from "@/request/index.js";
 import {exportTableData, formatDate} from "@/utils/ElTableConfig.js";
-import {isEmpty, parseDate} from "@/utils/commons.js";
+import {parseDate} from "@/utils/commons.js";
 import {sendNotification} from "@/request/api/websocket.js";
-import _ from "lodash";
 import {message} from "@/utils/message.js";
 import {userInfo} from "@/layout/user.js";
+import {ElMessageBox} from "element-plus";
 
 const tableRef = ref(null)
 
@@ -239,15 +239,19 @@ const exportClose = () => {
 
 //删除数据
 const handleDelete = (row) => {
-  request.delete("/notification/delete/" + row.id).then(res => {
-    if (res.code === 1) {
-      getTableData()
-      message("删除成功")
-    } else {
+  ElMessageBox.confirm("您确定要删除吗？", "提示", {
+    type: "warning"
+  }).then(()=>{
+    request.delete("/notification/delete/" + row.id).then(res => {
+      if (res.code === 1) {
+        getTableData()
+        message("删除成功")
+      } else {
+        message("删除失败", "error")
+      }
+    }).catch(err => {
       message("删除失败", "error")
-    }
-  }).catch(err => {
-    message("删除失败", "error")
+    })
   })
 }
 
