@@ -241,13 +241,6 @@ onMounted(async () => {
   margin-bottom: 1%;
 }
 
-.left-title{
-  font-size: 25px;
-  font-weight: bold;
-  letter-spacing: 5px;
-  color: #4C5D6E;
-}
-
 .background-leftBottom{
   width: 100%;
   height: 91%;
