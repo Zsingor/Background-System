@@ -13,6 +13,10 @@
 
 <script setup>
 
+defineOptions({
+  name: 'test'
+})
+
 </script>
 
 <style scoped>

@@ -126,6 +126,10 @@ import {ElMessageBox} from "element-plus";
 import QueryForm from "@/views/notification/components/QueryForm.vue";
 import {getDefaultPageSize, pageSizes} from "@/utils/VxeTableConfig.js";
 
+defineOptions({
+  name: 'notification'
+})
+
 const tableRef = ref(null)
 const addRef = ref(null)
 const exportRef = ref(null)
