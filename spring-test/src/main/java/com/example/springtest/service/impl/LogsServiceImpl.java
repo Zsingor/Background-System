@@ -23,7 +23,6 @@ public class LogsServiceImpl implements LogsService {
     public JSONObject logsquery(String json) {
         JSONObject jsonObject= JSON.parseObject(json);
         Logs logs=jsonObject.getObject("queryForm",Logs.class);
-        System.out.println(logs);
         int currentPage=jsonObject.getInteger("currentPage");
         int pageSize=jsonObject.getInteger("pageSize");
         List<Logs> data=logsMapper.logsquery(logs);

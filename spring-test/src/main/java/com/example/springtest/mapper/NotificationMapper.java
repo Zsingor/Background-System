@@ -13,8 +13,7 @@ public interface NotificationMapper {
     @Insert("insert into test.notification(sender_id,title, content, create_time) VALUES (#{senderId},#{title},#{content},#{createTime})")
     void addNotification(Notification notification);
 
-    @Select("select * from test.notification order by create_time desc ")
-    List<Notification> queryNotification();
+    List<Notification> queryNotification(Notification notification);
 
     @Delete("delete from test.notification where id = #{id}")
     void deleteNotification(Integer id);

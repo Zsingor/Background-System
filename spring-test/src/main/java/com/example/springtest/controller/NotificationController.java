@@ -1,18 +1,17 @@
 package com.example.springtest.controller;
 
+import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.aop.authorize.PreAuthorize;
 import com.example.springtest.aop.logs.AutoLog;
 import com.example.springtest.config.websocket.WebSocketUtil;
 import com.example.springtest.entity.Notification;
 import com.example.springtest.entity.Result;
 import com.example.springtest.service.NotificationService;
-import jakarta.websocket.server.PathParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -24,9 +23,9 @@ public class NotificationController {
     private WebSocketUtil webSocketUtil;
 
     @PostMapping("/query")
-    public Result queryNotification() {
+    public Result queryNotification(@RequestBody String json) {
         try {
-            List<Notification> data=notificationService.queryNotifications();
+            JSONObject data=notificationService.queryNotifications(json);
             return Result.success(data);
         } catch (Exception e) {
             return Result.error("获取数据失败");

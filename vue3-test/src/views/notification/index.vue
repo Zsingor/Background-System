@@ -1,11 +1,13 @@
 <template>
   <div class="background">
+    <QueryForm v-if="searchFlag" @query="getTableData"></QueryForm>
     <div class="top-button">
       <div class="top-left-button">
         <el-button type="primary" plain :icon="Plus" @click="addNotify">新增</el-button>
         <el-button type="success" plain :icon="Upload" @click="showExport">导出</el-button>
       </div>
       <div class="top-right-button">
+        <el-button :icon="Search" circle title="显示搜索" @click="showSearch" />
         <el-button :icon="Refresh" circle title="刷新" @click="getTableData"/>
       </div>
     </div>
@@ -31,6 +33,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页 -->
+    <div class="pagination">
+      <el-pagination
+          :pager-count="currentPage"
+          :total="tableTotal"
+          :page-size="pageSize"
+          :page-sizes="pageSizes"
+          layout="sizes, prev, pager, next, jumper,total"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+      />
+    </div>
   </div>
 
   <el-dialog
@@ -62,7 +76,7 @@
       @closed="exportClose">
     <el-form style="width: 70%" ref="exportRef" :model="exportForm" label-width="100px">
       <el-form-item label="文件名" prop="fileName">
-        <el-input v-model="exportForm.fileName"/>
+        <el-input v-model="exportForm.fileName" placeholder="请输入文件名"/>
       </el-form-item>
       <el-form-item label="选择数据" prop="data">
         <el-select
@@ -100,8 +114,8 @@
 
 <script setup>
 
-import {onMounted, reactive, ref} from "vue";
-import {Plus, Refresh, Upload} from "@element-plus/icons";
+import {onMounted, provide, reactive, ref} from "vue";
+import {Plus, Refresh, Search, Upload} from "@element-plus/icons";
 import request from "@/request/index.js";
 import {exportTableData, formatDate} from "@/utils/ElTableConfig.js";
 import {parseDate} from "@/utils/commons.js";
@@ -109,15 +123,28 @@ import {sendNotification} from "@/request/api/websocket.js";
 import {message} from "@/utils/message.js";
 import {userInfo} from "@/layout/user.js";
 import {ElMessageBox} from "element-plus";
+import QueryForm from "@/views/notification/components/QueryForm.vue";
+import {getDefaultPageSize, pageSizes} from "@/utils/VxeTableConfig.js";
 
 const tableRef = ref(null)
+const addRef = ref(null)
+const exportRef = ref(null)
 
 let tableData = ref([])
 //加载判断
 let tableLoading = ref(false)
-
-const addRef = ref(null)
-const exportRef = ref(null)
+//当前页
+let currentPage=ref(1)
+//显示的订单数
+let pageSize=ref(getDefaultPageSize())
+//总条目数
+let tableTotal=ref()
+//是否显示搜索
+let searchFlag=ref(true)
+//页面参数
+const rootData = reactive({
+  queryData: {},
+})
 
 //新增弹窗配置
 let dialogTitle = ref("")
@@ -175,12 +202,35 @@ const filterList = reactive([
   }
 ])
 
+//显示搜索
+const showSearch=()=>{
+  searchFlag.value=!searchFlag.value
+}
+
+// 改变每页大小， 根据页码更新dataShow数据(显示的项目)
+const handleSizeChange=(val)=>{
+  pageSize.value=val
+  getTableData()
+}
+
+// 点击分页组件会返回页码， 根据页码更新tableData数据(显示的项目)
+const handleCurrentChange=(val)=>{
+  currentPage.value = val
+  getTableData()
+}
+
 //获取表格数据
 const getTableData = () => {
   tableLoading.value = true
   tableRef.value.clearSelection()
-  request.post("/notification/query").then(res => {
-    tableData.value = res.data
+  const params = {
+    currentPage: currentPage.value,
+    pageSize: pageSize.value,
+    queryForm: rootData.queryData
+  }
+  request.post("/notification/query",params).then(res => {
+    tableData.value = res.data.resultList
+    tableTotal.value=res.data.rowSum
   }).catch(err => {
 
   }).finally(() => {
@@ -283,6 +333,8 @@ const filterTableData = (data) => {
 onMounted(() => {
   getTableData()
 })
+
+provide('rootData', rootData)
 </script>
 
 <style scoped>
@@ -299,5 +351,12 @@ onMounted(() => {
 .top-right-button {
   position: relative;
   float: right;
+}
+
+.pagination{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
 }
 </style>

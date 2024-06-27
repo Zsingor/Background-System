@@ -1,8 +1,12 @@
 package com.example.springtest.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.example.springtest.entity.Logs;
 import com.example.springtest.entity.Notification;
 import com.example.springtest.mapper.NotificationMapper;
 import com.example.springtest.service.NotificationService;
+import com.example.springtest.utils.QueryResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +27,14 @@ public class NotificationServiceImpl implements NotificationService {
     }
 
     @Override
-    public List<Notification> queryNotifications() {
-        return notificationMapper.queryNotification();
+    public JSONObject queryNotifications(String json) {
+        JSONObject jsonObject= JSON.parseObject(json);
+        Notification notification=jsonObject.getObject("queryForm", Notification.class);
+        System.out.println(notification);
+        int currentPage=jsonObject.getInteger("currentPage");
+        int pageSize=jsonObject.getInteger("pageSize");
+        List<Notification> data=notificationMapper.queryNotification(notification);
+        return QueryResult.getResult(data,currentPage,pageSize);
     }
 
     @Override

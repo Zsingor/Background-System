@@ -1,26 +1,17 @@
 <template>
   <el-row :gutter="8" style="padding-bottom: 8px" >
     <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.username" clearable placeholder="用户名" />
+      <el-input size="default" v-model="rootData.queryData.title" clearable placeholder="通知标题" />
     </el-col>
     <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.module" clearable placeholder="操作模块" />
-    </el-col>
-    <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.operate" clearable placeholder="操作内容" />
-    </el-col>
-    <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.details" clearable placeholder="详细内容" />
-    </el-col>
-    <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.ip" clearable placeholder="IP地址" />
+      <el-input size="default" v-model="rootData.queryData.content" clearable placeholder="通知内容" />
     </el-col>
     <el-col :span="6">
       <el-date-picker
           style="width: 100%"
-          v-model="rootData.queryData.startDate"
+          v-model="rootData.queryData.createTime"
           type="datetime"
-          placeholder="操作起始时间"
+          placeholder="发送起始时间"
           format="YYYY-MM-DD hh:mm:ss"
           value-format="x"
       />
@@ -28,9 +19,9 @@
     <el-col :span="6">
       <el-date-picker
           style="width: 100%"
-          v-model="rootData.queryData.endDate"
+          v-model="rootData.queryData.endTime"
           type="datetime"
-          placeholder="操作终止时间"
+          placeholder="发送终止时间"
           format="YYYY-MM-DD hh:mm:ss"
           value-format="x"
       />
