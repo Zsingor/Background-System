@@ -86,7 +86,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
     }
 
-    public static List<Routes> Routeprocess(List<Routes> routesList){
+    public List<Routes> Routeprocess(List<Routes> routesList){
         // 分类一级路由和二级路由
         List<Routes> parentRoutes = routesList.stream()
                 .filter(route -> route.getLevel() == 1)
@@ -94,7 +94,19 @@ public class RoutesServiceImpl implements RoutesService {
 
         List<Routes> childRoutes = routesList.stream()
                 .filter(route -> route.getLevel() == 2)
-                .collect(Collectors.toList());
+                .toList();
+
+        // 确保每一条子路由都有父路由
+        for (Routes childRoute : childRoutes) {
+            // 检查childRoute的parentId是否在parentRoutes的id中存在
+            if (parentRoutes.stream()
+                    .anyMatch(parent -> parent.getId().equals(childRoute.getParentid()))) {
+                // 如果找到了匹配的父路由，则继续
+                continue;
+            }
+            Routes parent=routesMapper.routesqueryById(childRoute.getParentid());
+            parentRoutes.add(parent);
+        }
 
         // 构建一级路由的 children
         for (Routes route : parentRoutes) {

@@ -11,6 +11,9 @@
         <if test="type != null and type != ''">
             AND type = #{type}
         </if>
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
         ORDER BY position DESC
     </select>
 

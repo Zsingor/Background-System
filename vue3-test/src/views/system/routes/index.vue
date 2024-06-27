@@ -25,10 +25,16 @@
           </div>
         </template>
         <template #menustatus="{ row }">
-          <vxe-switch v-model="row.status"
-                      @click="switchUpdateHandler(row)"
-                      open-label="启用" close-label="禁用"
-                      open-value="1" close-value="0"></vxe-switch>
+<!--          <vxe-switch v-model="row.status"-->
+<!--                      @click="switchUpdateHandler(row)"-->
+<!--                      open-label="启用" close-label="禁用"-->
+<!--                      open-value="1" close-value="0"></vxe-switch>-->
+          <div v-if="row.status==='1'">
+            <span style="color:#16aad8">已启用</span>
+          </div>
+          <div v-else>
+            <span style="color:#F56C6C">已禁用</span>
+          </div>
         </template>
         <template #menulevel="{ row }">
           <div v-if="row.level===1">
@@ -188,6 +194,11 @@ const gridOptions = reactive({
   formConfig: {
     items: [
       {
+        field: 'title',
+        span: 4,
+        itemRender: { name: '$input', props: { placeholder: '菜单名称', clearable: true } }
+      },
+      {
         field: 'type',
         span: 4,
         itemRender: {},
@@ -220,7 +231,7 @@ const gridOptions = reactive({
   columns: [
     {
       type: 'checkbox',
-      title: '菜单名字',
+      title: '菜单名称',
       width: 250,
       treeNode: true,
       align: 'left'
@@ -268,6 +279,11 @@ const gridOptions = reactive({
             request.post("/routes/parents"),
           ]).then(axios.spread((res1, res2) => {
             xGrid.value.clearCheckboxRow()
+            //如果有菜单名字搜索，展开树
+            if(!isEmpty(form.title))
+            {
+              xGrid.value.setAllTreeExpand(true)
+            }
             resolve(res1.data)
             rootData.parentMenus = res2.data
           })).catch(() => {

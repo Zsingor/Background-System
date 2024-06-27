@@ -18,6 +18,10 @@ public interface RoutesMapper {
     @Select("select * from test.routes where level=1 order by position DESC")
     List<Routes> routesParentquery();
 
+    //根据指定的id查询路由
+    @Select("select * from test.routes where id=#{id}")
+    Routes routesqueryById(String id);
+
     //添加新路由
     @Insert("insert into test.routes(id,name,title,path,level,status,icon,parentid,position,type)"+
             "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid},#{position},#{type})")

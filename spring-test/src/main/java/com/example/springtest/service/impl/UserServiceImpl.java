@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService {
                 if(!routesIds.isEmpty())
                 {
                     List<Routes> routesList=routesMapper.routesquery(routesIds);
-                    menuList = RoutesServiceImpl.Routeprocess(routesList);
+                    menuList = Routeprocess(routesList);
                 }
             }
 
@@ -193,5 +193,26 @@ public class UserServiceImpl implements UserService {
 
         List<String> result=RoutesServiceImpl.authorityProcess(authorityList);
         return result;
+    }
+
+    public static List<Routes> Routeprocess(List<Routes> routesList){
+        // 分类一级路由和二级路由
+        List<Routes> parentRoutes = routesList.stream()
+                .filter(route -> route.getLevel() == 1)
+                .collect(Collectors.toList());
+
+        List<Routes> childRoutes = routesList.stream()
+                .filter(route -> route.getLevel() == 2)
+                .toList();
+
+        // 构建一级路由的 children
+        for (Routes route : parentRoutes) {
+            List<Routes> children = childRoutes.stream()
+                    .filter(r -> Objects.equals(r.getParentid(), route.getId()))
+                    .collect(Collectors.toList());
+            route.setChildren(children);
+        }
+
+        return parentRoutes;
     }
 }
