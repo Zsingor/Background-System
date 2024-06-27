@@ -104,8 +104,13 @@ const initSystemNotice=()=>{
   if(loginFlag.value)
   {
     notifyLoading.value=true
-    request.post("/notification/query").then(res => {
-      notifications.value = res.data
+    const params = {
+      currentPage: 1,
+      pageSize: 20,
+      queryForm: {}
+    }
+    request.post("/notification/query",params).then(res => {
+      notifications.value = res.data.resultList
     }).catch(err=>{
 
     }).finally(()=>{
