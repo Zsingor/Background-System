@@ -1,5 +1,5 @@
 <template>
-  <div id="app-navbar" class="disable-selected">
+  <div id="app-header" class="disable-selected">
     <div class="navbar-left">
       <div class="collapse-button"
            @click="persistentConfig.isCollapse=!persistentConfig.isCollapse">
@@ -230,7 +230,7 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style scoped lang="scss">
 
 /* 菜单栏的样式 */
 
@@ -239,9 +239,9 @@ onMounted(() => {
   color: #f0f0f0;
 }
 
-#app-navbar {
+#app-header {
   width: 100%;
-  height: 48px;
+  height: $header-height;
   background: var(--header-bg, #F1F4F3FF);
   color: var(--header-font-color, #000000FF);
   padding-right: 18px;

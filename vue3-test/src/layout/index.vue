@@ -5,8 +5,6 @@
       <PageAside/>
     </div>
     <TagView></TagView>
-    <div class="lineview">
-    </div>
     <div class="mainview" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}">
       <router-view v-slot="{ Component }">
         <transition name="route-fade" mode="out-in" :key="reloadCurrentRoute">
@@ -98,7 +96,7 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style scoped lang="scss">
 
 #layout-wrapper {
   width: 100%;
@@ -108,9 +106,9 @@ onMounted(() => {
 }
 
 .sideview {
-  height: calc(100% - 48px);
+  height: calc(100% - $header-height);
   position: fixed;
-  top: 48px;
+  top: $header-height;
   left: 0;
   background-size: cover;
   transition: width 0.3s;
@@ -118,23 +116,15 @@ onMounted(() => {
 }
 
 .mainview {
-  height: calc(100% - 92px);
-  top: 92px;
+  height: calc(100% - $header-height - $tags-height);
+  top: calc($header-height + $tags-height);
   position: fixed;
-  padding: 0 8px 0 8px;
+  padding: 2px 8px 0 8px;
   transition-property: width, left;
   transition-duration: 0.3s;
   overflow: hidden;
   overflow-y: auto;
   background: #ffffff;
-}
-
-.lineview {
-  height: 2px;
-  width: 100%;
-  background: #888888;
-  opacity: 0.3;
-  margin-bottom: 10px;
 }
 
 /* 路由切换动画 */

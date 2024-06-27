@@ -27,5 +27,13 @@ export default defineConfig({
         rewrite: path => path.replace(/^\/api/, '')
       }
     }
+  },
+
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "./src/styles/layout.scss";`
+      }
+    }
   }
 })

@@ -17,6 +17,7 @@
         </div>
       </div>
     </tag-scroll>
+    <div class="lineview"></div>
   </div>
   <tag-menu/>
 </template>
@@ -99,21 +100,28 @@ onMounted(() => {
 
 </script>
 
-<style>
+<style scoped lang="scss">
 
 #app-tags {
   top:48px;
-  height: 36px;
+  height: $tags-height;
   background: #ffffff;
-  padding: 4px 6px 2px 2px;
+  padding: 4px 6px 0 2px;
   box-shadow: 0 4px 4px -4px #888888;
   position: fixed;
   transition-property: width, left;
   transition-duration: 0.3s;
 }
 
+.lineview{
+  width: 100%;
+  height: 1px;
+  bottom: 0;
+  background-color: #bcbbbb;
+}
+
 #tag-sortable-container {
-  height: 28px;
+  height: calc($tags-height - 8px);
 
   .tag-item {
     min-width: 64px;
@@ -132,7 +140,7 @@ onMounted(() => {
     }
 
     .tag-content {
-      height: 24px;
+      height: calc($tags-height - 14px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -147,7 +155,7 @@ onMounted(() => {
 
       .tag-icon {
         width: 16px;
-        height: 16px;
+        height: calc($tags-height - 22px);
         font-size: 12px;
         margin-left: 8px;
         border-radius: 50%;

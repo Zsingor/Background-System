@@ -79,6 +79,12 @@ onMounted(()=>{
   box-sizing: border-box;
 }
 
+body{
+  background-image: url("./assets/loading.gif");
+  background-position:center;
+  background-repeat:no-repeat;
+}
+
 html, body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, pre, form, fieldset, legend, input, textarea, p, blockquote, figure, hr, menu, dir, thead, tbody, tfoot, th, td {
   margin: 0;
   padding: 0;
