@@ -14,6 +14,7 @@ public class Notification {
     private String senderId;
     private String title;
     private String content;
+    private Integer type;
     private Date createTime;
     private Date endTime;
 }

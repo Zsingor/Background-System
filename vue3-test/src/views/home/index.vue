@@ -78,6 +78,7 @@ let notifyLoading=ref(false)
 
 const dateValue = ref(new Date())
 const user = ref({
+  id:"",
   name: ""
 })
 
@@ -85,7 +86,7 @@ const user = ref({
 const initUser=()=>{
   if(loginFlag.value)
   {
-    user.value.name = userInfo.baseInfo.user_name
+    user.value.id = userInfo.baseInfo.user_id
     request.post("/user/querymsssage", user.value).then(res => {
       user.value = res.data
     }).catch(error => {

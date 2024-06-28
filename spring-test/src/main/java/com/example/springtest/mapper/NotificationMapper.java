@@ -10,7 +10,7 @@ import java.util.List;
 
 @Mapper
 public interface NotificationMapper {
-    @Insert("insert into test.notification(sender_id,title, content, create_time) VALUES (#{senderId},#{title},#{content},#{createTime})")
+    @Insert("insert into test.notification(sender_id,title, content, create_time,type) VALUES (#{senderId},#{title},#{content},#{createTime},#{type})")
     void addNotification(Notification notification);
 
     List<Notification> queryNotification(Notification notification);

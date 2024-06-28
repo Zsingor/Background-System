@@ -96,10 +96,16 @@ const submitForm = () => {
         })
       } else {
         request.post("/user/add", rootData.formData).then(res => {
-          rootData.showForm = false
-          xGrid.value.commitProxy('query')
-          message('添加成功')
-          console.log(res)
+          if(res.code===1)
+          {
+            rootData.showForm = false
+            xGrid.value.commitProxy('query')
+            message('添加成功')
+          }
+          else if(res.code===2)
+          {
+            message(res.msg,"error")
+          }
         }).catch(() => {
           message("添加失败", "error")
         }).finally(()=>{

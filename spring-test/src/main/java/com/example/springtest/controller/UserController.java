@@ -68,6 +68,10 @@ public class UserController {
         {
             return Result.success();
         }
+        else if (flag==2)
+        {
+            return Result.error(2,"用户名已存在");
+        }
         else {
             return Result.error("添加失败");
         }

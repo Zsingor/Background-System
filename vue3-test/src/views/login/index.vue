@@ -141,7 +141,7 @@ onUnmounted(()=>{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #3a5587;
+  background-color: #F0EFF2;
 }
 
 .bg-card{
@@ -161,8 +161,7 @@ onUnmounted(()=>{
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  transition: 1.25s;
-  background-color: #ecf0f3;
+  background-color: #3f8eca;
   overflow: hidden;
   box-shadow: 4px 4px 10px #d1dfe6;
 }
@@ -179,14 +178,14 @@ onUnmounted(()=>{
   font-size: 40px;
   font-weight: 700;
   line-height: 3;
-  color: #181818;
+  color: #ffffff;
   letter-spacing: 0.5px;
 }
 
 .left_description {
   font-size: 16px;
   line-height: 1.6;
-  color: #181818;
+  color: #ffffff;
   letter-spacing: 0.25px;
 }
 

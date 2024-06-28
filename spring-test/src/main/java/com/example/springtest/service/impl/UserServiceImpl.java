@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     //用户登录
     @Override
     public JSONObject userlogin(User user) {
-        User user1 = userMapper.userPrimaryquery(user);
+        User user1 = userMapper.userNamequery(user);
         JSONObject response = new JSONObject();
         //如果当前用户不存在或者密码错误
         if(user1==null)
@@ -91,10 +91,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public int useradd(User user) {
         try {
-            user.setId(UUIDUtils.getUUID());
-            userMapper.useradd(user);
-            userAssignRole(user);
-            return 1;
+            User user1 = userMapper.userNamequery(user);
+            if(user1!=null)
+            {
+                return 2;
+            }
+            else
+            {
+                user.setId(UUIDUtils.getUUID());
+                userMapper.useradd(user);
+                return 1;
+            }
         }
         catch (Exception error)
         {
@@ -147,6 +154,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    //给用户分配角色
     @Override
     public int userAssignRole(User user) {
         try {
@@ -195,6 +203,7 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    //处理路由格式
     public static List<Routes> Routeprocess(List<Routes> routesList){
         // 分类一级路由和二级路由
         List<Routes> parentRoutes = routesList.stream()
