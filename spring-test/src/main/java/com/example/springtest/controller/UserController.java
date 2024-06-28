@@ -22,6 +22,7 @@ import java.util.Objects;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
+
     private UserService userService;
 
     //用户登录
@@ -42,6 +43,26 @@ public class UserController {
             return Result.success(data);
         }catch (Exception e){
             return Result.error("查询失败");
+        }
+    }
+
+    //用户申请账号
+    @PostMapping("/register")
+    public Result userRegister(@RequestBody User user)
+    {
+        user.setType(0);
+        user.setStatus("1");
+        int flag=userService.useradd(user);
+        if (flag==1)
+        {
+            return Result.success();
+        }
+        else if (flag==2)
+        {
+            return Result.error(2,"用户名已存在");
+        }
+        else {
+            return Result.error("申请失败");
         }
     }
 
@@ -90,6 +111,19 @@ public class UserController {
         }
     }
 
+    //查询注册
+    @PostMapping("/applicationquery")
+    public Result applicationQuery()
+    {
+        try {
+            List<User> data=userService.applicationQuery();
+            return Result.success(data);
+        }
+        catch (Exception error){
+            return Result.error("获取数据失败:"+error);
+        }
+    }
+
     //查询用户所拥有的路由
     @PostMapping("/queryRoles")
     public Result queryUserRoles(@RequestBody User user)
@@ -115,6 +149,22 @@ public class UserController {
             return Result.error("无法删除初始用户");
         }
         int flag=userService.userdelete(userlist);
+        if (flag==1)
+        {
+            return Result.success();
+        }
+        else {
+            return Result.error("删除失败");
+        }
+    }
+
+    //同意用户申请
+    @PostMapping("/agree")
+    @PreAuthorize("/user/agree")
+    @AutoLog(module = "用户管理",operate = "同意用户申请")
+    public Result useragree(@RequestBody List<String> userlist)
+    {
+        int flag=userService.useragree(userlist);
         if (flag==1)
         {
             return Result.success();

@@ -22,7 +22,7 @@
     <select id="userquery" parameterType="com.example.springtest.entity.User" resultMap="UserResultMap">
         SELECT u.* FROM test.user u
         LEFT JOIN test.user_roles ur ON u.id = ur.userid
-        WHERE 1=1
+        WHERE u.type = 1
         <if test="name != null and name != ''">
             AND u.name LIKE CONCAT('%', #{name}, '%')
         </if>
@@ -49,5 +49,12 @@
             #{item}
         </foreach>
     </delete>
+
+    <update id="useragree" parameterType="java.util.List">
+        UPDATE test.user SET type=1 WHERE id IN
+        <foreach item="item" collection="userlist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
 
 </mapper>

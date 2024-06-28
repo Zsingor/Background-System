@@ -99,6 +99,8 @@ public class UserServiceImpl implements UserService {
             else
             {
                 user.setId(UUIDUtils.getUUID());
+                Date createtime=new Date(System.currentTimeMillis());
+                user.setCreateTime(createtime);
                 userMapper.useradd(user);
                 return 1;
             }
@@ -125,12 +127,29 @@ public class UserServiceImpl implements UserService {
         return QueryResult.getResult(data,currentPage,pageSize);
     }
 
+    @Override
+    public List<User> applicationQuery() {
+        return userMapper.applicationQuery();
+    }
+
     // 用户删除
     @Override
     public int userdelete(List<String> userlist) {
         try {
             userRolesMapper.deleteUsersRoles(userlist);
             userMapper.userdelete(userlist);
+            return 1;
+        }
+        catch (Exception error)
+        {
+            return 0;
+        }
+    }
+
+    @Override
+    public int useragree(List<String> userlist) {
+        try {
+            userMapper.useragree(userlist);
             return 1;
         }
         catch (Exception error)

@@ -8,12 +8,15 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     //添加用户信息
-    @Insert("insert into test.user(id,name,password,email,description,status)"+
-            "values(#{id},#{name},#{password},#{email},#{description},#{status})")
+    @Insert("insert into test.user(id,name,password,email,description,status,create_time,type)"+
+            "values(#{id},#{name},#{password},#{email},#{description},#{status},#{createTime},#{type})")
     void useradd(User user);
 
     //查询用户信息
     List<User> userquery(User user);
+
+    @Select("select * from test.user where type=0 order by create_time desc ")
+    List<User> applicationQuery();
 
     //返回消息的用户信息
     @Select("select id,name,description from test.user")
@@ -29,6 +32,9 @@ public interface UserMapper {
 
     //删除用户信息
     void userdelete(List<String> userlist);
+
+    //同意用户申请
+    void useragree(List<String> userlist);
 
     //更新用户信息
     @Update("update test.user set name=#{name},password=#{password},email=#{email},"+

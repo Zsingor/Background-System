@@ -18,7 +18,11 @@ public interface UserService {
 
     JSONObject userquery(String json);
 
+    List<User> applicationQuery();
+
     int userdelete(List<String> userlist);
+
+    int useragree(List<String> userlist);
 
     int userupdate(User user);
 
