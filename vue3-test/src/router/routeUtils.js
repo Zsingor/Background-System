@@ -4,6 +4,11 @@ import {routeMenus, userInfo} from "@/layout/user.js";
 import layoutRoutes from "@/router/routes/LayoutRoutes.js";
 import {isEmpty} from "@/utils/commons.js";
 
+const modules=import.meta.glob("../views/**/**.vue")
+
+console.log(222222222)
+console.log(modules)
+
 // 获取原生路由数组
 function getSourceRouteJson(userRouteJson) {
     let routeJson;
@@ -52,7 +57,8 @@ export function createRoutes(userRouteJson) {
                     path: `/admin${item.path}${r.path}`,
                     meta: {title: r.title},
                     name: r.name,
-                    component: () => import(/*@vite-ignore*/"../views"+item.path+r.path+"/index.vue")
+                    //component: () => import(/*@vite-ignore*/"../views"+item.path+r.path+"/index.vue")
+                    component: modules[/*@vite-ignore*/`../views${item.path}${r.path}/index.vue`]
                 });
             });
         }
@@ -62,7 +68,8 @@ export function createRoutes(userRouteJson) {
                 path: `/admin${item.path}`,
                 name: item.name,
                 meta: {title: item.title},
-                component: () => import(/*@vite-ignore*/"../views"+item.path+"/index.vue")
+                //component: () => import(/*@vite-ignore*/"../views"+item.path+"/index.vue")
+                component: modules[/*@vite-ignore*/`../views${item.path}/index.vue`]
             })
         }
 
