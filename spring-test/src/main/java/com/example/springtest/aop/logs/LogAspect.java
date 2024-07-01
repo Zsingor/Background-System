@@ -65,6 +65,10 @@ public class LogAspect {
             }
             else
             {
+                if(result.getCode()==0)
+                {
+                    return result;
+                }
                 JSONObject data=(JSONObject) result.getData();
                 token=data.getString("token");
             }
