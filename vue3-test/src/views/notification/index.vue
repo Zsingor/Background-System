@@ -45,71 +45,71 @@
           @current-change="handleCurrentChange"
       />
     </div>
-  </div>
 
-  <el-dialog
-      :title="dialogTitle"
-      v-model="dialogVisible"
-      @closed="handleClose">
-    <el-form ref="addRef" :model="notifyForm" label-width="100px" :rules="formRules">
-      <el-form-item label="通知标题:" prop="title">
-        <el-input v-model="notifyForm.title"/>
-      </el-form-item>
-      <el-form-item label="通知内容:" prop="content">
-        <el-input v-model="notifyForm.content"/>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" :loading="dialogLoading" @click="submit()">发 送</el-button>
-      </div>
-    </template>
-  </el-dialog>
+    <el-dialog
+        :title="dialogTitle"
+        v-model="dialogVisible"
+        @closed="handleClose">
+      <el-form ref="addRef" :model="notifyForm" label-width="100px" :rules="formRules">
+        <el-form-item label="通知标题:" prop="title">
+          <el-input v-model="notifyForm.title"/>
+        </el-form-item>
+        <el-form-item label="通知内容:" prop="content">
+          <el-input v-model="notifyForm.content"/>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" :loading="dialogLoading" @click="submit()">发 送</el-button>
+        </div>
+      </template>
+    </el-dialog>
 
-  <el-dialog
-      class="center-dialog"
-      :width="'40%'"
-      draggable
-      :title="dialogTitle"
-      v-model="ExportVisible"
-      @closed="exportClose">
-    <el-form style="width: 70%" ref="exportRef" :model="exportForm" label-width="100px">
-      <el-form-item label="文件名" prop="fileName">
-        <el-input v-model="exportForm.fileName" placeholder="请输入文件名"/>
-      </el-form-item>
-      <el-form-item label="选择数据" prop="data">
-        <el-select
-            v-model="exportForm.data"
-        >
-          <el-option
-              v-for="item in dataList"
-              :key="item.id"
-              :label="item.title"
-              :value="item.id"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="选择字段" prop="filter">
-        <el-checkbox-group
-            style="display: flex;
+    <el-dialog
+        class="center-dialog"
+        :width="'40%'"
+        draggable
+        :title="dialogTitle"
+        v-model="ExportVisible"
+        @closed="exportClose">
+      <el-form style="width: 70%" ref="exportRef" :model="exportForm" label-width="100px">
+        <el-form-item label="文件名" prop="fileName">
+          <el-input v-model="exportForm.fileName" placeholder="请输入文件名"/>
+        </el-form-item>
+        <el-form-item label="选择数据" prop="data">
+          <el-select
+              v-model="exportForm.data"
+          >
+            <el-option
+                v-for="item in dataList"
+                :key="item.id"
+                :label="item.title"
+                :value="item.id"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="选择字段" prop="filter">
+          <el-checkbox-group
+              style="display: flex;
                         flex-flow: column nowrap;
                         align-items: flex-start;"
-            v-model="exportForm.filter"
-        >
-          <el-checkbox v-for="(item,index) in filterList" :key="index" :label="item.title" :value="item.value">
-            {{ item.title }}
-          </el-checkbox>
-        </el-checkbox-group>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="ExportVisible = false">取 消</el-button>
-        <el-button type="primary" :loading="ExportLoading" @click="exportData()">导 出</el-button>
-      </div>
-    </template>
-  </el-dialog>
+              v-model="exportForm.filter"
+          >
+            <el-checkbox v-for="(item,index) in filterList" :key="index" :label="item.title" :value="item.value">
+              {{ item.title }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="ExportVisible = false">取 消</el-button>
+          <el-button type="primary" :loading="ExportLoading" @click="exportData()">导 出</el-button>
+        </div>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script setup>
