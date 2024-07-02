@@ -85,6 +85,8 @@ body{
   background-repeat:no-repeat;
 }
 
+
+/*清除浏览器默认样式*/
 html, body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, pre, form, fieldset, legend, input, textarea, p, blockquote, figure, hr, menu, dir, thead, tbody, tfoot, th, td {
   margin: 0;
   padding: 0;

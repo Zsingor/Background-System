@@ -7,7 +7,7 @@ import {persistentConfig} from "@/layout/layout.js";
 
 //创建一个新的axios对象
 const request=axios.create({
-    //baseURL:"http://192.168.1.180:7070", //后端的ip地址
+    //baseURL:"http://localhost:7070", //后端的ip地址
 
     //跨域的路径，见vite.config.js
     baseURL:"/api", //代理的ip地址

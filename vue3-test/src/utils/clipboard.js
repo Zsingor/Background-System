@@ -37,7 +37,7 @@ export const handlePaste = (e) => {
     text = window.clipboardData.getData("text") || ""
     if (text !== "") {
       if (window.getSelection) {
-        var newNode = document.createElement("span")
+        let newNode = document.createElement("span")
         newNode.innerHTML = text;
         window.getSelection().getRangeAt(0).insertNode(newNode)
       } else {

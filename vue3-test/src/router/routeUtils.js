@@ -6,8 +6,6 @@ import {isEmpty} from "@/utils/commons.js";
 
 const modules=import.meta.glob("../views/**/**.vue")
 
-console.log(modules)
-
 // 获取原生路由数组
 function getSourceRouteJson(userRouteJson) {
     let routeJson;

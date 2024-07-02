@@ -6,6 +6,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.io.File;
 
+// 配置静态资源映射
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
     private static final String ROOT_PATH=System.getProperty("user.dir")+ File.separator+"resource";
