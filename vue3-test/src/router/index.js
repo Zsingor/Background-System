@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from 'vue-router'
+import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import login from '@/views/login/index.vue'
 import register from '@/views/register/index.vue'
 import layoutRoutes from "@/router/routes/LayoutRoutes.js";
@@ -24,6 +24,7 @@ export const routes = [
 
 
 const router = createRouter({
+    //history: createWebHashHistory(),
     history: createWebHistory(),
     routes
 })

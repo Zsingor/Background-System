@@ -6,7 +6,6 @@ import {isEmpty} from "@/utils/commons.js";
 
 const modules=import.meta.glob("../views/**/**.vue")
 
-console.log(222222222)
 console.log(modules)
 
 // 获取原生路由数组
