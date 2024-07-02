@@ -48,13 +48,23 @@
                 <div class="msg-item" v-if="item.senderId===userId">
                   <div></div>
                   <!-- 文字内容 -->
-                  <div class="msg-content">
-                    {{item.content}}
+                  <div class="msg-item-right">
+                    <div class="msg-item-time">
+                      {{parseDate(item.createTime)}}
+                    </div>
+                    <div class="msg-content">
+                      {{item.content}}
+                    </div>
                   </div>
                 </div>
                 <div class="msg-item" v-else>
-                  <div class="msg-content">
-                    {{item.content}}
+                  <div class="msg-item-left">
+                    <div class="msg-item-time">
+                      {{parseDate(item.createTime)}}
+                    </div>
+                    <div class="msg-content">
+                      {{item.content}}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -80,9 +90,9 @@ import {
   getAllUser,
   getConversation,
   getMessage,
-  sendMessageToService, sendNotification
+  sendMessageToService
 } from "@/request/api/websocket.js";
-import {isEmpty} from "@/utils/commons.js";
+import {isEmpty, parseDate} from "@/utils/commons.js";
 import websocket from "@/utils/WebSocket.js";
 import { userInfo} from "@/layout/user.js";
 import {useRoute} from "vue-router";
@@ -334,11 +344,23 @@ onMounted(async () => {
   justify-content: space-between;
 }
 
-.msg-content{
-  position: relative;
+.msg-item-right{
   max-width: 60%;
+  text-align: right;
+}
+
+.msg-item-left{
+  max-width: 60%;
+}
+
+.msg-item-time{
+  font-size: 14px;
+}
+
+.msg-content{
+  text-align: left;
   word-wrap: break-word;
-  padding: 1%;
+  padding: 10px;
   border-radius: 8px;
   font-size: 18px;
   font-weight: 500;
