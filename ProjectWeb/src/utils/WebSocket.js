@@ -5,12 +5,10 @@ import {ElNotification} from "element-plus";
 import {persistentConfig} from "@/layout/layout.js";
 import {useRouter} from "vue-router";
 import router from "@/router/index.js";
+import {nextTick} from "vue";
 
 // WebSocket地址
 const url = 'ws://127.0.0.1:7070/webSocket/'
-
-//路由实例
-// const router=useRouter()
 
 // WebSocket实例
 let ws
@@ -136,13 +134,11 @@ if (performance.getEntriesByType('navigation')[0].type === 'reload') {
     if(!isEmpty(localStorage.getItem("User_Info")))
     {
         const userid=JSON.parse(localStorage.getItem("User_Info")).user_id
-        // 延迟一定时间再执行 WebSocket 初始化，确保页面完全加载后再进行连接
-        setTimeout(() => {
-            console.log('WebSocket执行刷新后重连...')
+        // 确保页面完全加载后再进行连接
+        nextTick(()=>{
             // 刷新后重连
-            // 获取username（假设为测试username写死，现在是动态获取）
             websocket.Init(userid)
-        }, 200) // 适当调整延迟时间
+        })
     }
 }
 

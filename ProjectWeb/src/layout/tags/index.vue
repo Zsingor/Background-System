@@ -9,7 +9,7 @@
           <div class="tag-content">
             <span class="tag-flag"></span>
             <span class="tag-text">{{ tag.title }}</span>
-            <span v-if="isActive(tag.path)" class="tag-icon"
+            <span class="tag-icon"
                   @click.prevent.stop="closeTag(index,route.fullPath)">
               <el-icon><Close /></el-icon>
             </span>
@@ -156,12 +156,13 @@ onMounted(() => {
       .tag-icon {
         width: 16px;
         height: calc($tags-height - 22px);
-        font-size: 12px;
-        margin-left: 8px;
+        font-size: 10px;
+        margin-left: 4px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        color: #7a7a7a;
 
         &:hover {
           background: #BDBDBDFF;
@@ -196,6 +197,7 @@ onMounted(() => {
       }
 
       .tag-icon {
+        color: var(--tag-active-font-color,#fff);
         &:hover {
           background: var(--tag-bg2,#AFD6E9FF);
           color: #FAFAFAFF;

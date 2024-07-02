@@ -135,30 +135,6 @@ const reject=(flag,row)=>{
     }).finally(() => {
       tableLoading.value = false
     })
-    // let datas=tableRef.value.getSelectionRows()
-    // if(isEmpty(datas))
-    // {
-    //   message("请先选择数据","info")
-    // }
-    // else
-    // {
-    //   const ids = [];
-    //   tableLoading.value = true
-    //   datas.forEach(item => {
-    //     ids.push(item["id"]);
-    //   });
-    //   request.post("/user/delete",ids).then(res=>{
-    //     if (res.code === 1) {
-    //       message("拒绝成功");
-    //       getTableData()
-    //     }
-    //     else {
-    //       message(res.msg,"error")
-    //     }
-    //   }).finally(() => {
-    //     tableLoading.value = false
-    //   })
-    // }
   })
 }
 
