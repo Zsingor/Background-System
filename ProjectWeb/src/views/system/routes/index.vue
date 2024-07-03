@@ -257,7 +257,7 @@ const gridOptions = reactive({
     },
     {
       field: 'level',
-      title: '菜单权重',
+      title: '菜单级别',
       width: 100,
       slots: {default: 'menulevel'}
     },
@@ -266,6 +266,11 @@ const gridOptions = reactive({
       title: '菜单类别',
       width: 100,
       slots: {default: 'menutype'}
+    },
+    {
+      field: 'position',
+      title: '菜单权重',
+      width: 100,
     },
     {title: '操作', minWidth: 150, fixed: 'right', slots: {default: 'operate'}}
   ],
