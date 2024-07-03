@@ -25,6 +25,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             return true;
         }
 
+        //System.out.println(request.getRequestURL());
+
         //获取请求中的令牌
         String token = request.getHeader("token");
         //判断令牌是否存在,如果不存在则返回错误信息
