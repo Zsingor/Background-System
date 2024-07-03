@@ -74,8 +74,11 @@ public class WebSocketController {
     public Result sendMessageTo(@RequestBody Message message) {
         System.out.println(message);
         try {
+            //新增消息信息
             messageService.addMessage(message);
+            //增加未读数
             conversationsService.addUnreadCount(message.getReceiverId(),message.getSenderId());
+            //发送消息
             webSocketUtil.sendMessageTo(message.getReceiverId(),message);
             return Result.success();
         } catch (IOException e) {

@@ -115,7 +115,8 @@ let userMessage=ref({
   senderId:userInfo.baseInfo.user_id,
   senderName:userInfo.baseInfo.user_name,
   receiverId:"",
-  content:""
+  content:"",
+  createTime:0,
 })
 
 //拥有的用户列表
@@ -164,6 +165,12 @@ const getMessageCallback = async (message) => {
   if(activeVar.value!==-1)
   {
     msgList.value.push(message)
+    //若用户在当前的消息列表中，消去未读数
+    request.post("/conversations/updateUnreadCount",
+        {userId:userInfo.baseInfo.user_id,contactId:userList.value[activeVar.value].id}).then(res=>{
+
+    })
+    scrollerToBottom()
   }
 }
 
@@ -182,6 +189,7 @@ const sendText = async () => {
     }
     if(res.code===1)
     {
+      userMessage.value.createTime=Date.now()
       let sendMessage=_.cloneDeep(userMessage.value)
       msgList.value.push(sendMessage)
       userMessage.value.content=""
@@ -197,11 +205,14 @@ const sendText = async () => {
 }
 
 onMounted(async () => {
-  console.log("mounted")
+  //给接收信息设置回调函数
   websocket.setMessageCallback(getMessageCallback)
+
+  //获得全部的用户列表
   const res = await getAllUser()
   allList.value=res.data
 
+  //获得朋友列表
   const res1=await getConversation(userInfo.baseInfo.user_id)
   userList.value=res1.data
 
