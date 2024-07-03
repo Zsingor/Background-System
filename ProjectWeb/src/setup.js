@@ -3,7 +3,7 @@ import {isEmpty} from "@/utils/commons.js";
 import {ref} from "vue";
 import {
     initPersistentConfig,
-    persistentConfig, updateErrorTheme,
+    persistentConfig, setNprogressColor, updateErrorTheme,
     updateInfoTheme,
     updatePrimaryTheme,
     updateSuccessTheme, updateWarningTheme
@@ -22,11 +22,13 @@ export function loadConfig() {
     } else {
         initPersistentConfig(JSON.parse(localStorage.getItem("Global_Config")));
     }
+    //更新颜色样式
     updatePrimaryTheme(persistentConfig.theme.global.primary)
     updateInfoTheme(persistentConfig.theme.global.info)
     updateSuccessTheme(persistentConfig.theme.global.success)
     updateErrorTheme(persistentConfig.theme.global.error)
     updateWarningTheme(persistentConfig.theme.global.warning)
+    setNprogressColor(persistentConfig.theme.header.nprogressColor)
     // 2.初始化路由信息
     if (!isEmpty(localStorage.getItem("User_Info"))) {
         userInfo.baseInfo=JSON.parse(localStorage.getItem("User_Info"))

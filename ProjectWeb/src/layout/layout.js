@@ -29,6 +29,7 @@ export const defaultTheme = {
         bgColor: "hsl(160,10%,95%)",    // 背景色
         bgColor1: "hsl(160,10%,80%)",   // 鼠标悬停在按钮上的背景色
         fontColor: "#000",              // 字体颜色
+        nprogressColor: '#16aad8'       // 顶部导航进度条颜色
     },
     tag: {
         bgColor: "hsl(200,57%,50%)",    // 标签被选中时的颜色
@@ -150,4 +151,10 @@ function setGlobalTheme(value, type) {
         document.documentElement.style.setProperty(`--color-${type}-${i}`,
             colorIsDark(value) ? colorLighten(value, 10 * i) : colorDarken(value, 10 * i));
     }
+}
+
+//设置页面加载进度条的颜色
+export function setNprogressColor(value) {
+    persistentConfig.theme.header.nprogressColor = value;
+    document.documentElement.style.setProperty(`--nprogress-color`, value);
 }

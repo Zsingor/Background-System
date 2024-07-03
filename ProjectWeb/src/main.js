@@ -9,8 +9,11 @@ import * as echarts from 'echarts' //导入echarts
 import "exceljs" //导入excel文件导出工具
 import {loadConfig} from "@/setup.js";
 import "@/router/permission.js"
+
+
 import "@/styles/element-plus.css"
 import "@/styles/vxe-table.css"
+import "@/styles/nprogress.scss"
 
 const app = createApp(App)
 //关闭警告信息

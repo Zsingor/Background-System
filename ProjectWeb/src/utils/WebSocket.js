@@ -1,4 +1,4 @@
-// 信息提示
+// websocket工具类
 import {onceMessage} from "@/utils/message.js";
 import {isEmpty} from "@/utils/commons.js";
 import {ElNotification} from "element-plus";

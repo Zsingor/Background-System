@@ -3,25 +3,16 @@
 import Clipboard from 'clipboard'
 import {message} from "@/utils/message.js";
 
-
-function clipboardSuccess() {
-  message('复制成功')
-}
-
-function clipboardError() {
-  message('复制失败','error')
-}
-
 export default function handleClipboard(text, event) {
   const clipboard = new Clipboard(event.target, {
     text: () => text
   })
   clipboard.on('success', () => {
-    clipboardSuccess()
+    message('复制成功')
     clipboard.destroy()
   })
   clipboard.on('error', () => {
-    clipboardError()
+    message('复制失败','error')
     clipboard.destroy()
   })
   clipboard.onClick(event)

@@ -84,6 +84,12 @@
                        @active-change="updateHeader"/>
     </div>
     <div class="theme-item">
+      <p>顶部导航进度条：</p>
+      <el-color-picker size="default"
+                       v-model="persistentConfig.theme.header.nprogressColor"
+                       @active-change="setNprogressColor"/>
+    </div>
+    <div class="theme-item">
       <p>导航标签激活背景颜色：</p>
       <el-color-picker size="default" color-format="hsl"
                        v-model="persistentConfig.theme.tag.bgColor"
@@ -132,7 +138,7 @@ import {
   defaultTheme,
   updatePrimaryTheme,
   updateInfoTheme,
-  updateSuccessTheme, updateWarningTheme, updateErrorTheme
+  updateSuccessTheme, updateWarningTheme, updateErrorTheme, setNprogressColor
 } from "@/layout/layout.js";
 
 const setLayoutTheme=(type)=>{
@@ -141,6 +147,7 @@ const setLayoutTheme=(type)=>{
       updateHeader("#16aad8");
       updateTag("#16aad8");
       updateAside("#545c64");
+      setNprogressColor('#dc2626')
       persistentConfig.theme.aside.fontColor = "#ffffff";
       persistentConfig.theme.aside.fontActiveColor = "#ffd04b";
       break;
@@ -148,6 +155,7 @@ const setLayoutTheme=(type)=>{
       updateHeader("hsl(160, 57%, 35%)");
       updateTag("hsl(160, 57%, 35%)");
       updateAside("#545c64");
+      setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#ffffff";
       persistentConfig.theme.aside.fontActiveColor = "#ffd04b";
       break;
@@ -155,6 +163,7 @@ const setLayoutTheme=(type)=>{
       updateHeader("hsl(160,10%,95%)");
       updateTag("hsl(200,57%,50%)");
       updateAside("#E5E5E5");
+      setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#171616";
       persistentConfig.theme.aside.fontActiveColor = "#00AC9B";
       break;
@@ -162,6 +171,7 @@ const setLayoutTheme=(type)=>{
       updateHeader("hsl(61, 0%, 19%)");
       updateTag("hsl(61, 0%, 19%)");
       updateAside("#3c3f41");
+      setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#DBDBDB";
       persistentConfig.theme.aside.fontActiveColor = "#00BBFF";
   }
