@@ -20,7 +20,7 @@ public class WebConfig implements WebMvcConfigurer {
         whileList.add("/user/login");
         whileList.add("/user/register");
         whileList.add("/resource/**");
-        whileList.add("/files/**");
+        whileList.add("/files/download");
         //配置黑名单
         List<String> blackList = new ArrayList<>();
         blackList.add("/**");

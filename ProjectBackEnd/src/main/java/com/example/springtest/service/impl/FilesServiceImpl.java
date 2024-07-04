@@ -12,6 +12,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class FilesServiceImpl implements FilesService {
@@ -46,6 +48,32 @@ public class FilesServiceImpl implements FilesService {
         File saveFile=new File(FILE_PATH+File.separator+orginalFilename);
         file.transferTo(saveFile);//存储文件到本地磁盘
         return orginalFilename;
+    }
+
+    @Override
+    public List<String> mutiFileUpload(MultipartFile[] files) throws IOException {
+        List<String> fileList=new ArrayList<>();
+        for(MultipartFile file:files)
+        {
+            String orginalFilename=file.getOriginalFilename();//文件名称
+            String mainName= FileUtil.mainName(orginalFilename);//文件的主名称
+            String extName=FileUtil.extName(orginalFilename);//文件的扩展名
+            String FILE_PATH="";
+            FILE_PATH=getPath(extName);
+
+            if(!FileUtil.exist(FILE_PATH))
+            {
+                FileUtil.mkdir(FILE_PATH);
+            }
+            if (FileUtil.exist(FILE_PATH+File.separator+orginalFilename))
+            {   //如果文件名已存在则随机创建新的文件名
+                orginalFilename=System.currentTimeMillis()+"_"+mainName+"."+extName;
+            }
+            File saveFile=new File(FILE_PATH+File.separator+orginalFilename);
+            file.transferTo(saveFile);//存储文件到本地磁盘
+            fileList.add(orginalFilename);
+        }
+        return fileList;
     }
 
     // 加载文件
