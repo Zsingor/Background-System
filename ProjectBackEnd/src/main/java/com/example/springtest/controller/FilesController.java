@@ -45,6 +45,7 @@ public class FilesController {
      */
     @PostMapping( "/uploadEditor")
     public JSONObject uploaduploadEditor(@RequestParam("file") MultipartFile file) throws Exception {
+        System.out.println(file.getOriginalFilename());
         return filesService.uploadEditor(file);
     }
 

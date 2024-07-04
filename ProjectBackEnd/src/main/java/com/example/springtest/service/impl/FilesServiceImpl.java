@@ -21,8 +21,10 @@ public class FilesServiceImpl implements FilesService {
     @Value("${server.port}")
     String port;
 
-    private static final String IMAGE_PATH=System.getProperty("user.dir")+ File.separator+"resource"+ File.separator+"images";
-    private static final String VIDEO_PATH=System.getProperty("user.dir")+ File.separator+"resource"+ File.separator+"videos";
+    private static final String ROOT_PATH=System.getProperty("user.dir")+ File.separator+"resource";
+    private static final String IMAGES_PATH=ROOT_PATH+ File.separator+"images";
+    private static final String VIDEOS_PATH=ROOT_PATH+ File.separator+"videos";
+    private static final String FILES_PATH=ROOT_PATH+ File.separator+"files";
 
     //上传文件
     @Override
@@ -31,15 +33,7 @@ public class FilesServiceImpl implements FilesService {
         String mainName= FileUtil.mainName(orginalFilename);//文件的主名称
         String extName=FileUtil.extName(orginalFilename);//文件的扩展名
         String FILE_PATH="";
-        //判断文件是图片还是视频
-        if (isImage(extName))
-        {
-            FILE_PATH=IMAGE_PATH;
-        }
-        else if (isVideo(extName))
-        {
-            FILE_PATH=VIDEO_PATH;
-        }
+        FILE_PATH=getPath(extName);
 
         if(!FileUtil.exist(FILE_PATH))
         {
@@ -59,15 +53,7 @@ public class FilesServiceImpl implements FilesService {
     public void downloads(String fileName, HttpServletResponse response) throws IOException {
         String extName=FileUtil.extName(fileName);//文件的扩展名
         String FILE_PATH="";
-        //判断文件是图片还是视频
-        if (isImage(extName))
-        {
-            FILE_PATH=IMAGE_PATH;
-        }
-        else if (isVideo(extName))
-        {
-            FILE_PATH=VIDEO_PATH;
-        }
+        FILE_PATH=getPath(extName);
 
         String filePath=FILE_PATH+ File.separator+fileName;
         if(!FileUtil.exist(filePath))
@@ -85,15 +71,7 @@ public class FilesServiceImpl implements FilesService {
     public void deleteFile(String fileName) {
         String extName=FileUtil.extName(fileName);//文件的扩展名
         String FILE_PATH="";
-        //判断文件是图片还是视频
-        if (isImage(extName))
-        {
-            FILE_PATH=IMAGE_PATH;
-        }
-        else if (isVideo(extName))
-        {
-            FILE_PATH=VIDEO_PATH;
-        }
+        FILE_PATH=getPath(extName);
 
         File dest = new File(FILE_PATH +File.separator+ fileName);
         if(dest.exists())
@@ -118,16 +96,21 @@ public class FilesServiceImpl implements FilesService {
         String FILE_PATH="";
         String resPath="";
 
-        //判断文件是图片还是视频
+        //判断文件是图片还是视频还是其他文件
         if (isImage(extName))
         {
-            FILE_PATH=IMAGE_PATH;
+            FILE_PATH=IMAGES_PATH;
             resPath="http://"+ip+":"+port+"/resource/images/"+orginalFilename;
         }
         else if (isVideo(extName))
         {
-            FILE_PATH=VIDEO_PATH;
+            FILE_PATH=VIDEOS_PATH;
             resPath="http://"+ip+":"+port+"/resource/videos/"+orginalFilename;
+        }
+        else
+        {
+            FILE_PATH=FILES_PATH;
+            resPath="http://"+ip+":"+port+"/resource/files/"+orginalFilename;
         }
 
         if(!FileUtil.exist(FILE_PATH))
@@ -147,6 +130,21 @@ public class FilesServiceImpl implements FilesService {
         res.put("errno",0);
         res.put("data",filePathList);
         return res;
+    }
+
+    String getPath(String extName){
+        if (isImage(extName))
+        {
+            return IMAGES_PATH;
+        }
+        else if (isVideo(extName))
+        {
+            return VIDEOS_PATH;
+        }
+        else
+        {
+            return FILES_PATH;
+        }
     }
 
     Boolean isImage(String extName)
