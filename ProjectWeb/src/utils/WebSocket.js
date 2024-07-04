@@ -8,7 +8,7 @@ import router from "@/router/index.js";
 import {nextTick} from "vue";
 
 // WebSocket地址
-const url = 'ws://127.0.0.1:7070/webSocket/'
+const url = import.meta.env.VITE_WS_API;
 
 // WebSocket实例
 let ws
@@ -41,6 +41,7 @@ const websocket = {
         ws.onerror = (e) => {
             console.log('WebSocket重连开关', isReconnecting)
             console.log('WebSocket数据传输发生错误', e)
+            console.log("11111111111",url)
             onceMessage.error('WebSocket传输发生错误')
             // 打开重连
             reconnect()

@@ -22,49 +22,9 @@ import java.util.*;
 @SpringBootTest
 class SpringTestApplicationTests {
 
-    @Autowired
-    private RoutesMapper routesMapper;
-
-    @Autowired
-    private MessageMapper messageMapper;
-
     @Test
     void contextLoads() {
-        Map<String, Object> claims=new HashMap<>();
-        claims.put("username","user11");
-        String token= JwtUtils.generateJWT(claims);
-        System.out.println("token"+token);
-        try {
-            // 验证令牌
-            DecodedJWT verify=JwtUtils.parseJWT(token);
-            System.out.println(verify.getClaim("username").toString());
-        } catch (SignatureVerificationException e) {
-            e.printStackTrace();
-            System.out.println("1");
-        }catch (TokenExpiredException e){
-            e.printStackTrace();
-            System.out.println("1");
-        }catch (AlgorithmMismatchException e){
-            e.printStackTrace();
-            System.out.println("1");
-        }catch (Exception e){
-            e.printStackTrace();
-            System.out.println("1");
-        }
 
-//        String uuid = UUID.randomUUID().toString().replace("-", "");
-//        System.out.println(uuid);
-//        System.out.println(uuid.length());
-    }
-
-    @Test
-    void test1() {
-        Message message=new Message();
-        message.setSenderId("123");
-        message.setContent("5555");
-        Date createtime=new Date(System.currentTimeMillis());
-        message.setCreateTime(createtime);
-        messageMapper.addMessage(message);
     }
 
 }

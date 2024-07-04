@@ -16,13 +16,13 @@ export default defineConfig({
 
   server:{
     host: "0.0.0.0", // ip
-    port: 5100,  // 端口号
+    port: 7051,  // 端口号
     open: false,  // 是否自动在浏览器打开
     https: false, // 是否开启 http
     // 跨域代理配置
     proxy: {
       '/api': {
-        target: 'http://localhost:7070',
+        target: 'http://localhost:7050',
         changeOrigin: true,
         rewrite: path => path.replace(/^\/api/, '')
       }
