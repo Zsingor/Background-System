@@ -8,7 +8,7 @@
         <selectKey keyProperty="id" resultType="java.lang.Integer" order="AFTER">
             SELECT LAST_INSERT_ID()
         </selectKey>
-        INSERT INTO test.message (sender_id,sender_name,receiver_id, content,create_time) VALUES
+        INSERT INTO sys_data.message (sender_id,sender_name,receiver_id, content,create_time) VALUES
         (#{senderId},#{senderName},#{receiverId}, #{content},#{createTime})
     </insert>
 </mapper>

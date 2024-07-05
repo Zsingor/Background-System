@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.springtest.mapper.RolesMapper">
     <select id="rolesquery" parameterType="com.example.springtest.entity.Roles" resultType="com.example.springtest.entity.Roles">
-        SELECT * FROM test.roles
+        SELECT * FROM sys_data.roles
         WHERE 1=1
         <if test="name != null and name != ''">
             AND name LIKE CONCAT('%', #{name}, '%')
@@ -16,7 +16,7 @@
     </select>
 
     <delete id="rolesdelete" parameterType="java.util.List">
-        DELETE FROM test.roles WHERE id IN
+        DELETE FROM sys_data.roles WHERE id IN
         <foreach item="item" collection="rolelist" open="(" separator="," close=")">
             #{item}
         </foreach>

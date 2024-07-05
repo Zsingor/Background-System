@@ -16,12 +16,12 @@
     </resultMap>
 
     <select id="selectUserRoles" resultType="java.lang.String">
-        SELECT roleid FROM test.user_roles WHERE userid = #{id}
+        SELECT roleid FROM sys_data.user_roles WHERE userid = #{id}
     </select>
 
     <select id="userquery" parameterType="com.example.springtest.entity.User" resultMap="UserResultMap">
-        SELECT u.* FROM test.user u
-        LEFT JOIN test.user_roles ur ON u.id = ur.userid
+        SELECT u.* FROM sys_data.user u
+        LEFT JOIN sys_data.user_roles ur ON u.id = ur.userid
         WHERE u.type = 1
         <if test="name != null and name != ''">
             AND u.name LIKE CONCAT('%', #{name}, '%')
@@ -44,14 +44,14 @@
     </select>
 
     <delete id="userdelete" parameterType="java.util.List">
-        DELETE FROM test.user WHERE id IN
+        DELETE FROM sys_data.user WHERE id IN
         <foreach item="item" collection="userlist" open="(" separator="," close=")">
             #{item}
         </foreach>
     </delete>
 
     <update id="useragree" parameterType="java.util.List">
-        UPDATE test.user SET type=1 WHERE id IN
+        UPDATE sys_data.user SET type=1 WHERE id IN
         <foreach item="item" collection="userlist" open="(" separator="," close=")">
             #{item}
         </foreach>

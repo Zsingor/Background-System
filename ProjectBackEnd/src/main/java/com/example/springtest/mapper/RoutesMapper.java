@@ -15,20 +15,20 @@ public interface RoutesMapper {
     List<Routes> routesAllquery(Routes routes);
 
     //查询所有父路由
-    @Select("select * from test.routes where level=1 order by position DESC")
+    @Select("select * from sys_data.routes where level=1 order by position DESC")
     List<Routes> routesParentquery();
 
     //根据指定的id查询路由
-    @Select("select * from test.routes where id=#{id}")
+    @Select("select * from sys_data.routes where id=#{id}")
     Routes routesqueryById(String id);
 
     //添加新路由
-    @Insert("insert into test.routes(id,name,title,path,level,status,icon,parentid,position,type)"+
+    @Insert("insert into sys_data.routes(id,name,title,path,level,status,icon,parentid,position,type)"+
             "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid},#{position},#{type})")
     void routesadd(Routes routes);
 
     //修改路由
-    @Update("update test.routes set name=#{name},title=#{title},path=#{path},level=#{level},"+
+    @Update("update sys_data.routes set name=#{name},title=#{title},path=#{path},level=#{level},"+
             "status=#{status},icon=#{icon},parentid=#{parentid},position=#{position},type=#{type} where id=#{id}")
     void routesupdate(Routes routes);
 

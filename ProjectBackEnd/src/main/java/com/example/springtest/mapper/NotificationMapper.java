@@ -10,11 +10,11 @@ import java.util.List;
 
 @Mapper
 public interface NotificationMapper {
-    @Insert("insert into test.notification(sender_id,title, content, create_time,type) VALUES (#{senderId},#{title},#{content},#{createTime},#{type})")
+    @Insert("insert into sys_data.notification(sender_id,title, content, create_time,type) VALUES (#{senderId},#{title},#{content},#{createTime},#{type})")
     void addNotification(Notification notification);
 
     List<Notification> queryNotification(Notification notification);
 
-    @Delete("delete from test.notification where id = #{id}")
+    @Delete("delete from sys_data.notification where id = #{id}")
     void deleteNotification(Integer id);
 }

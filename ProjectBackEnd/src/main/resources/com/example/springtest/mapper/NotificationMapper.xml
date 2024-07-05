@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.springtest.mapper.NotificationMapper">
     <select id="queryNotification" parameterType="com.example.springtest.entity.Notification" resultType="com.example.springtest.entity.Notification">
-        SELECT * FROM test.notification
+        SELECT * FROM sys_data.notification
         WHERE 1=1
         <if test="title != null and title != ''">
             AND title LIKE CONCAT('%', #{title}, '%')

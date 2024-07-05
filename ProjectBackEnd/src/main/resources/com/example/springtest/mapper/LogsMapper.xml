@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.springtest.mapper.LogsMapper">
     <select id="logsquery" parameterType="com.example.springtest.entity.Logs" resultType="com.example.springtest.entity.Logs">
-        SELECT * FROM test.logs
+        SELECT * FROM sys_data.logs
         WHERE 1=1
         <if test="username != null and username != ''">
             AND username LIKE CONCAT('%', #{username}, '%')
@@ -32,7 +32,7 @@
     </select>
 
     <delete id="logsdelete" parameterType="java.util.List">
-        DELETE FROM test.logs WHERE id IN
+        DELETE FROM sys_data.logs WHERE id IN
         <foreach item="item" collection="logslist" open="(" separator="," close=")">
             #{item}
         </foreach>

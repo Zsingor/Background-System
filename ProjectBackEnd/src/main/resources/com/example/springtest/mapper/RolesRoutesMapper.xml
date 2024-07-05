@@ -5,7 +5,7 @@
 
 <mapper namespace="com.example.springtest.mapper.RolesRoutesMapper">
     <insert id="addRoleRoutes">
-        insert into test.roles_routes(roleid, routeid,routetype)
+        insert into sys_data.roles_routes(roleid, routeid,routetype)
         values 
         <foreach collection="routeids" item="routeid" separator=",">
             (#{roleid}, #{routeid},#{routetype})
@@ -13,21 +13,21 @@
     </insert>
 
     <delete id="deleteRoutesRoles" parameterType="java.util.List">
-        DELETE FROM test.roles_routes WHERE routeid IN
+        DELETE FROM sys_data.roles_routes WHERE routeid IN
         <foreach item="item" collection="menulist" open="(" separator="," close=")">
             #{item}
         </foreach>
     </delete>
 
     <delete id="deleteRolesRoutes" parameterType="java.util.List">
-        DELETE FROM test.roles_routes WHERE roleid IN
+        DELETE FROM sys_data.roles_routes WHERE roleid IN
         <foreach item="item" collection="roleslist" open="(" separator="," close=")">
             #{item}
         </foreach>
     </delete>
 
     <select id="queryRolesRoutes" parameterType="java.util.List" resultType="string">
-        select routeid from test.roles_routes where roleid in
+        select routeid from sys_data.roles_routes where roleid in
         <foreach item="item" collection="roleList" open="(" separator="," close=")">
             #{item}
         </foreach>

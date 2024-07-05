@@ -10,13 +10,13 @@ import java.util.List;
 public interface RolesMapper {
 
     //角色添加
-    @Insert("insert into test.roles(id,name,description)"+
+    @Insert("insert into sys_data.roles(id,name,description)"+
             "values(#{id},#{name},#{description})")
     void rolesadd(Roles roles);
 
 
     //查找全部角色
-    @Select("select * from test.roles")
+    @Select("select * from sys_data.roles")
     List<Roles> rolesqueryAll();
 
     //角色查询
@@ -27,6 +27,6 @@ public interface RolesMapper {
     void rolesdelete(List<String> rolelist);
 
     //更新角色信息
-    @Update("update test.roles set name=#{name},description=#{description} where id=#{id}")
+    @Update("update sys_data.roles set name=#{name},description=#{description} where id=#{id}")
     void rolesupdate(Roles roles);
 }
