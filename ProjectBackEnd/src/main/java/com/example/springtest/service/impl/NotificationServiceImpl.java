@@ -30,7 +30,6 @@ public class NotificationServiceImpl implements NotificationService {
     public JSONObject queryNotifications(String json) {
         JSONObject jsonObject= JSON.parseObject(json);
         Notification notification=jsonObject.getObject("queryForm", Notification.class);
-        System.out.println(notification);
         int currentPage=jsonObject.getInteger("currentPage");
         int pageSize=jsonObject.getInteger("pageSize");
         List<Notification> data=notificationMapper.queryNotification(notification);

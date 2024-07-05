@@ -37,8 +37,28 @@
     </div>
     <div class="background-right">
       <div class="background-rightTop">
-        <el-card style="width: 34%;height: 100%;margin-right: 1%">
+        <el-card style="width: 32%;height: 100%;margin-right: 1%">
           <div style="width: 100%;height: 100%;" id="pieEcharts" ref="pieEcharts"></div>
+        </el-card>
+        <el-card style="width: 32%;height: 100%;margin-right: 1%">
+          <div class="card-image" onclick="window.location.href='https://github.com/Zsingor';">
+            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
+              <img style="width: 100px; height: 100px" src="@/assets/github.jpg"/>
+            </div>
+            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
+              <p style="font-size: 20px">GitHub</p>
+            </div>
+          </div>
+        </el-card>
+        <el-card style="width: 32%;height: 100%;margin-right: 1%">
+          <div class="card-image" onclick="window.location.href='https://cn.vuejs.org/';">
+            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
+              <img style="width: 100px; height: 100px" src="@/assets/vue.png"/>
+            </div>
+            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
+              <p style="font-size: 20px">Vue</p>
+            </div>
+          </div>
         </el-card>
       </div>
       <div class="background-rightBottom">
@@ -79,7 +99,8 @@ let notifyLoading=ref(false)
 const dateValue = ref(new Date())
 const user = ref({
   id:"",
-  name: ""
+  name: "游客",
+  description:"暂无描述"
 })
 
 //初始化用户数据
@@ -126,7 +147,8 @@ const initPieEcharts = () => {
   myChart = echarts.init(dom);
   let option = {
     tooltip: {
-      trigger: 'item'
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {d}%'
     },
     legend: {
       top: '0%',
@@ -134,7 +156,7 @@ const initPieEcharts = () => {
     },
     series: [
       {
-        name: '订单信息',
+        name: '技术栈',
         type: 'pie',
         radius: ['20%', '65%'],
         avoidLabelOverlap: false,
@@ -146,11 +168,10 @@ const initPieEcharts = () => {
           show: false,
         },
         data: [
-          {value: 1048, name: '成交订单量'},
-          {value: 735, name: '退款订单量'},
-          {value: 580, name: '浏览量'},
-          {value: 484, name: '加购量'},
-          {value: 300, name: '预购量'}
+          {value: 48.1, name: 'Vue3'},
+          {value: 29.9, name: 'Java'},
+          {value: 21.6, name: 'JavaScript'},
+          {value: 0.4, name: 'Other'},
         ]
       }
     ]
@@ -286,8 +307,19 @@ onMounted(() => {
 }
 
 .background-rightTop {
+  display: flex;
   width: 100%;
   height: 30%;
+}
+
+.card-image{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
 }
 
 .background-rightBottom {
