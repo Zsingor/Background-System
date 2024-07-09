@@ -28,7 +28,7 @@ public interface UserMapper {
 
     //根据对应的主键查询用户
     @Select("select * from sys_data.user where id=#{id}")
-    User userPrimaryquery(User user);
+    User userPrimaryquery(String id);
 
     //删除用户信息
     void userdelete(List<String> userlist);

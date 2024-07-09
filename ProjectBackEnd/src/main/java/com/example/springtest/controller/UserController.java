@@ -182,6 +182,22 @@ public class UserController {
         }
     }
 
+    //拒绝用户申请
+    @PostMapping("/reject")
+    @PreAuthorize("/user/reject")
+    @AutoLog(module = "用户管理",operate = "拒绝用户申请")
+    public Result userReject(@RequestBody List<String> userlist)
+    {
+        int flag=userService.userReject(userlist);
+        if (flag==1)
+        {
+            return Result.success();
+        }
+        else {
+            return Result.error("删除失败");
+        }
+    }
+
     //用户修改
     @PostMapping("/update")
     @PreAuthorize("/user/update")

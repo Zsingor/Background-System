@@ -24,7 +24,7 @@
                 <el-input clearable size="large" show-password type="password" placeholder="请确认密码" v-model="user.checkPassword"></el-input>
               </el-form-item>
               <el-form-item prop="email">
-                <el-input clearable size="large" placeholder="请确认邮箱" v-model="user.email"></el-input>
+                <el-input clearable size="large" placeholder="请输入邮箱(非必填)" v-model="user.email"></el-input>
               </el-form-item>
             </el-form>
           </div>

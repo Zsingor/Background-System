@@ -24,6 +24,8 @@ public interface UserService {
 
     int useragree(List<String> userlist);
 
+    int userReject(List<String> userlist);
+
     int userupdate(User user);
 
     int userAssignRole(User user);

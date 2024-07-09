@@ -2,7 +2,7 @@
   <div class="background">
     <div class="top-button">
       <div class="top-left-button">
-        <el-button type="primary" plain :icon="Plus" @click="agree(true)">批量同意</el-button>
+        <el-button type="primary" plain :icon="Plus" @click="agree(true)">批量通过</el-button>
         <el-button type="danger" plain :icon="Minus" @click="reject(true)">批量拒绝</el-button>
       </div>
       <div class="top-right-button">
@@ -103,7 +103,7 @@ const agree=(flag,row)=>{
 
 //批量拒绝
 const reject=(flag,row)=>{
-  ElMessageBox.confirm("您确定要删除吗？", "提示", {
+  ElMessageBox.confirm("您确定要拒绝吗？", "提示", {
     type: "warning"
   }).then(()=>{
     const ids = [];
@@ -124,7 +124,7 @@ const reject=(flag,row)=>{
       ids.push(row.id)
     }
     tableLoading.value = true
-    request.post("/user/delete",ids).then(res=>{
+    request.post("/user/reject",ids).then(res=>{
       if (res.code === 1) {
         message("操作成功");
         getTableData()
@@ -151,6 +151,7 @@ onMounted(()=>{
 .top-button {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 

@@ -3,14 +3,14 @@ package com.example.springtest.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.example.springtest.aop.logs.AutoLog;
-import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
 import com.example.springtest.mapper.*;
+import com.example.springtest.service.EmailService;
 import com.example.springtest.service.UserService;
 import com.example.springtest.utils.JwtUtils;
 import com.example.springtest.utils.QueryResult;
+import com.example.springtest.utils.TimeConvert;
 import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +28,8 @@ public class UserServiceImpl implements UserService {
     private RolesRoutesMapper rolesRoutesMapper;
     @Autowired
     private UserRolesMapper userRolesMapper;
+    @Autowired
+    private EmailService emailService;
 
 
     //用户登录
@@ -84,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User userQueryMsssage(User user) {
-        return userMapper.userPrimaryquery(user);
+        return userMapper.userPrimaryquery(user.getId());
     }
 
     // 用户注册
@@ -150,6 +152,45 @@ public class UserServiceImpl implements UserService {
     public int useragree(List<String> userlist) {
         try {
             userMapper.useragree(userlist);
+            for (String userId:userlist)
+            {
+                User data=userMapper.userPrimaryquery(userId);
+                String emailTo=data.getEmail();
+                if(!Objects.equals(emailTo, ""))
+                {
+                    String subject="申请结果通知";
+                    String text="";
+                    String date= TimeConvert.dateToTime(data.getCreateTime());
+                    text=String.format("您于 %s 申请的账号 %s 已通过申请！",date,data.getName());
+                    emailService.sendEmail(emailTo,subject,text);
+                }
+            }
+            return 1;
+        }
+        catch (Exception error)
+        {
+            return 0;
+        }
+    }
+
+    @Override
+    public int userReject(List<String> userlist) {
+        try {
+            for (String userId:userlist)
+            {
+                User data=userMapper.userPrimaryquery(userId);
+                String emailTo=data.getEmail();
+                if(!Objects.equals(emailTo, ""))
+                {
+                    String subject="申请结果通知";
+                    String text="";
+                    String date= TimeConvert.dateToTime(data.getCreateTime());
+                    text=String.format("非常抱歉，您于 %s 申请的账号 %s 未通过申请！",date,data.getName());
+                    emailService.sendEmail(emailTo,subject,text);
+                }
+            }
+            userRolesMapper.deleteUsersRoles(userlist);
+            userMapper.userdelete(userlist);
             return 1;
         }
         catch (Exception error)
