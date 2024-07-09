@@ -9,6 +9,10 @@
       <template #toolbar_buttons class="buttons">
         <vxe-button status="danger" @click="deleteTableData(xGrid,'/logs/delete',true)">批量删除</vxe-button>
       </template>
+      <!--  详细内容    -->
+      <template #details="{ row }">
+        <el-button type="primary" link @click="showDetails(row)">查看详情</el-button>
+      </template>
       <!--  操作按钮组    -->
       <template #operate="{ row }">
         <vxe-button title="删除" circle @click="deleteTableData(xGrid,'/logs/delete',false,row)">
@@ -18,6 +22,17 @@
         </vxe-button>
       </template>
     </vxe-grid>
+
+    <el-dialog v-model="showdialog" title="详细内容" draggable>
+      <el-input
+          v-model="rowDetails"
+          style="width: 100%"
+          readonly
+          resize="none"
+          :rows="8"
+          type="textarea"
+      />
+    </el-dialog>
   </div>
 </template>
 
@@ -44,13 +59,20 @@ defineOptions({
 })
 
 const xGrid = ref()
-
+let showdialog=ref(false)
+let rowDetails=ref("")
 
 const rootData = reactive({
   queryData: {},
   rolesMenu: [],
   rolesList: {}
 })
+
+const showDetails=(row)=>{
+  console.log(row.details)
+  rowDetails.value=row.details
+  showdialog.value=true
+}
 
 const gridOptions = reactive({
   rowId: 'id',
@@ -76,7 +98,7 @@ const gridOptions = reactive({
     {field: 'username', title: '用户名称', minWidth: 100},
     {field: 'module', title: '操作模块', minWidth: 100},
     {field: 'operate', title: '操作内容', minWidth: 100},
-    {field: 'details', title: '详细内容', minWidth: 200},
+    {field: 'details', title: '详细内容', minWidth: 100,slots: {default: 'details'}},
     {field: 'ip', title: 'IP地址', minWidth: 100},
     {field: 'operatedate', title: '操作时间', minWidth: 150, formatter: "formatDate"},
     {title: '操作', minWidth: 50, fixed: 'right', slots: {default: 'operate'}}
