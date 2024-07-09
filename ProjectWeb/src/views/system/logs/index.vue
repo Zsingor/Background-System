@@ -47,7 +47,7 @@
       />
     </el-dialog>
 
-    <el-dialog v-model="showErrDialog" title="详细内容" draggable>
+    <el-dialog v-model="showErrDialog" title="错误信息" draggable>
       <el-input
           v-model="rowErrmsg"
           style="width: 100%"
