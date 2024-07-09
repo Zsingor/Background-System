@@ -71,7 +71,7 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
-              <el-dropdown-item @click="logout">
+              <el-dropdown-item @click="gologout">
                 <el-icon>
                   <SwitchButton/>
                 </el-icon>
@@ -120,6 +120,13 @@ const controls = reactive({
   showPasswordForm: false,
   showGlobalSetting: false,
 });
+
+//退出登录
+const gologout=()=>{
+  request.post("/user/logout").finally(()=>{
+    logout()
+  })
+}
 
 //选择路由跳转
 const choosePath = () => {
@@ -205,6 +212,7 @@ provide("controls", controls)
 
 onMounted(() => {
   document.addEventListener("fullscreenchange", fullScreenEsc)
+  //获取未读消息数
   if (!isEmpty(userInfo.baseInfo))
   {
     request.post("/conversations/getUnreadCount", {id: userInfo.baseInfo.user_id}).then(res => {

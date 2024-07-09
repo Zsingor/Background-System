@@ -46,6 +46,14 @@ public class UserController {
         }
     }
 
+    //退出登录
+    @AutoLog(module = "用户管理",operate = "退出登录")
+    @PostMapping("/logout")
+    public Result userlogout()
+    {
+        return Result.success();
+    }
+
     //用户申请账号
     @PostMapping("/register")
     public Result userRegister(@RequestBody User user)

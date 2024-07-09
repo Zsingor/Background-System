@@ -10,8 +10,8 @@ import java.util.List;
 @Mapper
 public interface LogsMapper {
     //添加日志
-    @Insert("insert into sys_data.logs(id,userid,username,module,operate,details,ip,operatedate)"+
-            "values(#{id},#{userid},#{username},#{module},#{operate},#{details},#{ip},#{operatedate})")
+    @Insert("insert into sys_data.logs(id,userid,username,module,operate,details,ip,err_flag,err_msg,operatedate)"+
+            "values(#{id},#{userid},#{username},#{module},#{operate},#{details},#{ip},#{errFlag},#{errMsg},#{operatedate})")
     void logsadd(Logs logs);
 
     //日志查询

@@ -32,33 +32,32 @@ public class LogAspect {
 
     @Around("@annotation(autoLog)")
     public Object doAround(ProceedingJoinPoint joinPoint, AutoLog autoLog)throws Throwable{
+        String className=joinPoint.getTarget().getClass().getName();
+        String methodName = joinPoint.getSignature().getName();
+        String params = Arrays.toString(joinPoint.getArgs());
+        //操作详情
+        String details="[类名]:"+className+"  [方法]:"+methodName+" [参数]:"+params;
+        //id
+        String id= UUIDUtils.getUUID();
+        //操作模块
+        String module=autoLog.module();
+        //操作内容
+        String operate=autoLog.operate();
+        //操作时间
+        Date operatetime=new Date(System.currentTimeMillis());
+        HttpServletRequest request= ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
+        //操作ip
+        String ip=getIp(request);
+
         try {
             //执行具体的接口
             Result result=(Result) joinPoint.proceed();
 
-            String className=joinPoint.getTarget().getClass().getName();
-            String methodName = joinPoint.getSignature().getName();
-            String params = Arrays.toString(joinPoint.getArgs());
-
-            String details="[类名]:"+className+"  [方法]:"+methodName+" [参数]:"+params;
-
-            String id= UUIDUtils.getUUID();
-
-            //操作模块
-            String module=autoLog.module();
-
-            //操作内容
-            String operate=autoLog.operate();
-
-            //操作时间
-            Date operatetime=new Date(System.currentTimeMillis());
-
-            HttpServletRequest request= ((ServletRequestAttributes) Objects.requireNonNull(RequestContextHolder.getRequestAttributes())).getRequest();
-            //操作ip
-            String ip=getIp(request);
-
             //操作姓名
             String token="";
+            String userid="";
+            String username="";
+
             if(!Objects.equals(methodName, "userlogin"))
             {
                 token = request.getHeader("token");
@@ -73,17 +72,36 @@ public class LogAspect {
                 token=data.getString("token");
             }
             DecodedJWT verify=JwtUtils.parseJWT(token);
-            String userid=verify.getClaim("user_id").toString().replace("\"", "");
-            String username=verify.getClaim("user_name").toString().replace("\"", "");
+            userid=verify.getClaim("user_id").toString().replace("\"", "");
+            username=verify.getClaim("user_name").toString().replace("\"", "");
 
-            Logs logs=new Logs(id,userid,username,module,operate,details,ip,operatetime,null,null);
+            //操作失败
+            if (result.getCode()==0)
+            {
+                Logs logs=new Logs(id,userid,username,module,operate,details,ip,"0",result.getMsg(),operatetime,null,null);
+                logsService.logsadd(logs);
+                return result;
+            }
+
+            Logs logs=new Logs(id,userid,username,module,operate,details,ip,"1","无",operatetime,null,null);
             logsService.logsadd(logs);
 
             return result;
         }
         catch (Exception e)
         {
-            return Result.error(e.toString());
+            String userid="0";
+            String username="无";
+            if(!Objects.equals(methodName, "userlogin"))
+            {
+                String token = request.getHeader("token");
+                DecodedJWT verify=JwtUtils.parseJWT(token);
+                userid=verify.getClaim("user_id").toString().replace("\"", "");
+                username=verify.getClaim("user_name").toString().replace("\"", "");
+            }
+            Logs logs=new Logs(id,userid,username,module,operate,details,ip,"0",e.getMessage(),operatetime,null,null);
+            logsService.logsadd(logs);
+            return Result.error(e.getMessage());
         }
     }
 

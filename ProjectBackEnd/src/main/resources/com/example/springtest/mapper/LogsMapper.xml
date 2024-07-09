@@ -22,6 +22,9 @@
         <if test="ip != null and ip != ''">
             AND ip LIKE CONCAT('%', #{ip}, '%')
         </if>
+        <if test="errFlag != null and errFlag != ''">
+            AND err_flag = #{errFlag}
+        </if>
         <if test="startDate != null">
             AND operatedate &gt;= #{startDate}
         </if>

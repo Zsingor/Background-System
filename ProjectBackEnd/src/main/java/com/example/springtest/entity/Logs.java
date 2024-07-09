@@ -1,5 +1,6 @@
 package com.example.springtest.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,10 @@ public class Logs {
     private String operate;
     private String details;
     private String ip;
+    @JsonProperty(value = "errFlag")
+    private String errFlag;
+    @JsonProperty(value = "errMsg")
+    private String errMsg;
     private Date operatedate;
     private Date startDate;
     private Date endDate;

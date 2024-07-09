@@ -16,6 +16,14 @@
       <el-input size="default" v-model="rootData.queryData.ip" clearable placeholder="IP地址" />
     </el-col>
     <el-col :span="6">
+      <el-select clearable placeholder="操作结果"
+                 v-model="rootData.queryData.errFlag">
+        <el-option v-for="item in errList" :key="item.value"
+                   :label="item.title" :value="item.value">
+        </el-option>
+      </el-select>
+    </el-col>
+    <el-col :span="6">
       <el-date-picker
           style="width: 100%"
           v-model="rootData.queryData.startDate"
@@ -47,6 +55,17 @@ import {inject, ref} from "vue";
 
 const rootData=inject('rootData')
 const xGrid = inject("xGrid");
+
+const errList=[
+  {
+    value:"1",
+    title:"成功"
+  },
+  {
+    value:"0",
+    title:"失败"
+  }
+]
 
 const querydata=()=>{
   xGrid.value.commitProxy('query')
