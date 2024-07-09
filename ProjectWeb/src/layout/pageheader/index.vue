@@ -52,7 +52,7 @@
         </el-icon>
       </div>
       <div class="operate-button" @click="skipMessage">
-        <el-badge v-if="userInfo.unread_count!==0" class="item-button" :value="userInfo.unread_count" :max="99">
+        <el-badge v-if="userInfo.unread_count>0" class="item-button" :value="userInfo.unread_count" :min="0" :max="99">
           <el-icon style="font-size: 20px;" title="我的信息">
             <Message/>
           </el-icon>

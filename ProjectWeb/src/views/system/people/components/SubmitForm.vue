@@ -117,16 +117,17 @@ const submitForm = () => {
 }
 
 const resetForm = () => {
-  Object.assign(rootData.formData, {
+  const tempObj={
     id:"",
     name:"",
     password:"",
     email:"",
     roleid:-1,
     description:"",
-    status:"",
+    status:"1",
     rolesid:[]
-  })
+  }
+  rootData.formData=JSON.parse(JSON.stringify(tempObj))
   formRef.value.resetFields()
 }
 

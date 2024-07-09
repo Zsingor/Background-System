@@ -29,7 +29,7 @@
                   <p class="user-description">{{item.description}}</p>
                 </div>
                 <div class="content-right">
-                  <el-badge v-if="item.unreadCount!==0" :value="item.unreadCount" :max="99"></el-badge>
+                  <el-badge v-if="item.unreadCount>0" :value="item.unreadCount" :max="99"></el-badge>
                 </div>
               </div>
             </div>
@@ -46,25 +46,33 @@
               <div v-for="(item,index) in msgList">
                 <!-- 我方发的信息 -->
                 <div class="msg-item" v-if="item.senderId===userId">
-                  <div></div>
-                  <!-- 文字内容 -->
-                  <div class="msg-item-right">
+                  <div class="msg-item-line">
+                    <div></div>
                     <div class="msg-item-time">
                       {{parseDate(item.createTime)}}
                     </div>
+                  </div>
+                  <!-- 文字内容 -->
+                  <div class="msg-item-line">
+                    <div></div>
                     <div class="msg-content">
                       {{item.content}}
                     </div>
                   </div>
                 </div>
+                <!-- 对方发的信息 -->
                 <div class="msg-item" v-else>
-                  <div class="msg-item-left">
+                  <div class="msg-item-line">
                     <div class="msg-item-time">
                       {{parseDate(item.createTime)}}
                     </div>
+                    <div></div>
+                  </div>
+                  <div class="msg-item-line">
                     <div class="msg-content">
                       {{item.content}}
                     </div>
+                    <div></div>
                   </div>
                 </div>
               </div>
@@ -351,17 +359,11 @@ onMounted(async () => {
 
 .msg-item{
   margin-bottom: 15px;
+}
+
+.msg-item-line{
   display: flex;
   justify-content: space-between;
-}
-
-.msg-item-right{
-  max-width: 60%;
-  text-align: right;
-}
-
-.msg-item-left{
-  max-width: 60%;
 }
 
 .msg-item-time{
@@ -369,6 +371,7 @@ onMounted(async () => {
 }
 
 .msg-content{
+  max-width: 60%;
   text-align: left;
   word-wrap: break-word;
   padding: 10px;

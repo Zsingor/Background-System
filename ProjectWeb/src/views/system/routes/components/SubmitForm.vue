@@ -166,7 +166,7 @@ const submitForm = () => {
 }
 
 const resetForm = () => {
-  Object.assign(rootData.formData, {
+  const tempObj={
     name: "",
     title: "",
     path: "",
@@ -176,7 +176,8 @@ const resetForm = () => {
     icon: "",
     parentid: "",
     type:"1",
-  })
+  }
+  rootData.formData=JSON.parse(JSON.stringify(tempObj))
   formRef.value.resetFields()
 }
 
