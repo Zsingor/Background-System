@@ -8,6 +8,7 @@ import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.entity.User;
 import com.example.springtest.service.UserService;
+import com.example.springtest.utils.RsaUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,8 @@ public class UserController {
     public Result userlogin(@RequestBody User user)
     {
         try {
+            String pas= RsaUtils.decrypt(user.getPassword());
+            user.setPassword(pas);
             JSONObject data=userService.userlogin(user);
             if(data.get("token")=="0")
             {
@@ -42,6 +45,7 @@ public class UserController {
             }
             return Result.success(data);
         }catch (Exception e){
+            System.out.println(e.getMessage());
             return Result.error("查询失败");
         }
     }

@@ -52,6 +52,8 @@ import {userInfo} from "@/layout/user.js";
 import {message} from "@/utils/message.js";
 import websocket from "@/utils/WebSocket.js";
 import Identify from "@/components/Identify.vue";
+import {encodeData} from "@/utils/rsa.js";
+import _ from 'lodash'
 
 const router = useRouter()
 const identifyRef=ref(null)
@@ -87,7 +89,10 @@ const login=()=>{
     if (valid) {
       if(identifyCode.value.toLowerCase()===user.validCode.toLowerCase())
       {
-        request.post("/user/login",user).then(res => {
+        // user.password=encodeData(user.password)
+        let newUser=_.cloneDeep(user)
+        newUser.password=encodeData(newUser.password)
+        request.post("/user/login",newUser).then(res => {
           if(res.code===1)
           {
             userInfo.baseInfo=res.data
