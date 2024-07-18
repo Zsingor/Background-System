@@ -63,9 +63,11 @@
       </div>
       <div class="background-rightBottom">
         <el-card style="width:100%;height: 100%">
-          <div style="height: 100%">
-            <el-calendar class="calendar" v-model="dateValue"></el-calendar>
-          </div>
+          <el-scrollbar wrap-class="scrollbar-wrapper">
+            <div style="height: 100%">
+              <el-calendar class="calendar" v-model="dateValue"></el-calendar>
+            </div>
+          </el-scrollbar>
         </el-card>
       </div>
     </div>

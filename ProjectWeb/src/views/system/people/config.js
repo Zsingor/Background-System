@@ -37,7 +37,7 @@ export function getTableConfig() {
             {field: 'description', minWidth:120,title: '账号描述'},
             {field: 'status', minWidth:120,title: '状态',slots: {default: 'status'}},
             {field: 'createTime', minWidth:120,title: '创建时间',formatter: "formatDate"},
-            {title: '操作', minWidth: 250, fixed: 'right', slots: {default: 'operate'}}
+            {title: '操作', minWidth: 280, fixed: 'right', slots: {default: 'operate'}}
         ],
         queryData:{
             name:"",
