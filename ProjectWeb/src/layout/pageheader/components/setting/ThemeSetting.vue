@@ -114,10 +114,16 @@
                        @active-change="updateAsideFontColor"/>
     </div>
     <div class="theme-item">
-      <p>侧边栏文字激活颜色：</p>
+      <p>侧边栏激活文字颜色：</p>
       <el-color-picker size="default"
                        v-model="persistentConfig.theme.aside.fontActiveColor"
                        @active-change="updateAsideFontActiveColor"/>
+    </div>
+    <div class="theme-item">
+      <p>侧边栏激活背景颜色：</p>
+      <el-color-picker size="default"
+                       v-model="persistentConfig.theme.aside.backgroundColor"
+                       @active-change="updateAsideBgActiveColor"/>
     </div>
     <el-button style="width: 50%;margin-left:25%;margin-top: 8px;margin-bottom: 8px;"
                size="default" type="info"
@@ -150,6 +156,7 @@ const setLayoutTheme=(type)=>{
       setNprogressColor('#dc2626')
       persistentConfig.theme.aside.fontColor = "#ffffff";
       persistentConfig.theme.aside.fontActiveColor = "#ffd04b";
+      persistentConfig.theme.aside.backgroundColor = "#337DBE";
       break;
     case "theme-2":
       updateHeader("hsl(160, 57%, 35%)");
@@ -157,7 +164,7 @@ const setLayoutTheme=(type)=>{
       updateAside("#545c64");
       setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#ffffff";
-      persistentConfig.theme.aside.fontActiveColor = "#ffd04b";
+      persistentConfig.theme.aside.backgroundColor = "#337DBE";
       break;
     case "theme-3":
       updateHeader("hsl(160,10%,95%)");
@@ -166,6 +173,7 @@ const setLayoutTheme=(type)=>{
       setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#171616";
       persistentConfig.theme.aside.fontActiveColor = "#00AC9B";
+      persistentConfig.theme.aside.backgroundColor = "#2C486D";
       break;
     case "theme-4":
       updateHeader("hsl(61, 0%, 19%)");
@@ -174,6 +182,7 @@ const setLayoutTheme=(type)=>{
       setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#DBDBDB";
       persistentConfig.theme.aside.fontActiveColor = "#00BBFF";
+      persistentConfig.theme.aside.backgroundColor = "#5178F9";
   }
 }
 
@@ -250,6 +259,10 @@ const updateAsideFontColor=(value)=>{
 // 更新侧边栏文字激活颜色
 const updateAsideFontActiveColor=(value)=>{
   persistentConfig.theme.aside.fontActiveColor = value;
+}
+
+const updateAsideBgActiveColor=(value)=>{
+  persistentConfig.theme.aside.backgroundColor = value;
 }
 </script>
 

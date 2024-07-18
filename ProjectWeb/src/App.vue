@@ -3,6 +3,7 @@
     <router-view v-slot="{ Component }" >
       <component :is="Component" :style="{
       '--aside-bg': persistentConfig.theme.aside.bgColor,
+      '--aside-active-bg': persistentConfig.theme.aside.backgroundColor,
       '--header-bg': persistentConfig.theme.header.bgColor,
       '--header-bg1': persistentConfig.theme.header.bgColor1,
       '--header-font-color': persistentConfig.theme.header.fontColor,

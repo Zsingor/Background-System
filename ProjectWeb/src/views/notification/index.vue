@@ -48,6 +48,7 @@
 
     <el-dialog
         :title="dialogTitle"
+        draggable
         v-model="dialogVisible"
         @closed="handleClose">
       <el-form ref="addRef" :model="notifyForm" label-width="100px" :rules="formRules">

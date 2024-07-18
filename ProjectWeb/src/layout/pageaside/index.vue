@@ -4,6 +4,7 @@
         :default-active="$route.path"
         :background-color="persistentConfig.theme.aside.bgColor"
         :active-text-color="persistentConfig.theme.aside.fontActiveColor"
+        :active-background-color="persistentConfig.theme.aside.backgroundColor"
         :text-color="persistentConfig.theme.aside.fontColor"
         :collapse-transition="false"
         :collapse="persistentConfig.isCollapse"
@@ -25,8 +26,14 @@ import {routeMenus} from "@/layout/user.js";
 
 </script>
 
-<style>
+<style lang="scss">
 .el-menu {
   border: 0;
+}
+
+
+.el-menu-item.is-active {
+  background-color: var(--aside-active-bg, #0ce18f) !important;
+  border-radius: 6px;
 }
 </style>
