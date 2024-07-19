@@ -42,7 +42,7 @@
 
     <vxe-modal v-model="rootData.showForm" :title="rootData.selectRow ? '编辑&保存' : '新增&保存'" width="800" min-width="600" min-height="300" :loading="rootData.submitLoading" resize destroy-on-close>
       <template #default>
-        <vxe-form :data="rootData.formData" :rules="rootData.formRules" title-align="right" title-width="100" @submit="submitEvent">
+        <vxe-form :data="rootData.formData" :rules="rootData.formRules" title-align="right" title-width="100" @submit="submitEvent" @reset="resetEvent">
           <vxe-form-item title="基础信息" title-align="left" :title-width="200" :span="24" :title-prefix="{icon: 'vxe-icon-comment'}"></vxe-form-item>
           <vxe-form-item field="name" title="角色名称" :span="12" :item-render="{}">
             <template #default="{ data }">
@@ -77,7 +77,6 @@ import _ from "lodash";
 import {message} from "@/utils/message.js";
 import request from "@/request/index.js";
 import {persistentConfig} from "@/layout/layout.js";
-import {ElMessageBox} from "element-plus";
 import axios from "axios";
 import RoutesDialog from "@/views/system/roles/components/RoutesDialog.vue";
 
@@ -128,7 +127,7 @@ const addmessage=()=>{
 
 const updaterow=(row)=>{
   Object.assign(rootData.formData, row)
-  rootData.selectRow = row
+  rootData.selectRow = _.cloneDeep(row)
   rootData.showForm = true
 }
 
@@ -185,6 +184,21 @@ const submitEvent=()=>{
     }).finally(() => {
       rootData.submitLoading = false
     })
+  }
+}
+
+const resetEvent=()=>{
+  if(rootData.selectRow)
+  {
+    rootData.formData=JSON.parse(JSON.stringify(rootData.selectRow))
+  }
+  else
+  {
+    const tempObj={
+      name:"",
+      description:""
+    }
+    rootData.formData=JSON.parse(JSON.stringify(tempObj))
   }
 }
 

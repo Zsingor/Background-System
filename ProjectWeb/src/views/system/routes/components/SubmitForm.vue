@@ -166,18 +166,26 @@ const submitForm = () => {
 }
 
 const resetForm = () => {
-  const tempObj={
-    name: "",
-    title: "",
-    path: "",
-    level: 1,
-    position:0,
-    status: "1",
-    icon: "",
-    parentid: "",
-    type:"1",
+  if(rootData.selectRow)
+  {
+    rootData.formData=JSON.parse(JSON.stringify(rootData.selectRow))
+    parentMenuChangeHandler(rootData.formData.parentid)
   }
-  rootData.formData=JSON.parse(JSON.stringify(tempObj))
+  else
+  {
+    const tempObj={
+      name: "",
+      title: "",
+      path: "",
+      level: 1,
+      position:0,
+      status: "1",
+      icon: "",
+      parentid: "",
+      type:"1",
+    }
+    rootData.formData=JSON.parse(JSON.stringify(tempObj))
+  }
   formRef.value.resetFields()
 }
 
@@ -261,6 +269,10 @@ watch(() => rootData.formData.level, value => {
 // 打开dialog时开启粘贴事件监听
 const openHandler=()=>{
   document.addEventListener('paste', pasteEvent);
+  if(!rootData.selectRow)
+  {
+    formRef.value.resetFields()
+  }
 }
 
 // 关闭dialog时销毁粘贴事件监听

@@ -171,6 +171,7 @@ const initPieEcharts = () => {
   let option = {
     tooltip: {
       trigger: 'item',
+      appendToBody: true,
       formatter: '{a} <br/>{b} : {d}%'
     },
     legend: {

@@ -3,6 +3,7 @@
              size=40%
              :direction="persistentConfig.drawerPosition"
              v-model="rootData.showForm"
+             @open="openHandler"
              @close="closeHandler">
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="drawer_content">
@@ -117,20 +118,34 @@ const submitForm = () => {
 }
 
 const resetForm = () => {
-  const tempObj={
-    id:"",
-    name:"",
-    password:"",
-    email:"",
-    roleid:-1,
-    description:"",
-    status:"1",
-    rolesid:[]
+  if(rootData.selectRow)
+  {
+    rootData.formData=JSON.parse(JSON.stringify(rootData.selectRow))
   }
-  rootData.formData=JSON.parse(JSON.stringify(tempObj))
+  else
+  {
+    const tempObj={
+      id:"",
+      name:"",
+      password:"",
+      email:"",
+      roleid:-1,
+      description:"",
+      status:"1",
+      rolesid:[]
+    }
+    rootData.formData=JSON.parse(JSON.stringify(tempObj))
+  }
   formRef.value.resetFields()
 }
 
+// 打开dialog时清除表单校验
+const openHandler=()=>{
+  if(!rootData.selectRow)
+  {
+    formRef.value.resetFields()
+  }
+}
 
 // 关闭dialog时销毁粘贴事件监听
 const closeHandler=()=>{

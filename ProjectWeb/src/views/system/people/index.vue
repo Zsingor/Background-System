@@ -75,6 +75,7 @@ import {getTableConfig} from "@/views/system/people/config.js";
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import axios from "axios";
 import {message} from "@/utils/message.js";
+import _ from 'lodash'
 
 //定义界面的name，用于使用keep-alive
 defineOptions({
@@ -87,33 +88,43 @@ const tableConfig = getTableConfig()
 
 const rootData = reactive({
   name: "测试列表",
+  //显示编辑界面
   showForm: false,
+  //显示分配弹窗
   showDialog: false,
+  //提交加载
   submitLoading: false,
+  //用于判断是新增还是修改
   selectRow: null,
+  //提交表单的信息
   formData: {},
+  //查询表单的信息
   queryData: {},
+  //表单校验规则
   formRules: Object.assign({}, tableConfig.formRules),
-  userroles:[],
-  userMenus: {// 角色拥有的菜单数据
+  // 角色拥有的菜单数据
+  userMenus: {
     id: 0,
     menus: []
   },
+  //角色列表
   rolesMenu:[],
+  //存储角色id和名称的键值对
   rolesList:{}
 })
 
 const addmessage = () => {
-  Object.assign(rootData.formData, {
+  const tempObj={
     id:"",
     name:"",
     password:"",
     email:"",
-    roleid:null,
+    roleid:-1,
     description:"",
     status:"1",
     rolesid:[]
-  })
+  }
+  rootData.formData=JSON.parse(JSON.stringify(tempObj))
   rootData.name = "添加信息"
   rootData.selectRow = null
   rootData.showForm = true
@@ -122,7 +133,7 @@ const addmessage = () => {
 const updaterow = (row) => {
   Object.assign(rootData.formData, row)
   rootData.name = "修改信息"
-  rootData.selectRow = row
+  rootData.selectRow = _.cloneDeep(row)
   rootData.showForm = true
 }
 

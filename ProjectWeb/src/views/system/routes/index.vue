@@ -7,7 +7,7 @@
           <vxe-button status="danger" @click="deleteTableData(xGrid,'/routes/delete',true)">批量删除</vxe-button>
         </template>
         <template #queryType="{ data }">
-          <vxe-select v-model="data.type" transfer placeholder="菜单类别">
+          <vxe-select v-model="data.type" transfer clearable placeholder="菜单类别">
             <vxe-option v-for="item in typeList" :key="item.value" :value="item.value" :label="item.label"></vxe-option>
           </vxe-select>
         </template>
@@ -121,7 +121,7 @@ const typeList = ref([
 ])
 
 const addmessage = () => {
-  Object.assign(rootData.formData, {
+  const tempObj={
     name: "",
     title: "",
     path: "",
@@ -131,8 +131,8 @@ const addmessage = () => {
     icon: "",
     parentid: "",
     type:"1",
-    parentMenuPath: ""
-  })
+  }
+  rootData.formData=JSON.parse(JSON.stringify(tempObj))
   rootData.name = "添加信息"
   rootData.selectRow = null
   rootData.showForm = true
@@ -142,7 +142,7 @@ const addmessage = () => {
 const updaterow = (row) => {
   Object.assign(rootData.formData, row)
   rootData.name = "修改信息"
-  rootData.selectRow = row
+  rootData.selectRow = _.cloneDeep(row)
   const parentMenuUrl = Object.assign({}, toRaw(rootData.parentMenus.filter(item => {
     return item.id === row.parentid
   })[0])).path
