@@ -6,7 +6,6 @@
 </template>
 
 <script setup>
-import RichEditor from "@/components/RichEditor.vue";
 import {ref} from "vue";
 
 defineOptions({
