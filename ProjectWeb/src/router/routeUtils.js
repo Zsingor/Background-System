@@ -101,11 +101,13 @@ export function createMenus(userRouteJson) {
                     childMenu.icon = child.icon;
                 }
                 routeMenu.children.push(childMenu);
+                //用于全局搜索路由
                 userInfo.user_menus.push({path: routeMenu.path + child.path, title: item.title+' > '+child.title})
             });
         }
         else
         {
+            //用于全局搜索路由
             userInfo.user_menus.push({path: item.path, title: item.title})
         }
         routeMenus.push(routeMenu);

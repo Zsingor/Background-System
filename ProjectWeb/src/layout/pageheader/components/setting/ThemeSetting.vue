@@ -15,9 +15,9 @@
       </div>
       <div class="theme-container-item" @click="setLayoutTheme('theme-2')">
         <el-container>
-          <el-header height="20px" style="background: hsl(160, 57%, 35%)"/>
+          <el-header height="20px" style="background: #5D28E9"/>
           <el-container>
-            <el-aside width="40px" style="height:100px;background: #545c64"/>
+            <el-aside width="40px" style="height:100px;background: #EBEBEB"/>
             <el-main style="background: #F8F8F8"></el-main>
           </el-container>
         </el-container>
@@ -159,12 +159,13 @@ const setLayoutTheme=(type)=>{
       persistentConfig.theme.aside.backgroundColor = "#337DBE";
       break;
     case "theme-2":
-      updateHeader("hsl(160, 57%, 35%)");
-      updateTag("hsl(160, 57%, 35%)");
-      updateAside("#545c64");
-      setNprogressColor('#16aad8')
-      persistentConfig.theme.aside.fontColor = "#ffffff";
-      persistentConfig.theme.aside.backgroundColor = "#337DBE";
+      updateHeader("#5D29E5");
+      updateTag("hsl(241, 70%, 67%)");
+      updateAside("#EBEBEB");
+      setNprogressColor('#dc2626')
+      persistentConfig.theme.aside.fontColor = "#3D3737";
+      persistentConfig.theme.aside.fontActiveColor = "#4700FF";
+      persistentConfig.theme.aside.backgroundColor = "#D9D9D9";
       break;
     case "theme-3":
       updateHeader("hsl(160,10%,95%)");
@@ -172,7 +173,7 @@ const setLayoutTheme=(type)=>{
       updateAside("#E5E5E5");
       setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#171616";
-      persistentConfig.theme.aside.fontActiveColor = "#00AC9B";
+      persistentConfig.theme.aside.fontActiveColor = "#ffffff";
       persistentConfig.theme.aside.backgroundColor = "#2C486D";
       break;
     case "theme-4":
@@ -181,7 +182,7 @@ const setLayoutTheme=(type)=>{
       updateAside("#3c3f41");
       setNprogressColor('#16aad8')
       persistentConfig.theme.aside.fontColor = "#DBDBDB";
-      persistentConfig.theme.aside.fontActiveColor = "#00BBFF";
+      persistentConfig.theme.aside.fontActiveColor = "#ffffff";
       persistentConfig.theme.aside.backgroundColor = "#5178F9";
   }
 }

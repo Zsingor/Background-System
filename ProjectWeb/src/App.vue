@@ -76,44 +76,5 @@ onMounted(()=>{
 </script>
 
 <style>
-* {
-  box-sizing: border-box;
-}
 
-body{
-  background-image: url("./assets/loading.gif");
-  background-position:center;
-  background-repeat:no-repeat;
-}
-
-
-/*清除浏览器默认样式*/
-html, body, dl, dd, ul, ol, h1, h2, h3, h4, h5, h6, pre, form, fieldset, legend, input, textarea, p, blockquote, figure, hr, menu, dir, thead, tbody, tfoot, th, td {
-  margin: 0;
-  padding: 0;
-}
-
-html, body, #app {
-  width: 100%;
-  height: 100%;
-}
-
-/* 重置浏览器上的滚动条 */
-.app-scroll *::-webkit-scrollbar {
-  width: var(--scroll-size) !important;
-  height: var(--scroll-size) !important;
-}
-
-.app-scroll *::-webkit-scrollbar-thumb {
-  background-color: rgba(161, 163, 169, 0.5);
-  border-radius: calc(var(--scroll-size) - 4px) !important;
-}
-
-.app-scroll *::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(161, 163, 169, 0.75);
-}
-
-.app-scroll *::-webkit-scrollbar-thumb:active {
-  background-color: rgba(161, 163, 169, 1);
-}
 </style>

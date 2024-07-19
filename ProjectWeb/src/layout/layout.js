@@ -41,7 +41,7 @@ export const defaultTheme = {
     aside:{
         bgColor: "#E5E5E5", //侧边栏的背景色
         fontColor: "#171616",   //侧边栏文字的颜色
-        fontActiveColor: "#00AC9B", //侧边栏文字激活时的颜色
+        fontActiveColor: "#ffffff", //侧边栏文字激活时的颜色
         backgroundColor:"#2C486D", //侧边栏激活时背景的颜色
     }
 };

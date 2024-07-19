@@ -11,9 +11,11 @@ import {loadConfig} from "@/setup.js";
 import "@/router/permission.js"
 
 
-import "@/styles/element-plus.css"
-import "@/styles/vxe-table.css"
-import "@/styles/nprogress.scss"
+// import "@/styles/element-plus.css"
+// import "@/styles/vxe-table.css"
+// import "@/styles/nprogress.scss"
+// 引入全局样式
+import "@/styles/index.scss"
 
 const app = createApp(App)
 //关闭警告信息

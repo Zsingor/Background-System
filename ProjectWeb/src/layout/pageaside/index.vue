@@ -33,7 +33,7 @@ import {routeMenus} from "@/layout/user.js";
 
 
 .el-menu-item.is-active {
-  background-color: var(--aside-active-bg, #0ce18f) !important;
+  background-color: var(--aside-active-bg, #2C486D) !important;
   border-radius: 6px;
 }
 </style>
