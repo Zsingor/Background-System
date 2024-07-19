@@ -14,6 +14,8 @@ import com.example.springtest.utils.TimeConvert;
 import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
 
     //用户登录
+    @Transactional
     @Override
     public JSONObject userlogin(User user) {
         User user1 = userMapper.userNamequery(user);
@@ -91,6 +94,7 @@ public class UserServiceImpl implements UserService {
 
     // 用户注册
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int useradd(User user) {
         try {
             User user1 = userMapper.userNamequery(user);
@@ -109,6 +113,7 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
@@ -135,6 +140,7 @@ public class UserServiceImpl implements UserService {
     }
 
     // 用户删除
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int userdelete(List<String> userlist) {
         try {
@@ -144,10 +150,12 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int useragree(List<String> userlist) {
         try {
@@ -169,10 +177,12 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int userReject(List<String> userlist) {
         try {
@@ -195,12 +205,14 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
 
 
     // 用户更新
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int userupdate(User user) {
         try {
@@ -210,11 +222,13 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
 
     //给用户分配角色
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int userAssignRole(User user) {
         try {
@@ -237,6 +251,7 @@ public class UserServiceImpl implements UserService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
@@ -248,6 +263,7 @@ public class UserServiceImpl implements UserService {
     }
 
     //获得用户拥有的权限
+    @Transactional
     @Override
     public List<String> queryUserAuthority(String userid) {
         //拿到用户的所有角色信息

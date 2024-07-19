@@ -7,6 +7,7 @@ import com.example.springtest.mapper.MessageMapper;
 import com.example.springtest.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +20,7 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private ConversationsMapper conversationsMapper;
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addMessage(Message message) {
         Date createtime=new Date(System.currentTimeMillis());

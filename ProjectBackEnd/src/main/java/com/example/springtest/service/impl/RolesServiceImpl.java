@@ -12,6 +12,8 @@ import com.example.springtest.utils.QueryResult;
 import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.*;
 
@@ -19,8 +21,6 @@ import java.util.*;
 public class RolesServiceImpl implements RolesService {
     @Autowired
     private RolesMapper rolesMapper;
-    @Autowired
-    private UserMapper userMapper;
     @Autowired
     private RolesRoutesMapper rolesRoutesMapper;
     @Autowired
@@ -54,6 +54,7 @@ public class RolesServiceImpl implements RolesService {
         return QueryResult.getResult(data,currentPage,pageSize);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesdelete(List<String> rolelist) {
         try {
@@ -64,10 +65,12 @@ public class RolesServiceImpl implements RolesService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesupdate(Roles roles) {
         try {
@@ -76,10 +79,12 @@ public class RolesServiceImpl implements RolesService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesAssignRoute(Roles roles) {
         try {
@@ -101,10 +106,12 @@ public class RolesServiceImpl implements RolesService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesAssignAuthority(Roles roles) {
         try {
@@ -126,6 +133,7 @@ public class RolesServiceImpl implements RolesService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }

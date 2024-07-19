@@ -8,6 +8,8 @@ import com.example.springtest.service.RoutesService;
 import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RolesRoutesMapper rolesRoutesMapper;
 
+    @Transactional
     @Override
     public List<Routes> routesquery(Roles roles) {
         List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
@@ -29,18 +32,21 @@ public class RoutesServiceImpl implements RoutesService {
         return Routeprocess(routesList);
     }
 
+    @Transactional
     @Override
     public List<Routes> routesall(Routes routes) {
         List<Routes> routesList=routesMapper.routesAllquery(routes);
         return Routeprocess(routesList);
     }
 
+    @Transactional
     @Override
     public List<Routes> routesParentquery() {
         List<Routes> routesList=routesMapper.routesParentquery();
         return Routeprocess(routesList);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int routesadd(Routes routes) {
         try {
@@ -56,7 +62,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
         catch (Exception error)
         {
-            System.out.println(error);
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
@@ -73,6 +79,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int routesdelete(List<String> menulist) {
         try {
@@ -82,6 +89,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
         catch (Exception error)
         {
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
             return 0;
         }
     }
