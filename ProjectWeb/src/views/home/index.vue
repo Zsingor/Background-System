@@ -65,7 +65,19 @@
         <el-card style="width:100%;height: 100%">
           <el-scrollbar wrap-class="scrollbar-wrapper">
             <div style="height: 100%">
-              <el-calendar class="calendar" v-model="dateValue"></el-calendar>
+              <el-calendar class="calendar" v-model="dateValue">
+                <template #date-cell="{ data }">
+                  <p :class="data.isSelected ? 'is-selected' : ''">
+                    <div>
+                      {{ data.day.split('-').slice(2).join('') }}
+                      <span v-if="restDay(data)" class="rest">休</span>
+                    </div>
+                    <div>
+                      {{ data.isSelected ? '✔️' : '' }}
+                    </div>
+                  </p>
+                </template>
+              </el-calendar>
             </div>
           </el-scrollbar>
         </el-card>
@@ -99,11 +111,20 @@ const echarts = inject('echarts');
 let notifyLoading=ref(false)
 
 const dateValue = ref(new Date())
+
 const user = ref({
   id:"",
   name: "游客",
   description:"暂无描述"
 })
+
+const restDay=(data)=>{
+  let date=new Date(data.day)
+  let dayofWeek=date.getDay()
+  return (
+      (dayofWeek%7 === 0 || dayofWeek%7 === 6)
+  );
+}
 
 //初始化用户数据
 const initUser=()=>{
@@ -333,5 +354,14 @@ onMounted(() => {
 .calendar {
   height: 200px;
   width: 100%;
+}
+
+.rest{
+  color: #fff;
+  background-color: #0ce18f;
+  border-radius: 50%;
+  padding: 3px;
+  font-size: 10px;
+  margin-left: 5px;
 }
 </style>
