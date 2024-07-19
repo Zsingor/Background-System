@@ -164,6 +164,7 @@ const switchUpdateHandler = (row) => {
 }
 
 const gridOptions = reactive({
+  id:'routes',
   rowId: 'id',
   height: 'auto',
   align: 'center',

@@ -147,6 +147,7 @@ const submitRoles=()=>{
 }
 
 const gridOptions = reactive({
+  id:'people',
   rowId: 'id',
   ...VxeTableCommonsConfig,
   toolbarConfig: tableConfig.toolbarConfig,

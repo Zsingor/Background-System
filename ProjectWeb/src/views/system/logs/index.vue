@@ -105,6 +105,7 @@ const showErrmsg=(row)=>{
 }
 
 const gridOptions = reactive({
+  id:'logs',
   rowId: 'id',
   ...VxeTableCommonsConfig,
   border:false,

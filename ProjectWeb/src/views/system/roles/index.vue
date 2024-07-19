@@ -189,6 +189,7 @@ const submitEvent=()=>{
 }
 
 const gridOptions = reactive({
+  id:'roles',
   rowId: 'id',
   ...VxeTableCommonsConfig,
   formConfig: {
@@ -248,9 +249,7 @@ const gridOptions = reactive({
               "description": form.description,
             }
           }
-          console.log(page)
           request.post("/roles/query", params).then(res => {
-            console.log("res", res)
             resolve({
               page: {
                 total: res.data.rowSum
