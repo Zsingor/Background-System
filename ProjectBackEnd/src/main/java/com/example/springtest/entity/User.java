@@ -22,5 +22,6 @@ public class User
     private Integer type;
 
     private List<String> rolesid;
+    private Integer rolesidSize=0;
     private Integer unreadCount;
 }

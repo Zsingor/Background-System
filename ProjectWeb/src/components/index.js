@@ -14,7 +14,6 @@ keyList.forEach((key) => {
     if (lastSlashIndex !== -1){
         name=name.slice(lastSlashIndex + 1)
     }
-    console.log(name)
     components[name] = component
 });
 

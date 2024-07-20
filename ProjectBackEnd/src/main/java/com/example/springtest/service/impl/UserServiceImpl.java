@@ -126,11 +126,14 @@ public class UserServiceImpl implements UserService {
         User user=jsonObject.getObject("queryForm",User.class);
         int currentPage=jsonObject.getInteger("currentPage");
         int pageSize=jsonObject.getInteger("pageSize");
-
+        if(user.getRolesid()!=null)
+        {
+            user.setRolesidSize(user.getRolesid().size());
+        }
+        System.out.println("你好");
         List<User> data=userMapper.userquery(user);
         //列表去重
-        data=data.stream().distinct().collect(Collectors.toList());
-
+        //data=data.stream().distinct().collect(Collectors.toList());
         return QueryResult.getResult(data,currentPage,pageSize);
     }
 

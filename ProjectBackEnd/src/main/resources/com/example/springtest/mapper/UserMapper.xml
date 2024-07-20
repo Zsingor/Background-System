@@ -20,26 +20,30 @@
     </select>
 
     <select id="userquery" parameterType="com.example.springtest.entity.User" resultMap="UserResultMap">
-        SELECT u.* FROM sys_data.user u
-        LEFT JOIN sys_data.user_roles ur ON u.id = ur.userid
-        WHERE u.type = 1
+        SELECT * FROM sys_data.user
+        WHERE type = 1
         <if test="name != null and name != ''">
-            AND u.name LIKE CONCAT('%', #{name}, '%')
+            AND name LIKE CONCAT('%', #{name}, '%')
         </if>
         <if test="email != null and email != ''">
-            AND u.email LIKE CONCAT('%', #{email}, '%')
+            AND email LIKE CONCAT('%', #{email}, '%')
         </if>
         <if test="description != null and description != ''">
-            AND u.description LIKE CONCAT('%', #{description}, '%')
+            AND description LIKE CONCAT('%', #{description}, '%')
         </if>
         <if test="status != null and status != ''">
-            AND u.status = #{status}
+            AND status = #{status}
         </if>
         <if test="rolesid != null and !rolesid.isEmpty()">
-            AND ur.roleid IN
-            <foreach item="roleid" collection="rolesid" open="(" separator="," close=")">
-                #{roleid}
+            AND id IN(
+            SELECT userid
+            FROM sys_data.user_roles
+            WHERE roleid IN
+            <foreach item="roleId" collection="rolesid" open="(" separator="," close=")">
+                #{roleId}
             </foreach>
+            GROUP BY userid HAVING COUNT(roleid) = #{rolesidSize}
+            )
         </if>
     </select>
 
