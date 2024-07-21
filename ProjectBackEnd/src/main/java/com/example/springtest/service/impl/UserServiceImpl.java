@@ -21,6 +21,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
@@ -35,7 +36,6 @@ public class UserServiceImpl implements UserService {
 
 
     //用户登录
-    @Transactional
     @Override
     public JSONObject userlogin(User user) {
         User user1 = userMapper.userNamequery(user);
@@ -94,7 +94,6 @@ public class UserServiceImpl implements UserService {
 
     // 用户注册
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public int useradd(User user) {
         try {
             User user1 = userMapper.userNamequery(user);
@@ -143,7 +142,6 @@ public class UserServiceImpl implements UserService {
     }
 
     // 用户删除
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int userdelete(List<String> userlist) {
         try {
@@ -158,7 +156,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    //同意用户申请
     @Override
     public int useragree(List<String> userlist) {
         try {
@@ -185,7 +183,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    //拒绝用户申请
     @Override
     public int userReject(List<String> userlist) {
         try {
@@ -215,7 +213,6 @@ public class UserServiceImpl implements UserService {
 
 
     // 用户更新
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int userupdate(User user) {
         try {
@@ -231,7 +228,6 @@ public class UserServiceImpl implements UserService {
     }
 
     //给用户分配角色
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int userAssignRole(User user) {
         try {
@@ -266,7 +262,6 @@ public class UserServiceImpl implements UserService {
     }
 
     //获得用户拥有的权限
-    @Transactional
     @Override
     public List<String> queryUserAuthority(String userid) {
         //拿到用户的所有角色信息
@@ -278,12 +273,12 @@ public class UserServiceImpl implements UserService {
 
         List<Routes> authorityList=routesMapper.queryAuthority(routesIds);
 
-        List<String> result=RoutesServiceImpl.authorityProcess(authorityList);
+        List<String> result=authorityProcess(authorityList);
         return result;
     }
 
     //处理路由格式
-    public static List<Routes> Routeprocess(List<Routes> routesList){
+    private List<Routes> Routeprocess(List<Routes> routesList){
         // 分类一级路由和二级路由
         List<Routes> parentRoutes = routesList.stream()
                 .filter(route -> route.getLevel() == 1)
@@ -302,5 +297,30 @@ public class UserServiceImpl implements UserService {
         }
 
         return parentRoutes;
+    }
+
+    private List<String> authorityProcess(List<Routes> routesList){
+        // 分类一级权限和二级权限
+        List<Routes> parentAuthority = routesList.stream()
+                .filter(route -> route.getLevel() == 1)
+                .toList();
+
+        List<Routes> childAuthority = routesList.stream()
+                .filter(route -> route.getLevel() == 2)
+                .toList();
+
+        // 将 parentAuthority 转换为 Map<id, path>
+        Map<String, String> parentMap = parentAuthority.stream()
+                .collect(Collectors.toMap(Routes::getId, Routes::getPath));
+
+        // 创建 resultList 并拼接路径
+        List<String> resultList = childAuthority.stream()
+                .map(child -> {
+                    String parentPath = parentMap.get(child.getParentid());
+                    return parentPath + child.getPath();
+                })
+                .collect(Collectors.toList());
+
+        return resultList;
     }
 }

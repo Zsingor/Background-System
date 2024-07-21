@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Service
+@Transactional
 public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageMapper messageMapper;
@@ -20,7 +21,6 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private ConversationsMapper conversationsMapper;
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public void addMessage(Message message) {
         Date createtime=new Date(System.currentTimeMillis());

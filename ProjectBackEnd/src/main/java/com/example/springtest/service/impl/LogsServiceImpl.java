@@ -15,6 +15,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.util.List;
 
 @Service
+@Transactional
 public class LogsServiceImpl implements LogsService {
 
     @Autowired
@@ -45,7 +46,7 @@ public class LogsServiceImpl implements LogsService {
 
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    //    @Transactional(rollbackFor = Exception.class)
     public int logsdelete(List<String> logslist) {
         try {
             logsMapper.logsdelete(logslist);

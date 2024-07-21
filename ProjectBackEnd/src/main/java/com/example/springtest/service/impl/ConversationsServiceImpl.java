@@ -6,10 +6,12 @@ import com.example.springtest.mapper.ConversationsMapper;
 import com.example.springtest.service.ConversationsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class ConversationsServiceImpl implements ConversationsService {
     @Autowired
     private ConversationsMapper conversationsMapper;

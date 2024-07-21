@@ -17,13 +17,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class RoutesServiceImpl implements RoutesService {
     @Autowired
     private RoutesMapper routesMapper;
     @Autowired
     private RolesRoutesMapper rolesRoutesMapper;
 
-    @Transactional
     @Override
     public List<Routes> routesquery(Roles roles) {
         List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
@@ -32,21 +32,18 @@ public class RoutesServiceImpl implements RoutesService {
         return Routeprocess(routesList);
     }
 
-    @Transactional
     @Override
     public List<Routes> routesall(Routes routes) {
         List<Routes> routesList=routesMapper.routesAllquery(routes);
         return Routeprocess(routesList);
     }
 
-    @Transactional
     @Override
     public List<Routes> routesParentquery() {
         List<Routes> routesList=routesMapper.routesParentquery();
         return Routeprocess(routesList);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int routesadd(Routes routes) {
         try {
@@ -79,7 +76,6 @@ public class RoutesServiceImpl implements RoutesService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int routesdelete(List<String> menulist) {
         try {
@@ -94,7 +90,7 @@ public class RoutesServiceImpl implements RoutesService {
         }
     }
 
-    public List<Routes> Routeprocess(List<Routes> routesList){
+    private List<Routes> Routeprocess(List<Routes> routesList){
         // 分类一级路由和二级路由
         List<Routes> parentRoutes = routesList.stream()
                 .filter(route -> route.getLevel() == 1)
@@ -125,30 +121,5 @@ public class RoutesServiceImpl implements RoutesService {
         }
 
         return parentRoutes;
-    }
-
-    public static List<String> authorityProcess(List<Routes> routesList){
-        // 分类一级路由和二级路由
-        List<Routes> parentAuthority = routesList.stream()
-                .filter(route -> route.getLevel() == 1)
-                .toList();
-
-        List<Routes> childAuthority = routesList.stream()
-                .filter(route -> route.getLevel() == 2)
-                .toList();
-
-        // 将 parentAuthority 转换为 Map<id, path>
-        Map<String, String> parentMap = parentAuthority.stream()
-                .collect(Collectors.toMap(Routes::getId, Routes::getPath));
-
-        // 创建 resultList 并拼接路径
-        List<String> resultList = childAuthority.stream()
-                .map(child -> {
-                    String parentPath = parentMap.get(child.getParentid());
-                    return parentPath + child.getPath();
-                })
-                .collect(Collectors.toList());
-        
-        return resultList;
     }
 }

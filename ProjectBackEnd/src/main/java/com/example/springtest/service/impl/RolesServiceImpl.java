@@ -18,6 +18,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.util.*;
 
 @Service
+@Transactional
 public class RolesServiceImpl implements RolesService {
     @Autowired
     private RolesMapper rolesMapper;
@@ -54,7 +55,6 @@ public class RolesServiceImpl implements RolesService {
         return QueryResult.getResult(data,currentPage,pageSize);
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesdelete(List<String> rolelist) {
         try {
@@ -70,7 +70,6 @@ public class RolesServiceImpl implements RolesService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesupdate(Roles roles) {
         try {
@@ -84,7 +83,6 @@ public class RolesServiceImpl implements RolesService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesAssignRoute(Roles roles) {
         try {
@@ -111,7 +109,6 @@ public class RolesServiceImpl implements RolesService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
     @Override
     public int rolesAssignAuthority(Roles roles) {
         try {
