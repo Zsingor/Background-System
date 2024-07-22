@@ -13,8 +13,8 @@
       <!--  所属角色显示显示    -->
       <template #role="{ row }">
           <div>
-            <el-tag class="item-tag" v-for="(roleid, index) in row.rolesid">
-              {{ rootData.rolesList[roleid] }}
+            <el-tag :style="{ whiteSpace: 'pre-wrap' }" class="item-tag" v-for="(roleid, index) in row.rolesid">
+              {{" "+rootData.rolesList[roleid]+" "}}
             </el-tag>
           </div>
       </template>

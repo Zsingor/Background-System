@@ -73,8 +73,6 @@ import {
 } from "@/utils/VxeTableConfig.js";
 import {persistentConfig} from "@/layout/layout.js";
 import {isEmpty, parseDate} from "@/utils/commons.js";
-import {message} from "@/utils/message.js";
-import {ElMessageBox} from "element-plus";
 import axios from "axios";
 
 //定义界面的name，用于使用keep-alive
@@ -104,6 +102,16 @@ const showErrmsg=(row)=>{
   showErrDialog.value=true
 }
 
+//自定义详细内容的导出格式
+const exportDetails=({ row, column, options })=>{
+  return row.details
+}
+
+//自定义错误信息的导出格式
+const exportErrmsg=({ row, column, options })=>{
+  return row.errMsg
+}
+
 const gridOptions = reactive({
   id:'logs',
   rowId: 'id',
@@ -123,7 +131,7 @@ const gridOptions = reactive({
       } else {
         return !isEmpty(column.property)
       }
-    }
+    },
   },
   columns: [
     {type: 'checkbox', width: 50, fixed: 'left'},
@@ -131,9 +139,9 @@ const gridOptions = reactive({
     {field: 'username', title: '用户名称', minWidth: 100},
     {field: 'module', title: '操作模块', minWidth: 100},
     {field: 'operate', title: '操作内容', minWidth: 100},
-    {field: 'details', title: '详细内容', minWidth: 100,slots: {default: 'details'}},
+    {field: 'details', title: '详细内容', minWidth: 100,slots: {default: 'details'},exportMethod:exportDetails},
     {field: 'errFlag', title: '操作结果', minWidth: 100,slots: {default: 'errFlag'}},
-    {field: 'errMsg', title: '错误信息', minWidth: 100,slots: {default: 'errMsg'}},
+    {field: 'errMsg', title: '错误信息', minWidth: 100,slots: {default: 'errMsg'},exportMethod:exportErrmsg},
     {field: 'ip', title: 'IP地址', minWidth: 100},
     {field: 'operatedate', title: '操作时间', minWidth: 150, formatter: "formatDate"},
     {title: '操作', minWidth: 50, fixed: 'right', slots: {default: 'operate'}}
