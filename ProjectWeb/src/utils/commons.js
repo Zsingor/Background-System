@@ -103,6 +103,15 @@ export function getExplorerInfo() {
     return explorerInfo;
 }
 
+//canvas指纹追踪技术(编码生成)
+export const uuid=()=>{
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d');
+    const txt='backstage management system'
+    ctx.fillText(txt,20,20)
+    return canvas.toDataURL()
+}
+
 /**
  * 数组并集,只支持一维数组
  * @param {Array} arrOne

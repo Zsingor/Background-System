@@ -2,7 +2,13 @@
 
 
 
-// 生成水印
+/**
+ * 生成水印
+ * @param dom 文档对象
+ * @param text 文本
+ * @param fontSize 字体大小
+ * @param gap 水印间的距离
+ */
 export function drawWaterMark(dom, text = "我是水印", fontSize = 18, gap = 20) {
     const ctx = dom.getContext("2d");
     ctx.font = `${fontSize}px 'PingFang SC'`;
