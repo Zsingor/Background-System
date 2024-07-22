@@ -9,7 +9,8 @@ import * as echarts from 'echarts' //导入echarts
 import "exceljs" //导入excel文件导出工具
 import {loadConfig} from "@/setup.js";
 import "@/router/permission.js" //导入路由守卫
-import registerComponents from '@/components/index.js'
+import registerComponents from '@/components/index.js' //导入组件自动化注册
+import pinia from "@/stores/index.js"; //引入pinia实例
 
 // 引入全局样式
 import "@/styles/index.scss"
@@ -17,6 +18,7 @@ import "@/styles/index.scss"
 const app = createApp(App)
 //关闭警告信息
 app.config.warnHandler = () => null;
+//声明全局使用的baseurl
 app.config.globalProperties.$baseUrl=import.meta.env.VITE_BASE_API;
 
 //初始化配置信息
@@ -25,6 +27,7 @@ loadConfig()
 app.use(ElementPlus)
 app.use(VxeTable)
 app.use(router);
+app.use(pinia)
 
 //导入全部组件
 Object.keys(registerComponents).forEach((key) => {
@@ -38,4 +41,5 @@ app.provide('echarts', echarts);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
+
 app.mount('#app')
