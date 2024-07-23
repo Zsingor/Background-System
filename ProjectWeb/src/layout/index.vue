@@ -1,11 +1,11 @@
 <template>
   <div id="layout-wrapper">
     <PageHeader></PageHeader>
-    <div class="sideview" :style="{width: sidebarWidth+'px'}">
+    <div class="sideview" :style="{width: sidebarWidth+'px'}" :class="{asideShow:windowConfig.showAside}">
       <PageAside/>
     </div>
     <TagView></TagView>
-    <div class="mainview" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}">
+    <div class="mainview" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}" :class="{mainShow:windowConfig.showAside}">
       <router-view v-slot="{ Component }">
         <transition name="route-fade" mode="out-in" :key="reloadCurrentRoute">
           <Suspense>
@@ -14,7 +14,7 @@
             </keep-alive>
           </Suspense>
         </transition>
-      </router-view>
+      </router-view>  
     </div>
     <canvas
         v-if="!persistentConfig.closeWaterMark"
@@ -35,7 +35,7 @@ import TagView from "@/layout/tags/index.vue"
 import {onMounted, ref, watch} from 'vue'
 import {addRouteTag} from "@/layout/tags/tag.js";
 import {useRoute} from "vue-router";
-import {excludeRoute, includeRoutes, persistentConfig, reloadCurrentRoute, sidebarWidth} from "@/layout/layout.js";
+import {excludeRoute, includeRoutes, persistentConfig, reloadCurrentRoute, sidebarWidth,windowConfig} from "@/layout/layout.js";
 import {isEmpty, parseDate} from "@/utils/commons.js";
 import {drawWaterMark} from "@/utils/project.js";
 import {userInfo} from "@/layout/user.js";
@@ -127,6 +127,15 @@ onMounted(() => {
   background: #ffffff;
 }
 
+.asideShow{
+  width: 200px !important; 
+  z-index: 1000 !important;
+}
+
+.mainShow{
+  filter: brightness(50%);
+}
+
 /* 路由切换动画 */
 .route-fade-leave-active,.route-fade-enter-active {
   transition: all 0.3s;
@@ -142,6 +151,7 @@ onMounted(() => {
   opacity: 0;
 }
 
+/* 水印的样式 */
 #canvas-watermark {
   position: absolute;
   top: 0;

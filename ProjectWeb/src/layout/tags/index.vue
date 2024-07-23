@@ -1,5 +1,5 @@
 <template>
-  <div id="app-tags" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}">
+  <div id="app-tags" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}" :class="{mainShow:windowConfig.showAside}">
     <tag-scroll>
       <div id="tag-sortable-container">
         <div class="tag-item" :class="{'is-active': isActive(tag.path)}"
@@ -25,7 +25,7 @@
 <script setup>
 import TagMenu from "@/layout/tags/components/TagMenu.vue";
 import {useRoute,useRouter} from "vue-router";
-import {persistentConfig, sidebarWidth} from "@/layout/layout.js";
+import {persistentConfig, sidebarWidth,windowConfig} from "@/layout/layout.js";
 import {isEmpty} from "@/utils/commons.js";
 import {addRouteTag, closeTag, moveToTarget, reloadPage, scrollbarRef, tagMenu} from "@/layout/tags/tag.js";
 import {nextTick, onMounted, unref, watch} from "vue";
@@ -111,6 +111,10 @@ onMounted(() => {
   position: fixed;
   transition-property: width, left;
   transition-duration: 0.3s;
+}
+
+.mainShow{
+  filter: brightness(50%);
 }
 
 .lineview{

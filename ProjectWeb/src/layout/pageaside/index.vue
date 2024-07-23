@@ -7,7 +7,7 @@
         :active-background-color="persistentConfig.theme.aside.backgroundColor"
         :text-color="persistentConfig.theme.aside.fontColor"
         :collapse-transition="false"
-        :collapse="persistentConfig.isCollapse"
+        :collapse="(persistentConfig.isCollapse&&!windowConfig.showAside)"
         :router="true"
     >
       <MenuItem
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-import {persistentConfig} from "@/layout/layout.js";
+import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import MenuItem from "@/layout/pageaside/MenuItem.vue";
 import {routeMenus} from "@/layout/user.js";
 

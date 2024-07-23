@@ -2,7 +2,7 @@
   <div id="app-header" class="disable-selected">
     <div class="navbar-left">
       <div class="collapse-button"
-           @click="persistentConfig.isCollapse=!persistentConfig.isCollapse">
+           @click="operAside">
         <el-icon style="font-size: 20px;">
           <component :is="persistentConfig.isCollapse?'Expand':'Fold'"/>
         </el-icon>
@@ -94,7 +94,7 @@
 <script setup>
 import GlobalSetting from "@/layout/pageheader/components/setting/index.vue"
 import {projectName} from "@/setup.js";
-import {persistentConfig} from "@/layout/layout.js";
+import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {reloadPage} from "@/layout/tags/tag.js";
 import {onMounted, provide, reactive, ref} from "vue";
@@ -120,6 +120,24 @@ const controls = reactive({
   showPasswordForm: false,
   showGlobalSetting: false,
 });
+
+const operAside=()=>{
+  console.log("你好",windowConfig.showAside);
+  if(windowConfig.isPc)
+  {
+    persistentConfig.isCollapse=!persistentConfig.isCollapse
+  }
+  else if(persistentConfig.isCollapse)
+  {
+    persistentConfig.isCollapse=false
+    windowConfig.showAside=true
+  }
+  else
+  {
+    persistentConfig.isCollapse=true
+    windowConfig.showAside=false
+  }
+}
 
 //退出登录
 const gologout=()=>{

@@ -50,8 +50,7 @@ export const defaultTheme = {
 export const windowConfig = reactive({
     isPc: true,       // 根据终端窗口大小(1024px)判断当前环境是否是pc端，如果为true，sidebar将以drawer形式展示
     breakpoint: "",   // 窗口断点，这里仅划分三档：xs(windows<=600) sm(600<windows<=1024) lg(windows>1024)
-    showSidebarDrawer: false,
-    showNav: true,
+    showAside: false, //控制当isPc=false时侧边栏的显示
     dialogWidth: computed(() => {
         switch (windowConfig.breakpoint) {
             case "lg":

@@ -29,6 +29,10 @@ const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
 
 const onResize=()=>{
   window.innerWidth > 1024 ? windowConfig.isPc = true : windowConfig.isPc = false;
+  if(!windowConfig.isPc)
+  {
+    persistentConfig.isCollapse=true
+  }
   if (window.innerWidth <= 600) {
     windowConfig.breakpoint = "xs";
   } else if (window.innerWidth <= 1024) {

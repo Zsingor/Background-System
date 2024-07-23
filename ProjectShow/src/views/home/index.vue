@@ -28,12 +28,10 @@ onMounted(()=>{
 </script>
 
 <style scoped lang="scss">
-:root{
-  --blue:#2c7ad2;
-  --purple:#8d3dae;
-  --red:#c82736;
-  --orange:#e77614;
-}
+$blue:#2c7ad2;
+$purple:#8d3dae;
+$red:#c82736;
+$orange:#e77614;
 
 .container{
   display: flex;
@@ -50,18 +48,17 @@ onMounted(()=>{
     width: 75px;
     height: 75px;
     border-radius: 12px;
-    //background-color: var(--blue);
     &:nth-child(2){
-      background-color: #2c7ad2;
+      background-color: $blue;
     }
     &:nth-child(3){
-      background: #8d3dae;
+      background: $purple;
     }
     &:nth-child(4){
-      background: #c82736;
+      background: $red;
     }
     &:nth-child(5){
-      background: #e77614;
+      background: $orange;
     }
   }
 
