@@ -205,49 +205,30 @@ public class UserServiceImpl implements UserService {
     public void userupdate(User user) {
         userMapper.userupdate(user);
         userAssignRole(user);
-//        try {
-//            userMapper.userupdate(user);
-//            userAssignRole(user);
-//            return 1;
-//        }
-//        catch (Exception error)
-//        {
-//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-//            return 0;
-//        }
     }
 
     @Override
-    public int userUpdateSelf(User user) {
-        try {
-            userMapper.userUpdateSelf(user);
-            return 1;
-        }
-        catch (Exception error)
-        {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
-        }
+    public void userUpdateSelf(User user) {
+        userMapper.userUpdateSelf(user);
     }
 
     @Override
-    public int userUpdatePwd(User user) {
+    public void userUpdatePwd(User user) throws Exception {
         try {
             String pas= RsaUtils.decrypt(user.getPassword());
             user.setPassword(pas);
             userMapper.userUpdatePwd(user);
-            return 1;
         }
         catch (Exception error)
         {
             TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
+            throw new Exception(error.getMessage());
         }
     }
 
     //给用户分配角色
     @Override
-    public int userAssignRole(User user) {
+    public void userAssignRole(User user) {
         List<String> roleList=user.getRolesid();
         if(Objects.equals(user.getId(), "1"))
         {
@@ -263,7 +244,6 @@ public class UserServiceImpl implements UserService {
             userRolesMapper.deleteUserRoles(user);
             userRolesMapper.addUserRoles(user.getId(),roleList);
         }
-        return 1;
     }
 
     //查询用户的角色

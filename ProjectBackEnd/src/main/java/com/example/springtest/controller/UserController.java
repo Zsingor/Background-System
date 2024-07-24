@@ -215,32 +215,17 @@ public class UserController {
     @AutoLog(module = "用户管理",operate = "更新个人信息")
     public Result updateSelf(@RequestBody User user)
     {
-        int flag=userService.userUpdateSelf(user);
-        if(flag==1)
-        {
-            return Result.success();
-        }
-        else
-        {
-            return Result.error("修改失败");
-        }
+        userService.userUpdateSelf(user);
+        return Result.success();
     }
 
-    //用户修改个人信息
+    //用户修改个人密码
     @PostMapping("/updatePwd")
     @PreAuthorize("/user/updatePwd")
     @AutoLog(module = "用户管理",operate = "修改个人密码")
-    public Result updatePwd(@RequestBody User user)
-    {
-        int flag=userService.userUpdatePwd(user);
-        if(flag==1)
-        {
-            return Result.success();
-        }
-        else
-        {
-            return Result.error("修改失败");
-        }
+    public Result updatePwd(@RequestBody User user) throws Exception {
+        userService.userUpdatePwd(user);
+        return Result.success();
     }
 
     //为用户分配角色
@@ -249,13 +234,7 @@ public class UserController {
     @PostMapping("/assignRole")
     public Result userAssignRole(@RequestBody User user)
     {
-        int flag=userService.userAssignRole(user);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("添加失败");
-        }
+        userService.userAssignRole(user);
+        return Result.success();
     }
 }

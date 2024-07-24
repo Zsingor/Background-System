@@ -30,11 +30,11 @@ public interface UserService {
 
     void userupdate(User user);
 
-    int userUpdateSelf(User user);
+    void userUpdateSelf(User user);
 
-    int userUpdatePwd(User user);
+    void userUpdatePwd(User user) throws Exception;
 
-    int userAssignRole(User user);
+    void userAssignRole(User user);
 
     List<String> queryUserRoles(String userid);
 
