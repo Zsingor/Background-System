@@ -88,14 +88,8 @@ public class RoutesController {
     @PreAuthorize("/routes/update")
     public Result routesupdate(@RequestBody Routes routes)
     {
-        int flag=routesService.routesupdate(routes);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("修改失败");
-        }
+        routesService.routesupdate(routes);
+        return Result.success();
     }
 
 
@@ -111,14 +105,8 @@ public class RoutesController {
         {
             return Result.error("无法删除初始路由");
         }
-        int flag=routesService.routesdelete(menulist);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("删除失败");
-        }
+        routesService.routesdelete(menulist);
+        return Result.success();
     }
 
     @GetMapping("/get/{name}")

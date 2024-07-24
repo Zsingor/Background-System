@@ -36,27 +36,17 @@ public class NotificationController {
     @PreAuthorize("/notification/delete")
     @DeleteMapping("/delete/{id}")
     public Result deleteNotification(@PathVariable("id")int id) {
-        try {
-            notificationService.deleteNotification(id);
-            return Result.success();
-        } catch (Exception e) {
-            return Result.error("删除通知失败");
-        }
+        notificationService.deleteNotification(id);
+        return Result.success();
     }
 
     //发送全体通知
     @AutoLog(module = "通知管理",operate = "发送通知")
     @PreAuthorize("/notification/send")
     @PostMapping( "/send")
-    public Result sendMessageAll(@RequestBody Notification notification) {
-        try {
-            notificationService.addNotification(notification);
-            webSocketUtil.sendNotification(notification);
-            return Result.success();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-            return Result.error(e.getMessage());
-        }
+    public Result sendMessageAll(@RequestBody Notification notification) throws IOException {
+        notificationService.addNotification(notification);
+        webSocketUtil.sendNotification(notification);
+        return Result.success();
     }
 }

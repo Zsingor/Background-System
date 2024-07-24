@@ -33,14 +33,8 @@ public class RolesController {
     @PreAuthorize("/roles/add")
     public Result rolesadd(@RequestBody Roles roles)
     {
-        int flag=rolesService.rolesadd(roles);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("添加失败");
-        }
+        rolesService.rolesadd(roles);
+        return Result.success();
     }
 
 
@@ -82,14 +76,8 @@ public class RolesController {
         {
             return Result.error("无法删除超级管理员");
         }
-        int flag=rolesService.rolesdelete(rolelist);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("删除失败");
-        }
+        rolesService.rolesdelete(rolelist);
+        return Result.success();
     }
 
 
@@ -99,15 +87,8 @@ public class RolesController {
     @PreAuthorize("/roles/update")
     public Result rolesupdate(@RequestBody Roles roles)
     {
-        System.out.println(roles);
-        int flag=rolesService.rolesupdate(roles);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("修改失败");
-        }
+        rolesService.rolesupdate(roles);
+        return Result.success();
     }
 
     //角色路由添加
@@ -116,14 +97,8 @@ public class RolesController {
     @PreAuthorize("/roles/assignRoute")
     public Result rolesAssignRoute(@RequestBody Roles roles)
     {
-        int flag=rolesService.rolesAssignRoute(roles);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("添加失败");
-        }
+        rolesService.rolesAssignRoute(roles);
+        return Result.success();
     }
 
     //角色权限添加
@@ -132,13 +107,7 @@ public class RolesController {
     @PreAuthorize("/roles/assignAuthority")
     public Result rolesAssignAuthority(@RequestBody Roles roles)
     {
-        int flag=rolesService.rolesAssignAuthority(roles);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("添加失败");
-        }
+        rolesService.rolesAssignAuthority(roles);
+        return Result.success();
     }
 }

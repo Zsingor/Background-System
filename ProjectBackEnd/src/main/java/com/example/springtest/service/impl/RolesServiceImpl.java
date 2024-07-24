@@ -28,16 +28,9 @@ public class RolesServiceImpl implements RolesService {
     private UserRolesMapper userRolesMapper;
 
     @Override
-    public int rolesadd(Roles roles) {
-        try {
-            roles.setId(UUIDUtils.getUUID());
-            rolesMapper.rolesadd(roles);
-            return 1;
-        }
-        catch (Exception error)
-        {
-            return 0;
-        }
+    public void rolesadd(Roles roles) {
+        roles.setId(UUIDUtils.getUUID());
+        rolesMapper.rolesadd(roles);
     }
 
     @Override
@@ -56,82 +49,50 @@ public class RolesServiceImpl implements RolesService {
     }
 
     @Override
-    public int rolesdelete(List<String> rolelist) {
-        try {
-            userRolesMapper.deleteRolesUsers(rolelist);
-            rolesRoutesMapper.deleteRolesRoutes(rolelist);
-            rolesMapper.rolesdelete(rolelist);
-            return 1;
-        }
-        catch (Exception error)
+    public void rolesdelete(List<String> rolelist) {
+        userRolesMapper.deleteRolesUsers(rolelist);
+        rolesRoutesMapper.deleteRolesRoutes(rolelist);
+        rolesMapper.rolesdelete(rolelist);
+    }
+
+    @Override
+    public void rolesupdate(Roles roles) {
+        rolesMapper.rolesupdate(roles);
+    }
+
+    @Override
+    public void rolesAssignRoute(Roles roles) {
+        List<String> routeList=roles.getRoutesid();
+        if(Objects.equals(roles.getId(), "1"))
         {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
+            List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
+            Set<String> resultSet = new HashSet<>(routeList);
+            resultSet.addAll(whitelist);
+            List<String> resultList = new ArrayList<>(resultSet);
+            rolesRoutesMapper.deleteRoleRoutes(roles);
+            rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList,"1");
+        }
+        else {
+            rolesRoutesMapper.deleteRoleRoutes(roles);
+            rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList,"1");
         }
     }
 
     @Override
-    public int rolesupdate(Roles roles) {
-        try {
-            rolesMapper.rolesupdate(roles);
-            return 1;
-        }
-        catch (Exception error)
+    public void rolesAssignAuthority(Roles roles) {
+        List<String> routeList=roles.getRoutesid();
+        if(Objects.equals(roles.getId(), "1"))
         {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
+            List<String> whitelist=new ArrayList<>(Arrays.asList("6","7"));
+            Set<String> resultSet = new HashSet<>(routeList);
+            resultSet.addAll(whitelist);
+            List<String> resultList = new ArrayList<>(resultSet);
+            rolesRoutesMapper.deleteAuthority(roles);
+            rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList,"2");
         }
-    }
-
-    @Override
-    public int rolesAssignRoute(Roles roles) {
-        try {
-            List<String> routeList=roles.getRoutesid();
-            if(Objects.equals(roles.getId(), "1"))
-            {
-                List<String> whitelist=new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
-                Set<String> resultSet = new HashSet<>(routeList);
-                resultSet.addAll(whitelist);
-                List<String> resultList = new ArrayList<>(resultSet);
-                rolesRoutesMapper.deleteRoleRoutes(roles);
-                rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList,"1");
-            }
-            else {
-                rolesRoutesMapper.deleteRoleRoutes(roles);
-                rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList,"1");
-            }
-            return 1;
-        }
-        catch (Exception error)
-        {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
-        }
-    }
-
-    @Override
-    public int rolesAssignAuthority(Roles roles) {
-        try {
-            List<String> routeList=roles.getRoutesid();
-            if(Objects.equals(roles.getId(), "1"))
-            {
-                List<String> whitelist=new ArrayList<>(Arrays.asList("6","7"));
-                Set<String> resultSet = new HashSet<>(routeList);
-                resultSet.addAll(whitelist);
-                List<String> resultList = new ArrayList<>(resultSet);
-                rolesRoutesMapper.deleteAuthority(roles);
-                rolesRoutesMapper.addRoleRoutes(roles.getId(),resultList,"2");
-            }
-            else {
-                rolesRoutesMapper.deleteAuthority(roles);
-                rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList,"2");
-            }
-            return 1;
-        }
-        catch (Exception error)
-        {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
+        else {
+            rolesRoutesMapper.deleteAuthority(roles);
+            rolesRoutesMapper.addRoleRoutes(roles.getId(),routeList,"2");
         }
     }
 }

@@ -7,17 +7,17 @@ import com.example.springtest.entity.Roles;
 import java.util.List;
 
 public interface RolesService {
-    int rolesadd(Roles roles);
+    void rolesadd(Roles roles);
 
     List<Roles> rolesqueryAll();
 
     JSONObject rolesquery(String json);
 
-    int rolesdelete(List<String> rolelist);
+    void rolesdelete(List<String> rolelist);
 
-    int rolesupdate(Roles roles);
+    void rolesupdate(Roles roles);
 
-    int rolesAssignRoute(Roles roles);
+    void rolesAssignRoute(Roles roles);
 
-    int rolesAssignAuthority(Roles roles);
+    void rolesAssignAuthority(Roles roles);
 }

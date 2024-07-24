@@ -82,7 +82,7 @@ public class WebSocketController {
             webSocketUtil.sendMessageTo(message.getReceiverId(),message);
             return Result.success();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             return Result.error(e.getMessage());
         }
     }

@@ -46,48 +46,26 @@ public class RoutesServiceImpl implements RoutesService {
 
     @Override
     public int routesadd(Routes routes) {
-        try {
-            Routes newr=new Routes();
-            List<Routes> routesall = routesMapper.routesAllquery(newr);
-            String name = routes.getName();
-            if (routesall.stream().anyMatch(route -> Objects.equals(route.getName(), name))) {
-                return 2;
-            }
-            routes.setId(UUIDUtils.getUUID());
-            routesMapper.routesadd(routes);
-            return 1;
+        Routes newr=new Routes();
+        List<Routes> routesall = routesMapper.routesAllquery(newr);
+        String name = routes.getName();
+        if (routesall.stream().anyMatch(route -> Objects.equals(route.getName(), name))) {
+            return 2;
         }
-        catch (Exception error)
-        {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
-        }
+        routes.setId(UUIDUtils.getUUID());
+        routesMapper.routesadd(routes);
+        return 1;
     }
 
     @Override
-    public int routesupdate(Routes routes) {
-        try {
-            routesMapper.routesupdate(routes);
-            return 1;
-        }
-        catch (Exception error)
-        {
-            return 0;
-        }
+    public void routesupdate(Routes routes) {
+        routesMapper.routesupdate(routes);
     }
 
     @Override
-    public int routesdelete(List<String> menulist) {
-        try {
-            rolesRoutesMapper.deleteRoutesRoles(menulist);
-            routesMapper.routesdelete(menulist);
-            return 1;
-        }
-        catch (Exception error)
-        {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
-        }
+    public void routesdelete(List<String> menulist) {
+        rolesRoutesMapper.deleteRoutesRoles(menulist);
+        routesMapper.routesdelete(menulist);
     }
 
     private List<Routes> Routeprocess(List<Routes> routesList){

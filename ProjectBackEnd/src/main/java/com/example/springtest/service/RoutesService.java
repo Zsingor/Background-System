@@ -17,7 +17,7 @@ public interface RoutesService {
 
     int routesadd(Routes routes);
 
-    int routesupdate(Routes routes);
+    void routesupdate(Routes routes);
 
-    int routesdelete(List<String> menulist);
+    void routesdelete(List<String> menulist);
 }
