@@ -43,7 +43,7 @@
         <div class="background-rightMid">
           <el-scrollbar ref="scrollbarRef" class="scroller">
             <div ref="innerRef">
-              <div v-for="(item,index) in msgList">
+              <div v-for="(item,index) in msgList" :key="index">
                 <!-- 我方发的信息 -->
                 <div class="msg-item" v-if="item.senderId===userId">
                   <div class="msg-item-line">
@@ -234,7 +234,7 @@ onMounted(async () => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .background {
   width: 100%;
   height: 100%;

@@ -89,7 +89,6 @@ const submitForm = () => {
           rootData.showForm = false
           xGrid.value.commitProxy('query')
           message('修改成功')
-          console.log(res)
         }).catch(() => {
           message("修改失败", "error")
         }).finally(()=>{

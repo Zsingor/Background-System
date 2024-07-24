@@ -6,14 +6,14 @@
         <query-form/>
       </template>
       <!--  表格上方的按钮组    -->
-      <template #toolbar_buttons class="buttons">
+      <template #toolbar_buttons>
         <vxe-button status="primary" @click="addmessage">新增</vxe-button>
         <vxe-button status="danger" @click="deleteTableData(xGrid,'/user/delete',true)">批量删除</vxe-button>
       </template>
       <!--  所属角色显示显示    -->
       <template #role="{ row }">
           <div>
-            <el-tag :style="{ whiteSpace: 'pre-wrap' }" class="item-tag" v-for="(roleid, index) in row.rolesid">
+            <el-tag :style="{ whiteSpace: 'pre-wrap' }" class="item-tag" v-for="(roleid, index) in row.rolesid" :key="index">
               {{" "+rootData.rolesList[roleid]+" "}}
             </el-tag>
           </div>

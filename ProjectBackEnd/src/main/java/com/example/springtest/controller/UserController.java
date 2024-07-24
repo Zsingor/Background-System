@@ -29,24 +29,39 @@ public class UserController {
     //用户登录
     @AutoLog(module = "用户管理",operate = "用户登录")
     @PostMapping("/login")
-    public Result userlogin(@RequestBody User user)
+    public Result userlogin(@RequestBody User user) throws Exception {
+        String pas= RsaUtils.decrypt(user.getPassword());
+        user.setPassword(pas);
+        JSONObject data=userService.userlogin(user);
+        if(data.get("token")=="0")
+        {
+            return Result.error("当前用户不存在");
+        }
+        else if(data.get("token")=="1")
+        {
+            return Result.error("用户名或密码错误");
+        }
+        return Result.success(data);
+    }
+
+    //密码校验
+    @PostMapping("/checkpwd")
+    public Result userCheckpwd(@RequestBody User user)
     {
         try {
             String pas= RsaUtils.decrypt(user.getPassword());
             user.setPassword(pas);
-            JSONObject data=userService.userlogin(user);
-            if(data.get("token")=="0")
+            int flag=userService.userCheckpwd(user);
+            if(flag==1)
             {
-                return Result.error("当前用户不存在");
+                return Result.success();
             }
-            else if(data.get("token")=="1")
+           else
             {
-                return Result.error("用户名或密码错误");
+                return Result.error("密码错误");
             }
-            return Result.success(data);
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            return Result.error("查询失败");
+            return Result.error("密码错误");
         }
     }
 
@@ -160,14 +175,8 @@ public class UserController {
         {
             return Result.error("无法删除初始用户");
         }
-        int flag=userService.userdelete(userlist);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("删除失败");
-        }
+        userService.userdelete(userlist);
+        return Result.success();
     }
 
     //同意用户申请
@@ -176,14 +185,8 @@ public class UserController {
     @AutoLog(module = "用户管理",operate = "同意用户申请")
     public Result useragree(@RequestBody List<String> userlist)
     {
-        int flag=userService.useragree(userlist);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("删除失败");
-        }
+        userService.useragree(userlist);
+        return Result.success();
     }
 
     //拒绝用户申请
@@ -192,14 +195,8 @@ public class UserController {
     @AutoLog(module = "用户管理",operate = "拒绝用户申请")
     public Result userReject(@RequestBody List<String> userlist)
     {
-        int flag=userService.userReject(userlist);
-        if (flag==1)
-        {
-            return Result.success();
-        }
-        else {
-            return Result.error("删除失败");
-        }
+        userService.userReject(userlist);
+        return Result.success();
     }
 
     //用户修改
@@ -208,7 +205,34 @@ public class UserController {
     @AutoLog(module = "用户管理",operate = "更新用户信息")
     public Result update(@RequestBody User user)
     {
-        int flag=userService.userupdate(user);
+        userService.userupdate(user);
+        return Result.success();
+    }
+
+    //用户修改个人信息
+    @PostMapping("/updateSelf")
+    @PreAuthorize("/user/updateSelf")
+    @AutoLog(module = "用户管理",operate = "更新个人信息")
+    public Result updateSelf(@RequestBody User user)
+    {
+        int flag=userService.userUpdateSelf(user);
+        if(flag==1)
+        {
+            return Result.success();
+        }
+        else
+        {
+            return Result.error("修改失败");
+        }
+    }
+
+    //用户修改个人信息
+    @PostMapping("/updatePwd")
+    @PreAuthorize("/user/updatePwd")
+    @AutoLog(module = "用户管理",operate = "修改个人密码")
+    public Result updatePwd(@RequestBody User user)
+    {
+        int flag=userService.userUpdatePwd(user);
         if(flag==1)
         {
             return Result.success();

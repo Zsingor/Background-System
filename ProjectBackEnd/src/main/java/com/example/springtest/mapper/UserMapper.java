@@ -40,4 +40,13 @@ public interface UserMapper {
     @Update("update sys_data.user set name=#{name},password=#{password},email=#{email},"+
             "description=#{description},status=#{status} where id=#{id}")
     void userupdate(User user);
+
+    //更新用户个人信息
+    @Update("update sys_data.user set name=#{name},email=#{email},"+
+            "description=#{description} where id=#{id}")
+    void userUpdateSelf(User user);
+
+    //更新用户个人密码
+    @Update("update sys_data.user set password=#{password} where id=#{id}")
+    void userUpdatePwd(User user);
 }

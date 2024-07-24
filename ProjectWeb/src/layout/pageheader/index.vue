@@ -53,7 +53,7 @@
       </div>
       <div class="operate-button" @click="skipMessage">
         <el-badge v-if="userInfo.unread_count>0" class="item-button" :value="userInfo.unread_count" :min="0" :max="99">
-          <el-icon style="font-size: 20px;" title="我的信息">
+          <el-icon style="font-size: 20px;" title="我的消息">
             <Message/>
           </el-icon>
         </el-badge>
@@ -71,6 +71,12 @@
           </div>
           <template #dropdown>
             <el-dropdown-menu>
+              <el-dropdown-item @click="skipPerson">
+                <el-icon>
+                  <User/>
+                </el-icon>
+                个人信息
+              </el-dropdown-item>
               <el-dropdown-item @click="gologout">
                 <el-icon>
                   <SwitchButton/>
@@ -104,6 +110,7 @@ import {isEmpty} from "@/utils/commons.js";
 import request from "@/request/index.js";
 import {ElNotification} from "element-plus";
 import screenfull from "screenfull";
+import { User } from "@element-plus/icons";
 
 const userouter = useRouter()
 
@@ -122,7 +129,6 @@ const controls = reactive({
 });
 
 const operAside=()=>{
-  console.log("你好",windowConfig.showAside);
   if(windowConfig.isPc)
   {
     persistentConfig.isCollapse=!persistentConfig.isCollapse
@@ -213,6 +219,11 @@ const refreshpage = () => {
 //跳转至站内信
 const skipMessage = () => {
   userouter.push("/admin/message")
+}
+
+//跳转至个人信息界面
+const skipPerson=()=>{
+  userouter.push("/admin/person")
 }
 
 //判断是否登录

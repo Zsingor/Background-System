@@ -10,6 +10,8 @@ public interface UserService {
 
     JSONObject userlogin(User user);
 
+    int userCheckpwd(User user);
+
     List<User> queryMessageUser();
 
     User userQueryMsssage(User user);
@@ -20,13 +22,17 @@ public interface UserService {
 
     List<User> applicationQuery();
 
-    int userdelete(List<String> userlist);
+    void userdelete(List<String> userlist);
 
-    int useragree(List<String> userlist);
+    void useragree(List<String> userlist);
 
-    int userReject(List<String> userlist);
+    void userReject(List<String> userlist);
 
-    int userupdate(User user);
+    void userupdate(User user);
+
+    int userUpdateSelf(User user);
+
+    int userUpdatePwd(User user);
 
     int userAssignRole(User user);
 

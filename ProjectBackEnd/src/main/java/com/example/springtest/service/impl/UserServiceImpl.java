@@ -8,10 +8,7 @@ import com.example.springtest.entity.User;
 import com.example.springtest.mapper.*;
 import com.example.springtest.service.EmailService;
 import com.example.springtest.service.UserService;
-import com.example.springtest.utils.JwtUtils;
-import com.example.springtest.utils.QueryResult;
-import com.example.springtest.utils.TimeConvert;
-import com.example.springtest.utils.UUIDUtils;
+import com.example.springtest.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -82,6 +79,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public int userCheckpwd(User user) {
+        User user1 = userMapper.userNamequery(user);
+        //如果当前用户不存在或者密码错误
+        if(user1==null)
+        {
+            return 0;
+        }
+        else if(!user1.getPassword().equals(user.getPassword()))
+        {
+            return 0;
+        }
+        return 1;
+    }
+
+    @Override
     public List<User> queryMessageUser() {
         return userMapper.queryMessageUser();
     }
@@ -143,65 +155,72 @@ public class UserServiceImpl implements UserService {
 
     // 用户删除
     @Override
-    public int userdelete(List<String> userlist) {
-        try {
-            userRolesMapper.deleteUsersRoles(userlist);
-            userMapper.userdelete(userlist);
-            return 1;
-        }
-        catch (Exception error)
-        {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
-        }
+    public void userdelete(List<String> userlist) {
+        userRolesMapper.deleteUsersRoles(userlist);
+        userMapper.userdelete(userlist);
     }
 
     //同意用户申请
     @Override
-    public int useragree(List<String> userlist) {
-        try {
-            userMapper.useragree(userlist);
-            for (String userId:userlist)
-            {
-                User data=userMapper.userPrimaryquery(userId);
-                String emailTo=data.getEmail();
-                if(!Objects.equals(emailTo, ""))
-                {
-                    String subject="申请结果通知";
-                    String text="";
-                    String date= TimeConvert.dateToTime(data.getCreateTime());
-                    text=String.format("您于 %s 申请的账号 %s 已通过申请！",date,data.getName());
-                    emailService.sendEmail(emailTo,subject,text);
-                }
-            }
-            return 1;
-        }
-        catch (Exception error)
+    public void useragree(List<String> userlist) {
+        userMapper.useragree(userlist);
+        for (String userId:userlist)
         {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
+            User data=userMapper.userPrimaryquery(userId);
+            String emailTo=data.getEmail();
+            if(!Objects.equals(emailTo, ""))
+            {
+                String subject="申请结果通知";
+                String text="";
+                String date= TimeConvert.dateToTime(data.getCreateTime());
+                text=String.format("您于 %s 申请的账号 %s 已通过申请！",date,data.getName());
+                emailService.sendEmail(emailTo,subject,text);
+            }
         }
     }
 
     //拒绝用户申请
     @Override
-    public int userReject(List<String> userlist) {
-        try {
-            for (String userId:userlist)
+    public void userReject(List<String> userlist) {
+        for (String userId:userlist)
+        {
+            User data=userMapper.userPrimaryquery(userId);
+            String emailTo=data.getEmail();
+            if(!Objects.equals(emailTo, ""))
             {
-                User data=userMapper.userPrimaryquery(userId);
-                String emailTo=data.getEmail();
-                if(!Objects.equals(emailTo, ""))
-                {
-                    String subject="申请结果通知";
-                    String text="";
-                    String date= TimeConvert.dateToTime(data.getCreateTime());
-                    text=String.format("非常抱歉，您于 %s 申请的账号 %s 未通过申请！",date,data.getName());
-                    emailService.sendEmail(emailTo,subject,text);
-                }
+                String subject="申请结果通知";
+                String text="";
+                String date= TimeConvert.dateToTime(data.getCreateTime());
+                text=String.format("非常抱歉，您于 %s 申请的账号 %s 未通过申请！",date,data.getName());
+                emailService.sendEmail(emailTo,subject,text);
             }
-            userRolesMapper.deleteUsersRoles(userlist);
-            userMapper.userdelete(userlist);
+        }
+        userRolesMapper.deleteUsersRoles(userlist);
+        userMapper.userdelete(userlist);
+    }
+
+
+    // 用户更新
+    @Override
+    public void userupdate(User user) {
+        userMapper.userupdate(user);
+        userAssignRole(user);
+//        try {
+//            userMapper.userupdate(user);
+//            userAssignRole(user);
+//            return 1;
+//        }
+//        catch (Exception error)
+//        {
+//            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
+//            return 0;
+//        }
+    }
+
+    @Override
+    public int userUpdateSelf(User user) {
+        try {
+            userMapper.userUpdateSelf(user);
             return 1;
         }
         catch (Exception error)
@@ -211,13 +230,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
-    // 用户更新
     @Override
-    public int userupdate(User user) {
+    public int userUpdatePwd(User user) {
         try {
-            userMapper.userupdate(user);
-            userAssignRole(user);
+            String pas= RsaUtils.decrypt(user.getPassword());
+            user.setPassword(pas);
+            userMapper.userUpdatePwd(user);
             return 1;
         }
         catch (Exception error)
@@ -230,29 +248,22 @@ public class UserServiceImpl implements UserService {
     //给用户分配角色
     @Override
     public int userAssignRole(User user) {
-        try {
-            List<String> roleList=user.getRolesid();
-            if(Objects.equals(user.getId(), "1"))
-            {
-                List<String> whitelist=new ArrayList<>(List.of("1"));
-                Set<String> resultSet = new HashSet<>(roleList);
-                resultSet.addAll(whitelist);
-                List<String> resultList = new ArrayList<>(resultSet);
-                user.setRolesid(resultList);
-                userRolesMapper.deleteUserRoles(user);
-                userRolesMapper.addUserRoles(user.getId(),resultList);
-            }
-            else {
-                userRolesMapper.deleteUserRoles(user);
-                userRolesMapper.addUserRoles(user.getId(),roleList);
-            }
-            return 1;
-        }
-        catch (Exception error)
+        List<String> roleList=user.getRolesid();
+        if(Objects.equals(user.getId(), "1"))
         {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
+            List<String> whitelist=new ArrayList<>(List.of("1"));
+            Set<String> resultSet = new HashSet<>(roleList);
+            resultSet.addAll(whitelist);
+            List<String> resultList = new ArrayList<>(resultSet);
+            user.setRolesid(resultList);
+            userRolesMapper.deleteUserRoles(user);
+            userRolesMapper.addUserRoles(user.getId(),resultList);
         }
+        else {
+            userRolesMapper.deleteUserRoles(user);
+            userRolesMapper.addUserRoles(user.getId(),roleList);
+        }
+        return 1;
     }
 
     //查询用户的角色

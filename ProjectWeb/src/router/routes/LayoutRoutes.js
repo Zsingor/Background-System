@@ -1,5 +1,6 @@
 import home from "@/views/home/index.vue";
 import message from "@/views/message/index.vue"
+import person from "@/views/person/index.vue"
 
 
 const layoutRoutes = {
@@ -20,14 +21,25 @@ const layoutRoutes = {
         },
         {
             path: 'message',
-            title:"我的信息",
+            title:"我的消息",
             meta:{
-                title:"我的信息",
+                title:"我的消息",
                 hidden:true
             },
             name: 'message',
             icon: "Message",
             component: message
+        },
+        {
+            path: 'person',
+            title:"个人信息",
+            meta:{
+                title:"个人信息",
+                hidden:true
+            },
+            name: 'person',
+            icon: "User",
+            component: person
         }
     ]
 };

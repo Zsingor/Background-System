@@ -101,7 +101,7 @@ public class LogAspect {
             }
             Logs logs=new Logs(id,userid,username,module,operate,details,ip,"0",e.getMessage(),operatetime,null,null);
             logsService.logsadd(logs);
-            return Result.error(e.getMessage());
+            return Result.error("操作失败");
         }
     }
 
