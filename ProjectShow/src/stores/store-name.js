@@ -1,3 +1,4 @@
 export const Names={
-    Test:"Test"
+    Test:"Test",
+    Lang:"Language"
 }
