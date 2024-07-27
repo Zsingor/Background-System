@@ -9,10 +9,10 @@
           <ul class="nav__list grid">
             <li class="nav__item" v-for="section in sections" :key="section.id">
               <a
-                :href="`#${section.id}`"
-                class="nav__link"
-                @click="showMenu"
-                :class="{ 'active-link': isActive(section.id) }"
+                  :href="`#${section.id}`"
+                  class="nav__link"
+                  @click="showMenu"
+                  :class="{ 'active-link': isActive(section.id) }"
               >
                 <i :class="`uil ${section.icon}`" class="nav__icon"></i>
                 <p>{{ $t(section.label) }}</p>
@@ -27,18 +27,18 @@
             </li>
           </ul>
           <i
-            class="uil uil-times nav__close"
-            @click="showMenu"
-            id="nav-close"
+              class="uil uil-times nav__close"
+              @click="showMenu"
+              id="nav-close"
           ></i>
         </div>
 
         <div class="nav__btns">
           <i
-            @click="changeTheme"
-            :class="`uil ${themeIcon}`"
-            class="change-theme"
-            id="theme-button"
+              @click="changeTheme"
+              :class="`uil ${themeIcon}`"
+              class="change-theme"
+              id="theme-button"
           ></i>
           <div class="nav__toggle" @click="showMenu" id="nav-toggle">
             <i class="uil uil-apps"></i>
@@ -55,49 +55,48 @@
           <div class="home__content grid">
             <div class="home__social">
               <a
-                href="https://gitee.com/asoutherncat/"
-                target="_blank"
-                class="home__social-icon"
+                  href="https://github.com/Zsingor"
+                  target="_blank"
+                  class="home__social-icon"
               >
                 <!-- <i class="uil uil-linkedin-alt"></i> -->
                 <svg
-                  t="1674798484640"
-                  viewBox="0 0 1024 1024"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  p-id="2757"
+                    t="1674798484640"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="2757"
                 >
                   <path
-                    d="M512 1024C229.222 1024 0 794.778 0 512S229.222 0 512 0s512 229.222 512 512-229.222 512-512 512z m259.149-568.883h-290.74a25.293 25.293 0 0 0-25.292 25.293l-0.026 63.206c0 13.952 11.315 25.293 25.267 25.293h177.024c13.978 0 25.293 11.315 25.293 25.267v12.646a75.853 75.853 0 0 1-75.853 75.853h-240.23a25.293 25.293 0 0 1-25.267-25.293V417.203a75.853 75.853 0 0 1 75.827-75.853h353.946a25.293 25.293 0 0 0 25.267-25.292l0.077-63.207a25.293 25.293 0 0 0-25.268-25.293H417.152a189.62 189.62 0 0 0-189.62 189.645V771.15c0 13.977 11.316 25.293 25.294 25.293h372.94a170.65 170.65 0 0 0 170.65-170.65V480.384a25.293 25.293 0 0 0-25.293-25.267z"
-                    fill="hsl(250deg 69% 61%)"
-                    p-id="2758"
+                      d="M512 1024C229.222 1024 0 794.778 0 512S229.222 0 512 0s512 229.222 512 512-229.222 512-512 512z m259.149-568.883h-290.74a25.293 25.293 0 0 0-25.292 25.293l-0.026 63.206c0 13.952 11.315 25.293 25.267 25.293h177.024c13.978 0 25.293 11.315 25.293 25.267v12.646a75.853 75.853 0 0 1-75.853 75.853h-240.23a25.293 25.293 0 0 1-25.267-25.293V417.203a75.853 75.853 0 0 1 75.827-75.853h353.946a25.293 25.293 0 0 0 25.267-25.292l0.077-63.207a25.293 25.293 0 0 0-25.268-25.293H417.152a189.62 189.62 0 0 0-189.62 189.645V771.15c0 13.977 11.316 25.293 25.294 25.293h372.94a170.65 170.65 0 0 0 170.65-170.65V480.384a25.293 25.293 0 0 0-25.293-25.267z"
+                      fill="hsl(250deg 69% 61%)"
+                      p-id="2758"
                   ></path>
                 </svg>
               </a>
               <a
-                href="http://github.com"
-                target="_blank"
-                class="home__social-icon"
+                  href="https://github.com/Zsingor"
+                  target="_blank"
+                  class="home__social-icon"
               >
                 <i class="uil uil-github-alt"></i>
               </a>
               <a
-                href="https://t.bilibili.com/"
-                target="_blank"
-                class="home__social-icon"
+                  href="https://github.com/Zsingor"
+                  target="_blank"
+                  class="home__social-icon"
               >
-                <!-- <i class="uil uil-dribbble"></i> -->
                 <svg
-                  t="1674801734735"
-                  viewBox="0 0 1024 1024"
-                  version="1.1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  p-id="4124"
+                    t="1674801734735"
+                    viewBox="0 0 1024 1024"
+                    version="1.1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    p-id="4124"
                 >
                   <path
-                    d="M777.514667 131.669333a53.333333 53.333333 0 0 1 0 75.434667L728.746667 255.829333h49.92A160 160 0 0 1 938.666667 415.872v320a160 160 0 0 1-160 160H245.333333A160 160 0 0 1 85.333333 735.872v-320a160 160 0 0 1 160-160h49.749334L246.4 207.146667a53.333333 53.333333 0 1 1 75.392-75.434667l113.152 113.152c3.370667 3.370667 6.186667 7.04 8.448 10.965333h137.088c2.261333-3.925333 5.12-7.68 8.490667-11.008l113.109333-113.152a53.333333 53.333333 0 0 1 75.434667 0z m1.152 231.253334H245.333333a53.333333 53.333333 0 0 0-53.205333 49.365333l-0.128 4.010667v320c0 28.117333 21.76 51.157333 49.365333 53.162666l3.968 0.170667h533.333334a53.333333 53.333333 0 0 0 53.205333-49.365333l0.128-3.968v-320c0-29.44-23.893333-53.333333-53.333333-53.333334z m-426.666667 106.666666c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z m320 0c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z"
-                    fill="hsl(250deg 69% 61%)"
-                    p-id="4125"
+                      d="M777.514667 131.669333a53.333333 53.333333 0 0 1 0 75.434667L728.746667 255.829333h49.92A160 160 0 0 1 938.666667 415.872v320a160 160 0 0 1-160 160H245.333333A160 160 0 0 1 85.333333 735.872v-320a160 160 0 0 1 160-160h49.749334L246.4 207.146667a53.333333 53.333333 0 1 1 75.392-75.434667l113.152 113.152c3.370667 3.370667 6.186667 7.04 8.448 10.965333h137.088c2.261333-3.925333 5.12-7.68 8.490667-11.008l113.109333-113.152a53.333333 53.333333 0 0 1 75.434667 0z m1.152 231.253334H245.333333a53.333333 53.333333 0 0 0-53.205333 49.365333l-0.128 4.010667v320c0 28.117333 21.76 51.157333 49.365333 53.162666l3.968 0.170667h533.333334a53.333333 53.333333 0 0 0 53.205333-49.365333l0.128-3.968v-320c0-29.44-23.893333-53.333333-53.333333-53.333334z m-426.666667 106.666666c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z m320 0c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z"
+                      fill="hsl(250deg 69% 61%)"
+                      p-id="4125"
                   ></path>
                 </svg>
               </a>
@@ -105,48 +104,47 @@
 
             <div class="home__img">
               <svg
-                class="home__blob"
-                viewBox="0 0 200 187"
-                xmlns="http://www.w3.org/2000/svg"
-                xmlns:xlink="http://www.w3.org/1999/xlink"
+                  class="home__blob"
+                  viewBox="0 0 200 187"
+                  xmlns="http://www.w3.org/2000/svg"
               >
                 <mask id="mask0" mask-type="alpha">
                   <path
-                    d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547 
-                                130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775 
-                                97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666 
+                      d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 165.547
+                                130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 129.362C2.45775
+                                97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 -0.149132 97.9666
                                 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"
                   />
                 </mask>
                 <g mask="url(#mask0)">
                   <path
-                    d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346 
-                                165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403 
-                                129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028 
+                      d="M190.312 36.4879C206.582 62.1187 201.309 102.826 182.328 134.186C163.346
+                                165.547 130.807 187.559 100.226 186.353C69.6454 185.297 41.0228 161.023 21.7403
+                                129.362C2.45775 97.8511 -7.48481 59.1033 6.67581 34.5279C20.9871 10.1032 59.7028
                                 -0.149132 97.9666 0.00163737C136.23 0.303176 174.193 10.857 190.312 36.4879Z"
                   />
                   <image
-                    class="home__blob-img"
-                    x="0"
-                    y="-30"
-                    src="@/assets/img/cat.png"
+                      class="home__blob-img"
+                      x="0"
+                      y="-30"
+                      xlink:href="@/assets/img/cat.png"
                   />
                 </g>
               </svg>
             </div>
 
             <div class="home__data">
-              <h1 class="home__title" i18n="home__title">
+              <h1 class="home__title">
                 {{ $t("home.opening") }}
               </h1>
-              <h3 class="home__subtitle" i18n="home__subtitle">
+              <h3 class="home__subtitle">
                 {{ $t("home.posts") }}
               </h3>
-              <p class="home__description" i18n="home__description">
+              <p class="home__description">
                 {{ $t("home.description") }}
               </p>
               <a href="#contact" class="button button-flex">
-                <span i18n="home__contact">{{ $t("home.tips") }}</span>
+                <span>{{ $t("home.tips") }}</span>
                 <i class="uil uil-message button__icon"></i>
               </a>
             </div>
@@ -154,9 +152,9 @@
           <div class="home__scroll">
             <a href="#about" class="home__scroll-button button--flex">
               <i class="uil uil-mouse-alt-2 home__scroll-mouse"></i>
-              <span class="home__scroll-name" i18n="home__scroll-name">{{
-                $t("home.slide")
-              }}</span>
+              <span class="home__scroll-name">{{
+                  $t("home.slide")
+                }}</span>
               <i class="uil uil-arrow-down home__scroll-arrow"></i>
             </a>
           </div>
@@ -165,52 +163,52 @@
 
       <!--==================== ABOUT ====================-->
       <section class="about section" id="about">
-        <h2 class="section__title" i18n="about__title">
+        <h2 class="section__title">
           {{ $t("about.title") }}
         </h2>
-        <span class="section__subtitle" i18n="about__subtitle">{{
-          $t("about.subheading")
-        }}</span>
+        <span class="section__subtitle">{{
+            $t("about.subheading")
+          }}</span>
         <div class="about__container container grid">
-          <img src="@/assets/img/about.png" alt="" class="about__img" />
+          <img src="@/assets/img/about.png" alt="" class="about__img"/>
 
           <div class="about__data">
-            <p class="about__description" i18n="about__description">
+            <p class="about__description">
               {{ $t("about.description") }}
             </p>
 
             <div class="about__info">
               <div>
                 <span class="about__info-title">{{
-                  $t("about.number_1")
-                }}</span>
-                <span class="about__info-name" i18n="about__info-name1">{{
-                  $t("about.tips_1")
-                }}</span>
+                    $t("about.number_1")
+                  }}</span>
+                <span class="about__info-name">{{
+                    $t("about.tips_1")
+                  }}</span>
               </div>
 
               <div>
                 <span class="about__info-title">{{
-                  $t("about.number_2")
-                }}</span>
-                <span class="about__info-name" i18n="about__info-name2">{{
-                  $t("about.tips_2")
-                }}</span>
+                    $t("about.number_2")
+                  }}</span>
+                <span class="about__info-name">{{
+                    $t("about.tips_2")
+                  }}</span>
               </div>
 
               <div>
                 <span class="about__info-title">{{
-                  $t("about.number_2")
-                }}</span>
-                <span class="about__info-name" i18n="about__info-name3">{{
-                  $t("about.tips_3")
-                }}</span>
+                    $t("about.number_2")
+                  }}</span>
+                <span class="about__info-name">{{
+                    $t("about.tips_3")
+                  }}</span>
               </div>
             </div>
 
             <div class="about__buttons">
               <a download="" class="button button--flex">
-                <span i18n="download">{{ $t("about.button") }}</span
+                <span>{{ $t("about.button") }}</span
                 ><i class="uil uil-download-alt button__icon"></i>
               </a>
             </div>
@@ -220,12 +218,12 @@
 
       <!--==================== SKILLS ====================-->
       <section class="skills section" id="skills">
-        <h2 class="section__title" i18n="skills__title">
+        <h2 class="section__title">
           {{ $t("skills.title") }}
         </h2>
-        <span class="section__subtitle" i18n="skills__subtitle">{{
-          $t("skills.subheading")
-        }}</span>
+        <span class="section__subtitle">{{
+            $t("skills.subheading")
+          }}</span>
 
         <div class="skills__container container grid">
           <div>
@@ -235,17 +233,17 @@
                 <i class="uil uil-brackets-curly skills__icon"></i>
 
                 <div>
-                  <h1 class="skills__title" i18n="home__subtitle">
+                  <h1 class="skills__title">
                     {{ $t("skills.title_1") }}
                   </h1>
-                  <span class="skills__subtitle" i18n="skills__years">{{
-                    $t("skills.subheading_1")
-                  }}</span>
+                  <span class="skills__subtitle">{{
+                      $t("skills.subheading_1")
+                    }}</span>
                 </div>
 
                 <i
-                  class="uil uil-angle-down skills__arrow"
-                  @click="changeSkill1"
+                    class="uil uil-angle-down skills__arrow"
+                    @click="changeSkill1"
                 ></i>
               </div>
 
@@ -297,17 +295,17 @@
                 <i class="uil uil-server-network skills__icon"></i>
 
                 <div>
-                  <h1 class="skills__title" i18n="skills__title2">
+                  <h1 class="skills__title">
                     {{ $t("skills.title_2") }}
                   </h1>
-                  <span class="skills__subtitle" i18n="skills__years2">{{
-                    $t("skills.subheading_2")
-                  }}</span>
+                  <span class="skills__subtitle">{{
+                      $t("skills.subheading_2")
+                    }}</span>
                 </div>
 
                 <i
-                  class="uil uil-angle-down skills__arrow"
-                  @click="changeSkill2"
+                    class="uil uil-angle-down skills__arrow"
+                    @click="changeSkill2"
                 ></i>
               </div>
 
@@ -339,52 +337,51 @@
 
       <!--==================== QUALIFICATION ====================-->
       <section class="qualification section" id="qualification">
-        <h2 class="section__title" i18n="qualification__title">
+        <h2 class="section__title">
           {{ $t("qualification.title") }}
         </h2>
-        <span class="section__subtitle" i18n="qualification__subtitle">{{
-          $t("qualification.subheading")
-        }}</span>
+        <span class="section__subtitle">{{
+            $t("qualification.subheading")
+          }}</span>
         <div class="qualification__container container">
           <div class="qualification__tabs">
             <div
-              class="qualification__button button--flex"
-              data-target="#education"
-              @click="showQualify(1)"
-              :class="{ qualification__active: qualifyFlag }"
+                class="qualification__button button--flex"
+                data-target="#education"
+                @click="showQualify(1)"
+                :class="{ qualification__active: qualifyFlag }"
             >
               <i class="uil uil-graduation-cap qualification__icon"></i>
-              <span i18n="education">{{ $t("qualification.title_1") }}</span>
+              <span>{{ $t("qualification.title_1") }}</span>
             </div>
 
             <div
-              class="qualification__button button--flex"
-              data-target="#work"
-              @click="showQualify(2)"
-              :class="{ qualification__active: !qualifyFlag }"
+                class="qualification__button button--flex"
+                data-target="#work"
+                @click="showQualify(2)"
+                :class="{ qualification__active: !qualifyFlag }"
             >
               <i class="uil uil-briefcase-alt qualification__icon"></i>
-              <span i18n="work">{{ $t("qualification.title_2") }}</span>
+              <span>{{ $t("qualification.title_2") }}</span>
             </div>
           </div>
           <div class="qualification__sections">
             <!--==================== QUALIFICATION CONTENT 1 ====================-->
             <div
-              class="qualification__content"
-              :class="{ qualification__active: qualifyFlag }"
-              data-content
-              id="education"
+                class="qualification__content"
+                :class="{ qualification__active: qualifyFlag }"
+                data-content
+                id="education"
             >
               <!--==================== QUALIFICATION 1 ====================-->
               <div class="qualification__data">
                 <div>
-                  <h3 class="qualification__title" i18n="qualification1__title">
+                  <h3 class="qualification__title">
                     {{ $t("qualification.tab_1") }}
                   </h3>
                   <span
-                    class="qualification__subtitle"
-                    i18n="qualification1__subtitle"
-                    >{{ $t("qualification.tab_des_1") }}</span
+                      class="qualification__subtitle"
+                  >{{ $t("qualification.tab_des_1") }}</span
                   >
                   <div class="qualification__calendar">
                     <i class="uil uil-calendar-alt"></i>
@@ -406,13 +403,12 @@
                 </div>
 
                 <div>
-                  <h3 class="qualification__title" i18n="qualification2__title">
+                  <h3 class="qualification__title">
                     {{ $t("qualification.tab_2") }}
                   </h3>
                   <span
-                    class="qualification__subtitle"
-                    i18n="qualification2__subtitle"
-                    >{{ $t("qualification.tab_des_2") }}</span
+                      class="qualification__subtitle"
+                  >{{ $t("qualification.tab_des_2") }}</span
                   >
                   <div class="qualification__calendar">
                     <i class="uil uil-calendar-alt"></i>
@@ -423,13 +419,12 @@
               <!--==================== QUALIFICATION 3 ====================-->
               <div class="qualification__data">
                 <div>
-                  <h3 class="qualification__title" i18n="qualification3__title">
+                  <h3 class="qualification__title">
                     {{ $t("qualification.tab_3") }}
                   </h3>
                   <span
-                    class="qualification__subtitle"
-                    i18n="qualification3__subtitle"
-                    >{{ $t("qualification.tab_des_3") }}</span
+                      class="qualification__subtitle"
+                  >{{ $t("qualification.tab_des_3") }}</span
                   >
                   <div class="qualification__calendar">
                     <i class="uil uil-calendar-alt"></i>
@@ -445,10 +440,10 @@
             </div>
             <!--==================== QUALIFICATION CONTENT 2 ====================-->
             <div
-              class="qualification__content"
-              data-content
-              id="work"
-              :class="{ qualification__active: !qualifyFlag }"
+                class="qualification__content"
+                data-content
+                id="work"
+                :class="{ qualification__active: !qualifyFlag }"
             >
               <!--==================== QUALIFICATION 1 ====================-->
               <div class="qualification__data">
@@ -458,13 +453,12 @@
                   <!-- <span class="qualification__line"></span> -->
                 </div>
                 <div>
-                  <h3 class="qualification__title" i18n="qualification4__title">
+                  <h3 class="qualification__title">
                     {{ $t("qualification.tab_4") }}
                   </h3>
                   <span
-                    class="qualification__subtitle"
-                    i18n="qualification4__subtitle"
-                    >{{ $t("qualification.tab_des_4") }}</span
+                      class="qualification__subtitle"
+                  >{{ $t("qualification.tab_des_4") }}</span
                   >
                   <div class="qualification__calendar">
                     <i class="uil uil-calendar-alt"></i>
@@ -479,46 +473,46 @@
 
       <!--==================== PORTFOLIO ====================-->
       <section class="portfolio section" id="portfolio">
-        <h2 class="section__title" i18n="portfolio__title">
+        <h2 class="section__title">
           {{ $t("portfolio.title") }}
         </h2>
-        <span class="section__subtitle" i18n="portfolio__subtitle">{{
-          $t("portfolio.subheading")
-        }}</span>
+        <span class="section__subtitle">{{
+            $t("portfolio.subheading")
+          }}</span>
 
         <div class="portfolio__container container swiper-container">
-          <div class="swiper-button-prev" @click="addPage(-1)">
+          <div class="swiper-button-prev">
             <i class="uil uil-angle-left-b swiper-portfolio-icon"></i>
           </div>
 
           <Swiper
-            :slides-per-view="1"
-            :loop="true"
-            @swiper="onSwiper"
-            @slideChange="onSlideChange"
+              :slides-per-view="1"
+              :loop="true"
+              :modules="modules"
+              :navigation="navigation"
+              :pagination="pagination"
           >
             <SwiperSlide>
               <div class="portfolio__content grid">
                 <img
-                  src="@/assets/img/portfolio1.jpg"
-                  alt=""
-                  class="portfolio__img"
+                    src="@/assets/img/portfolio1.jpg"
+                    alt=""
+                    class="portfolio__img"
                 />
 
                 <div class="portfolio_">
-                  <h3 class="portfolio__title" i18n="portfolio1__title">
+                  <h3 class="portfolio__title">
                     {{ $t("portfolio.title_1") }}
                   </h3>
                   <p
-                    class="portfolio__description"
-                    i18n="portfolio1__description"
+                      class="portfolio__description"
                   >
                     {{ $t("portfolio.description_1") }}
                   </p>
                   <a
-                    href="https://gitee.com/asoutherncat/"
-                    target="_blank"
-                    class="button button--flex button--small portfolio__button"
+                      href="https://github.com/Zsingor"
+                      target="_blank"
+                      class="button button--flex button--small portfolio__button"
                   >
                     Demo
                     <i class="uil uil-arrow-right button__icon"></i>
@@ -530,25 +524,24 @@
             <SwiperSlide>
               <div class="portfolio__content grid">
                 <img
-                  src="@/assets/img/portfolio2.jpg"
-                  alt=""
-                  class="portfolio__img"
+                    src="@/assets/img/portfolio2.jpg"
+                    alt=""
+                    class="portfolio__img"
                 />
 
                 <div class="portfolio_">
-                  <h3 class="portfolio__title" i18n="portfolio2__title">
+                  <h3 class="portfolio__title">
                     {{ $t("portfolio.title_2") }}
                   </h3>
                   <p
-                    class="portfolio__description"
-                    i18n="portfolio2__description"
+                      class="portfolio__description"
                   >
                     {{ $t("portfolio.description_2") }}
                   </p>
                   <a
-                    href="https://gitee.com/asoutherncat/"
-                    target="_blank"
-                    class="button button--flex button--small portfolio__button"
+                      href="https://github.com/Zsingor"
+                      target="_blank"
+                      class="button button--flex button--small portfolio__button"
                   >
                     Demo
                     <i class="uil uil-arrow-right button__icon"></i>
@@ -560,25 +553,24 @@
             <SwiperSlide>
               <div class="portfolio__content grid">
                 <img
-                  src="@/assets/img/portfolio3.jpg"
-                  alt=""
-                  class="portfolio__img"
+                    src="@/assets/img/portfolio3.jpg"
+                    alt=""
+                    class="portfolio__img"
                 />
 
                 <div class="portfolio_">
-                  <h3 class="portfolio__title" i18n="portfolio3__title">
+                  <h3 class="portfolio__title">
                     {{ $t("portfolio.title_3") }}
                   </h3>
                   <p
-                    class="portfolio__description"
-                    i18n="portfolio3__description"
+                      class="portfolio__description"
                   >
                     {{ $t("portfolio.description_3") }}
                   </p>
                   <a
-                    href="https://gitee.com/asoutherncat/"
-                    target="_blank"
-                    class="button button--flex button--small portfolio__button"
+                      href="https://github.com/Zsingor"
+                      target="_blank"
+                      class="button button--flex button--small portfolio__button"
                   >
                     Demo
                     <i class="uil uil-arrow-right button__icon"></i>
@@ -588,23 +580,23 @@
             </SwiperSlide>
           </Swiper>
           <!-- add arrows-->
-          <div class="swiper-button-next" @click="addPage(1)">
+          <div class="swiper-button-next">
             <i class="uil uil-angle-right-b swiper-portfolio-icon"></i>
           </div>
-
-          <!-- Add Pagination -->
-          <div class="swiper-pagination"></div>
         </div>
+
+        <!-- Add Pagination -->
+        <div class="swiper-pagination"></div>
       </section>
 
       <!--==================== CONTACT ME ====================-->
       <section class="contact section" id="contact">
-        <h2 class="section__title" i18n="contact__title">
+        <h2 class="section__title">
           {{ $t("contact.title") }}
         </h2>
-        <span class="section__subtitle" i18n="contact__subtitle">{{
-          $t("contact.subheading")
-        }}</span>
+        <span class="section__subtitle">{{
+            $t("contact.subheading")
+          }}</span>
 
         <div class="contact__container container grid">
           <div>
@@ -612,11 +604,11 @@
               <i class="uil uil-phone-alt contact__icon"></i>
 
               <div>
-                <h3 class="contact__title" i18n="tel">
+                <h3 class="contact__title">
                   {{ $t("contact.phone") }}
                 </h3>
-                <span class="contact__subtitle" i18n="tel__number"
-                  >166********</span
+                <span class="contact__subtitle"
+                >182********</span
                 >
               </div>
             </div>
@@ -625,11 +617,11 @@
               <i class="uil uil-envelope contact__icon"></i>
 
               <div>
-                <h3 class="contact__title" i18n="email">
+                <h3 class="contact__title">
                   {{ $t("contact.email") }}
                 </h3>
-                <span class="contatc__subtitle" i18n="email__address"
-                  >asoutherncat@gmail.com</span
+                <span class="contatc__subtitle"
+                >339******@qq.com</span
                 >
               </div>
             </div>
@@ -638,12 +630,12 @@
               <i class="uil uil-map-marker contact__icon"></i>
 
               <div>
-                <h3 class="contact__title" i18n="location">
+                <h3 class="contact__title">
                   {{ $t("contact.position") }}
                 </h3>
-                <span class="contatc__subtitle" i18n="location__detail">{{
-                  $t("contact.location")
-                }}</span>
+                <span class="contatc__subtitle">{{
+                    $t("contact.location")
+                  }}</span>
               </div>
             </div>
           </div>
@@ -657,64 +649,64 @@
         <div class="footer__container container grid">
           <div>
             <h1 class="footer__title">Singor</h1>
-            <span class="footer__subtitle" i18n="home__subtitle">{{
-              $t("footer.tab_1")
-            }}</span>
+            <span class="footer__subtitle">{{
+                $t("footer.tab_1")
+              }}</span>
           </div>
 
           <ul class="footer__links">
             <li>
-              <a href="#skills" class="footer__link" i18n="skills">{{
-                $t("footer.tab_2")
-              }}</a>
+              <a href="#skills" class="footer__link">{{
+                  $t("footer.tab_2")
+                }}</a>
             </li>
             <li>
-              <a href="#qualification" class="footer__link" i18n="portfolio">{{
-                $t("footer.tab_3")
-              }}</a>
+              <a href="#qualification" class="footer__link">{{
+                  $t("footer.tab_3")
+                }}</a>
             </li>
             <li>
-              <a href="#portfolio" class="footer__link" i18n="contact">{{
-                $t("footer.tab_4")
-              }}</a>
+              <a href="#portfolio" class="footer__link">{{
+                  $t("footer.tab_4")
+                }}</a>
             </li>
           </ul>
 
           <div class="footer__socials">
-            <a href="https://gitee.com/asoutherncat/" target="_blank">
+            <a href="https://github.com/Zsingor" target="_blank">
               <!-- <i class="uil uil-linkedin-alt"></i> -->
               <svg
-                class="icon footer__social"
-                aria-hidden="true"
-                t="1674798484640"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                p-id="2757"
+                  class="icon footer__social"
+                  aria-hidden="true"
+                  t="1674798484640"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="2757"
               >
                 <path
-                  d="M512 1024C229.222 1024 0 794.778 0 512S229.222 0 512 0s512 229.222 512 512-229.222 512-512 512z m259.149-568.883h-290.74a25.293 25.293 0 0 0-25.292 25.293l-0.026 63.206c0 13.952 11.315 25.293 25.267 25.293h177.024c13.978 0 25.293 11.315 25.293 25.267v12.646a75.853 75.853 0 0 1-75.853 75.853h-240.23a25.293 25.293 0 0 1-25.267-25.293V417.203a75.853 75.853 0 0 1 75.827-75.853h353.946a25.293 25.293 0 0 0 25.267-25.292l0.077-63.207a25.293 25.293 0 0 0-25.268-25.293H417.152a189.62 189.62 0 0 0-189.62 189.645V771.15c0 13.977 11.316 25.293 25.294 25.293h372.94a170.65 170.65 0 0 0 170.65-170.65V480.384a25.293 25.293 0 0 0-25.293-25.267z"
-                  fill="#ffffff"
-                  p-id="2758"
+                    d="M512 1024C229.222 1024 0 794.778 0 512S229.222 0 512 0s512 229.222 512 512-229.222 512-512 512z m259.149-568.883h-290.74a25.293 25.293 0 0 0-25.292 25.293l-0.026 63.206c0 13.952 11.315 25.293 25.267 25.293h177.024c13.978 0 25.293 11.315 25.293 25.267v12.646a75.853 75.853 0 0 1-75.853 75.853h-240.23a25.293 25.293 0 0 1-25.267-25.293V417.203a75.853 75.853 0 0 1 75.827-75.853h353.946a25.293 25.293 0 0 0 25.267-25.292l0.077-63.207a25.293 25.293 0 0 0-25.268-25.293H417.152a189.62 189.62 0 0 0-189.62 189.645V771.15c0 13.977 11.316 25.293 25.294 25.293h372.94a170.65 170.65 0 0 0 170.65-170.65V480.384a25.293 25.293 0 0 0-25.293-25.267z"
+                    fill="#ffffff"
+                    p-id="2758"
                 ></path>
               </svg>
             </a>
 
-            <a href="https://t.bilibili.com/" target="_blank">
+            <a href="https://github.com/Zsingor" target="_blank">
               <!-- <i class="uil uil-dribbble"></i> -->
               <svg
-                class="icon footer__social"
-                aria-hidden="true"
-                t="1674801734735"
-                viewBox="0 0 1024 1024"
-                version="1.1"
-                xmlns="http://www.w3.org/2000/svg"
-                p-id="4124"
+                  class="icon footer__social"
+                  aria-hidden="true"
+                  t="1674801734735"
+                  viewBox="0 0 1024 1024"
+                  version="1.1"
+                  xmlns="http://www.w3.org/2000/svg"
+                  p-id="4124"
               >
                 <path
-                  d="M777.514667 131.669333a53.333333 53.333333 0 0 1 0 75.434667L728.746667 255.829333h49.92A160 160 0 0 1 938.666667 415.872v320a160 160 0 0 1-160 160H245.333333A160 160 0 0 1 85.333333 735.872v-320a160 160 0 0 1 160-160h49.749334L246.4 207.146667a53.333333 53.333333 0 1 1 75.392-75.434667l113.152 113.152c3.370667 3.370667 6.186667 7.04 8.448 10.965333h137.088c2.261333-3.925333 5.12-7.68 8.490667-11.008l113.109333-113.152a53.333333 53.333333 0 0 1 75.434667 0z m1.152 231.253334H245.333333a53.333333 53.333333 0 0 0-53.205333 49.365333l-0.128 4.010667v320c0 28.117333 21.76 51.157333 49.365333 53.162666l3.968 0.170667h533.333334a53.333333 53.333333 0 0 0 53.205333-49.365333l0.128-3.968v-320c0-29.44-23.893333-53.333333-53.333333-53.333334z m-426.666667 106.666666c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z m320 0c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z"
-                  fill="#ffffff"
-                  p-id="4125"
+                    d="M777.514667 131.669333a53.333333 53.333333 0 0 1 0 75.434667L728.746667 255.829333h49.92A160 160 0 0 1 938.666667 415.872v320a160 160 0 0 1-160 160H245.333333A160 160 0 0 1 85.333333 735.872v-320a160 160 0 0 1 160-160h49.749334L246.4 207.146667a53.333333 53.333333 0 1 1 75.392-75.434667l113.152 113.152c3.370667 3.370667 6.186667 7.04 8.448 10.965333h137.088c2.261333-3.925333 5.12-7.68 8.490667-11.008l113.109333-113.152a53.333333 53.333333 0 0 1 75.434667 0z m1.152 231.253334H245.333333a53.333333 53.333333 0 0 0-53.205333 49.365333l-0.128 4.010667v320c0 28.117333 21.76 51.157333 49.365333 53.162666l3.968 0.170667h533.333334a53.333333 53.333333 0 0 0 53.205333-49.365333l0.128-3.968v-320c0-29.44-23.893333-53.333333-53.333333-53.333334z m-426.666667 106.666666c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z m320 0c29.44 0 53.333333 23.893333 53.333333 53.333334v53.333333a53.333333 53.333333 0 1 1-106.666666 0v-53.333333c0-29.44 23.893333-53.333333 53.333333-53.333334z"
+                    fill="#ffffff"
+                    p-id="4125"
                 ></path>
               </svg>
             </a>
@@ -724,10 +716,10 @@
         <p class="footer__copy">
           &#169; Singor.Copy from
           <a
-            class="footer__copy"
-            href="https://www.youtube.com/c/Bedimcode"
-            target="_blank"
-            >Bedimcode</a
+              class="footer__copy"
+              href="https://www.youtube.com/c/Bedimcode"
+              target="_blank"
+          >Bedimcode</a
           >
         </p>
       </div>
@@ -735,10 +727,10 @@
 
     <!--==================== SCROLL TOP ====================-->
     <a
-      href="#"
-      class="scrollup"
-      :class="{ 'show-scroll': showScroll }"
-      id="scroll-up"
+        href="#"
+        class="scrollup"
+        :class="{ 'show-scroll': showScroll }"
+        id="scroll-up"
     >
       <i class="uil uil-arrow-up scrollup__icon"></i>
     </a>
@@ -746,14 +738,26 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, ref, getCurrentInstance, watch } from "vue";
-import { useI18n } from "vue-i18n";
-// import "./swiper/swiper-bundle.min.js";
-// import "./swiper/swiper-bundle.min.css";
-import { Swiper, SwiperSlide } from "swiper/vue";
+import {onMounted, onUnmounted, ref, getCurrentInstance, watch} from "vue";
+import {useI18n} from "vue-i18n";
+import {Swiper, SwiperSlide} from "swiper/vue";
+// 引入swiper核心和所需模块
+import {  Pagination, Navigation } from 'swiper/modules'
+import 'swiper/css/pagination'
 import "swiper/css";
-const { t } = useI18n();
-const { proxy } = getCurrentInstance();
+
+const {t} = useI18n();
+const {proxy} = getCurrentInstance();
+// 在modules加入要使用的模块
+const modules = [ Pagination, Navigation]
+const navigation = ref({
+  nextEl: ".swiper-button-next",
+  prevEl: ".swiper-button-prev",
+});
+const pagination = ref({
+  el: ".swiper-pagination",
+  clickable: true,
+})
 
 //用于判断头部阴影是否显示
 let isScrolled = ref(false);
@@ -772,16 +776,15 @@ let openSkill1 = ref(true);
 let openSkill2 = ref(false);
 //用于判断显示哪个技能
 let qualifyFlag = ref(true);
-let useSwiper = ref(null);
 
 //用于判断标签
 const sections = ref([
-  { id: "home", icon: "uil-estate", label: "nav.home" },
-  { id: "about", icon: "uil-user", label: "nav.about" },
-  { id: "skills", icon: "uil-file-alt", label: "nav.skills" },
-  { id: "qualification", icon: "uil-file-alt", label: "nav.qualification" },
-  { id: "portfolio", icon: "uil-scenery", label: "nav.portfolio" },
-  { id: "contact", icon: "uil-message", label: "nav.contact" },
+  {id: "home", icon: "uil-estate", label: "nav.home"},
+  {id: "about", icon: "uil-user", label: "nav.about"},
+  {id: "skills", icon: "uil-file-alt", label: "nav.skills"},
+  {id: "qualification", icon: "uil-file-alt", label: "nav.qualification"},
+  {id: "portfolio", icon: "uil-scenery", label: "nav.portfolio"},
+  {id: "contact", icon: "uil-message", label: "nav.contact"},
 ]);
 
 //切换语言
@@ -813,7 +816,6 @@ const saveTheme = () => {
 //用于判断是否显示菜单
 const showMenu = () => {
   showmenu.value = !showmenu.value;
-  console.log(showmenu.value);
 };
 
 // 检查给定ID的section是否处于激活状态
@@ -833,31 +835,17 @@ const changeSkill2 = () => {
 
 //用于切换展示的经历
 const showQualify = (value) => {
-  qualifyFlag.value = value === 1 ? true : false;
-};
-
-const onSwiper = (swiper) => {
-  useSwiper.value = swiper;
-};
-
-const onSlideChange = () => {};
-
-const addPage = (value) => {
-  if (value > 0) {
-    useSwiper.value.slideNext();
-  } else if (value < 0) {
-    useSwiper.value.slidePrev();
-  }
+  qualifyFlag.value = value === 1;
 };
 
 // 处理滚动事件
 const handleScroll = () => {
   isScrolled.value = window.scrollY >= 80;
 
-  showScroll.value = window.scrollY >= 560 ? true : false;
+  showScroll.value = window.scrollY >= 560;
 
   const sectionsInView = Array.from(
-    document.querySelectorAll(".section")
+      document.querySelectorAll(".section")
   ).filter((section) => {
     // console.log(
     //   section.id,
@@ -867,8 +855,8 @@ const handleScroll = () => {
     //   section.getBoundingClientRect().bottom
     // );
     return (
-      section.getBoundingClientRect().top <= window.innerHeight &&
-      section.getBoundingClientRect().bottom > 1
+        section.getBoundingClientRect().top <= window.innerHeight &&
+        section.getBoundingClientRect().bottom > 1
     );
   });
   if (sectionsInView.length > 0) {

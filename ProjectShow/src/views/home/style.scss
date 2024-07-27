@@ -701,30 +701,30 @@ img {
     transform: translateX(.25rem);
 }
 
-.swiper-button-prev::after,
-.swiper-button-next::after {
-    content: '';
-}
-
+/*修改swiper左右分页按钮的颜色*/
 .swiper-portfolio-icon {
     font-size: 2rem;
     color: var(--first-color);
 }
 
 .swiper-button-prev {
-    left: -.5rem;
     cursor: pointer;
 }
 
 .swiper-button-next {
-    right: -.5rem;
     cursor: pointer;
 }
 
-.swiper-container-horizontal>.swiper-pagination-bullets {
-    bottom: -2.5rem;
+.swiper-pagination{
+    position: relative;
+    width: 100%;
 }
 
+.swiper-pagination-bullets {
+    bottom: -2.5rem !important;
+}
+
+/*修改swiper圆点的颜色*/
 .swiper-pagination-bullet-active {
     background-color: var(--first-color);
 
@@ -1209,16 +1209,8 @@ img {
         font-size: 3.5rem;
     }
 
-    .swiper-button-prev {
-        left: -3.5rem;
-    }
-
-    .swiper-button-next {
-        right: -3.5rem;
-    }
-
     .swiper-container-horizontal>.swiper-pagination-bullets {
-        bottom: -4.5rem
+        bottom: -4.5rem !important;
     }
 
     .contact__form {
