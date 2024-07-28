@@ -1,6 +1,5 @@
 import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import Home from '@/views/home/index.vue'
-import Animate from '@/views/animate/index.vue'
 
 export const routes = [
     {
@@ -11,11 +10,6 @@ export const routes = [
         path: '/home',
         name: 'home',
         component: Home
-    },
-    {
-        path: '/animate',
-        name: 'animate',
-        component: Animate
     },
 ]
 
