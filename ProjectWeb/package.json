@@ -1,5 +1,5 @@
 {
-  "name": "vue3-test",
+  "name": "project-web",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -28,6 +28,7 @@
     "sortablejs": "^1.15.2",
     "vue": "^3.4.21",
     "vue-clipboard3": "^2.0.0",
+    "vue-i18n": "^9.13.1",
     "vue-router": "^4.3.2",
     "vxe-table": "^4.6.17",
     "vxe-table-plugin-export-xlsx": "3.0",

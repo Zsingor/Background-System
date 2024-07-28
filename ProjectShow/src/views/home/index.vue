@@ -1,5 +1,14 @@
 <template>
   <div>
+    <IconBaseline5g />
+    <el-icon color="#004B5C" size="50">
+      <IcBaseline14mp/>
+    </el-icon>
+
+    <el-icon color="#004B5C" size="50">
+      <IconHomeCSDN/>
+    </el-icon>
+
     <div class="container">
       <img class="logo" src="@/assets/img.png" alt="logo">
       <div class="square blue"></div>
@@ -13,6 +22,9 @@
 <script setup>
 import {onMounted} from "vue";
 import {gsap} from 'gsap'
+import IconBaseline5g from '~icons/ic/baseline-5g'
+import IcBaseline14mp from '~icons/ic/baseline-14mp'
+import IconHomeCSDN from '~icons/home/csdn'
 
 onMounted(()=>{
   //gsap.to('.logo',{duration:3,x:300,scale:1.5,rotation:360})
