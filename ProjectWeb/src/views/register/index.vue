@@ -5,34 +5,39 @@
         <div class="switch" id="switch-cnt" ref="switchCtn">
           <div class="left_container" id="switch-c1" ref="switchC1">
             <h2 class="left_title">Hello Friend!</h2>
-            <p class="left_description">欢迎使用后台管理系统</p>
+            <p class="left_description">{{$t('register.welcome')}}</p>
           </div>
         </div>
       </div>
       <div class="content-right">
+        <div class="top_icon">
+          <el-icon @click="translate" size="20px" color="#4C5D6E">
+            <IconRiTranslate/>
+          </el-icon>
+        </div>
         <div style="width: 100%;text-align: center;">
-          <div style="font-size: 30px;width:100%;font-weight: bold;text-align: center;margin-bottom: 40px;color: #4C5D6E">账号申请</div>
+          <div style="font-size: 30px;width:100%;font-weight: bold;text-align: center;margin-bottom: 40px;color: #4C5D6E">{{$t('register.apply')}}</div>
           <div style="margin-left: 20%;width: 60%">
             <el-form :model="user" :rules="rules" ref="registerRef">
               <el-form-item prop="name">
-                <el-input clearable size="large" placeholder="请输入用户名" v-model="user.name"></el-input>
+                <el-input clearable size="large" :placeholder="$t('register.username')" v-model="user.name"></el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input clearable size="large" show-password type="password" placeholder="请输入密码" v-model="user.password"></el-input>
+                <el-input clearable size="large" show-password type="password" :placeholder="$t('register.password')" v-model="user.password"></el-input>
               </el-form-item>
               <el-form-item prop="checkPassword">
-                <el-input clearable size="large" show-password type="password" placeholder="请确认密码" v-model="user.checkPassword"></el-input>
+                <el-input clearable size="large" show-password type="password" :placeholder="$t('register.validpwd')" v-model="user.checkPassword"></el-input>
               </el-form-item>
               <el-form-item prop="email">
-                <el-input clearable size="large" placeholder="请输入邮箱(非必填)" v-model="user.email"></el-input>
+                <el-input clearable size="large" :placeholder="$t('register.email')" v-model="user.email"></el-input>
               </el-form-item>
             </el-form>
           </div>
           <div style="width:100%;text-align: center;margin-bottom: 15px">
-            <button class="button-login" @click="register">确认</button>
+            <button class="button-login" @click="register">{{$t('register.sure')}}</button>
           </div>
           <div>
-            已有账号?去 <span style="color: #409eff;cursor: pointer" @click="$router.push('/login')">登录</span>
+            {{$t('register.tips')}}<span style="color: #409eff;cursor: pointer" @click="$router.push('/login')">{{$t('register.login')}}</span>
           </div>
         </div>
       </div>
@@ -43,6 +48,7 @@
 <script setup>
 
 import {onMounted, onUnmounted, reactive, ref} from "vue";
+import {persistentConfig} from "@/layout/layout.js";
 import request from "@/request/index.js";
 import {message} from "@/utils/message.js";
 import {isEmpty} from "@/utils/commons.js";
@@ -92,6 +98,10 @@ var user=reactive({
   checkPassword:"",
   email:"",
 })
+
+const translate=()=>{
+  persistentConfig.localeLang=persistentConfig.localeLang==='zhCn'?'en':'zhCn'
+}
 
 const register=()=>{
   registerRef.value.validate((valid) => {
@@ -198,9 +208,11 @@ onUnmounted(()=>{
   line-height: 1.6;
   color: #ffffff;
   letter-spacing: 0.25px;
+  text-align: center;
 }
 
 .content-right{
+  position: relative;
   width: 50%;
   height: 100%;
   margin: 0;
@@ -208,6 +220,13 @@ onUnmounted(()=>{
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+}
+
+.top_icon{
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
 }
 
 .button-login{

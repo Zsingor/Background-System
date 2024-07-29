@@ -49,11 +49,6 @@ addRouteTag({
   componentName: route.name,
 });
 
-// 开始监听persistentConfig，当属性发生改变时同步到localStorage进行持久化
-watch(persistentConfig, (value) => {
-  localStorage.setItem("Global_Config", JSON.stringify(value));
-});
-
 // 监听路由标签的变化，同步缓存
 watch(
     persistentConfig.routeTags,

@@ -5,24 +5,29 @@
         <div class="switch" id="switch-cnt" ref="switchCtn">
           <div class="left_container" id="switch-c1" ref="switchC1">
             <h2 class="left_title">Hello Friend!</h2>
-            <p class="left_description">欢迎使用后台管理系统</p>
+            <p class="left_description">{{$t('login.welcome')}}</p>
           </div>
         </div>
       </div>
       <div class="content-right">
+        <div class="top_icon">
+          <el-icon @click="translate" size="20px" color="#4C5D6E">
+            <IconRiTranslate/>
+          </el-icon>
+        </div>
         <div style="width: 100%;text-align: center;">
-          <div style="font-size: 30px;width:100%;font-weight: bold;text-align: center;margin-bottom: 40px;color: #4C5D6E">登 录</div>
+          <div style="font-size: 30px;width:100%;font-weight: bold;text-align: center;margin-bottom: 40px;color: #4C5D6E">{{$t('login.login')}}</div>
           <div style="margin-left: 20%;width: 60%">
             <el-form :model="user" :rules="rules" ref="loginRef">
               <el-form-item prop="name">
-                <el-input clearable size="large" placeholder="请输入用户名" v-model="user.name"></el-input>
+                <el-input clearable size="large" :placeholder="$t('login.username')" v-model="user.name"></el-input>
               </el-form-item>
               <el-form-item prop="password">
-                <el-input clearable size="large" show-password type="password" placeholder="请输入密码" v-model="user.password"></el-input>
+                <el-input clearable size="large" show-password type="password" :placeholder="$t('login.password')" v-model="user.password"></el-input>
               </el-form-item>
               <el-form-item prop="validCode">
                 <div style="width: 100%;display: flex;">
-                  <el-input clearable size="large" style="width: 80%;" placeholder="请输入验证码" v-model="user.validCode"></el-input>
+                  <el-input clearable size="large" style="width: 80%;" :placeholder="$t('login.validcode')" v-model="user.validCode"></el-input>
                   <div style="left: 0;background-color: #F56C6C">
                     <Identify ref="identifyRef" @identifyCode="getCode" />
                   </div>
@@ -31,10 +36,10 @@
             </el-form>
           </div>
           <div style="width:100%;text-align: center;margin-bottom: 15px">
-            <button class="button-login" @click="login">确认</button>
+            <button class="button-login" @click="login">{{ $t('login.sure') }}</button>
           </div>
           <div>
-            还没有账号?去 <span style="color: #409eff;cursor: pointer" @click="$router.push('/register')">申请</span>
+            {{ $t('login.tips') }}<span style="color: #409eff;cursor: pointer" @click="$router.push('/register')">{{ $t('login.apply') }}</span>
           </div>
         </div>
       </div>
@@ -82,6 +87,11 @@ const rules = ref({
     {required:true,message:"请输入验证码",trigger:"blur" }
   ]
 })
+
+//切换中英文
+const translate=()=>{
+  persistentConfig.localeLang=persistentConfig.localeLang==='zhCn'?'en':'zhCn'
+}
 
 
 const login=()=>{
@@ -192,9 +202,11 @@ onUnmounted(()=>{
   line-height: 1.6;
   color: #ffffff;
   letter-spacing: 0.25px;
+  text-align: center;
 }
 
 .content-right{
+  position: relative;
   width: 50%;
   height: 100%;
   margin: 0;
@@ -204,11 +216,18 @@ onUnmounted(()=>{
   align-items: center;
 }
 
+.top_icon{
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  cursor: pointer;
+}
+
 .button-login{
   width: 30%;
   height:50px;
   border-radius: 25px;
-  margin-top: 50px;
+  margin-top: 5%;
   font-weight: 700;
   font-size: 14px;
   letter-spacing: 1.15px;

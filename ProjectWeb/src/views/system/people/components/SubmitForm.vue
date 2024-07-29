@@ -95,6 +95,7 @@ const submitForm = () => {
           rootData.submitLoading = false
         })
       } else {
+        rootData.formData.type=1
         request.post("/user/add", rootData.formData).then(res => {
           if(res.code===1)
           {

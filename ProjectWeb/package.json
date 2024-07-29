@@ -35,8 +35,11 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "@iconify-json/ri": "^1.1.21",
     "@vitejs/plugin-vue": "^5.0.4",
     "sass-loader": "^10.5.2",
+    "unplugin-icons": "^0.19.0",
+    "unplugin-vue-components": "^0.27.3",
     "vite": "^5.2.8"
   }
 }
