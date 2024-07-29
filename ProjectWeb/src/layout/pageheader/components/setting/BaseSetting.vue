@@ -5,29 +5,57 @@
     </el-divider>
     <el-form label-width="140px" label-position="left" size="default">
       <el-form-item label="开启缓存：">
-        <el-switch v-model="persistentConfig.openKeepalive"/>
+        <el-switch v-model="persistentConfig.openKeepalive" />
       </el-form-item>
       <el-form-item label="关闭水印：">
-        <el-switch v-model="persistentConfig.closeWaterMark"/>
+        <el-switch v-model="persistentConfig.closeWaterMark" />
       </el-form-item>
-      <el-form-item label="表格分页默认大小：" error="修改后需要刷新浏览器才可生效！">
+      <el-form-item
+        label="语言："
+      >
+        <el-select v-model="persistentConfig.localeLang">
+          <el-option
+            v-for="lang in langOption"
+            :key="lang.value"
+            :label="lang.label"
+            :value="lang.value"
+          >
+          </el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item
+        label="表格分页默认大小："
+        error="修改后需要刷新浏览器才可生效！"
+      >
         <el-select v-model="persistentConfig.defaultPageSize">
-          <el-option v-for="size in pageSizes" :key="size"
-                     :label="size" :value="size">
+          <el-option
+            v-for="size in pageSizes"
+            :key="size"
+            :label="size"
+            :value="size"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="编辑Drawer位置：">
         <el-select v-model="persistentConfig.drawerPosition">
-          <el-option v-for="position in drawerPositions" :key="position.value"
-                     :label="position.label" :value="position.value">
+          <el-option
+            v-for="position in drawerPositions"
+            :key="position.value"
+            :label="position.label"
+            :value="position.value"
+          >
           </el-option>
         </el-select>
       </el-form-item>
       <el-form-item label="编辑通知位置：">
         <el-select v-model="persistentConfig.notiPosition">
-          <el-option v-for="position in notiPositions" :key="position.value"
-                     :label="position.label" :value="position.value">
+          <el-option
+            v-for="position in notiPositions"
+            :key="position.value"
+            :label="position.label"
+            :value="position.value"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -37,12 +65,22 @@
     </el-divider>
     <el-form label-width="140px" label-position="left" size="default">
       <el-form-item label="开启自定义滚动条：">
-        <el-switch size="default" v-model="persistentConfig.scroll.openCustom"/>
+        <el-switch
+          size="default"
+          v-model="persistentConfig.scroll.openCustom"
+        />
       </el-form-item>
-      <el-form-item label="自定义滚动条尺寸：" error="该属性仅支持webkit内核的浏览器">
+      <el-form-item
+        label="自定义滚动条尺寸："
+        error="该属性仅支持webkit内核的浏览器"
+      >
         <el-select v-model="persistentConfig.scroll.size" size="default">
-          <el-option v-for="size in scrollSizes" :key="size.value"
-                     :label="size.label" :value="size.value">
+          <el-option
+            v-for="size in scrollSizes"
+            :key="size.value"
+            :label="size.label"
+            :value="size.value"
+          >
           </el-option>
         </el-select>
       </el-form-item>
@@ -51,65 +89,76 @@
 </template>
 
 <script setup>
-import {persistentConfig} from "@/layout/layout.js";
-import {pageSizes} from "@/utils/VxeTableConfig.js";
+import { persistentConfig } from '@/layout/layout.js'
+import { pageSizes } from '@/utils/VxeTableConfig.js'
 
 const drawerPositions = [
   {
-    label: "左边",
-    value: "ltr"
+    label: '左边',
+    value: 'ltr',
   },
   {
-    label: "右边",
-    value: "rtl"
+    label: '右边',
+    value: 'rtl',
   },
   {
-    label: "上面",
-    value: "ttb"
+    label: '上面',
+    value: 'ttb',
   },
   {
-    label: "下面",
-    value: "btt"
-  }
-];
+    label: '下面',
+    value: 'btt',
+  },
+]
 
 const notiPositions = [
   {
-    label: "右上方",
-    value: "top-right"
+    label: '右上方',
+    value: 'top-right',
   },
   {
-    label: "右下方",
-    value: "bottom-right"
+    label: '右下方',
+    value: 'bottom-right',
   },
   {
-    label: "左上方",
-    value: "top-left"
+    label: '左上方',
+    value: 'top-left',
   },
   {
-    label: "左下方",
-    value: "bottom-left"
-  }
-];
+    label: '左下方',
+    value: 'bottom-left',
+  },
+]
 
 const scrollSizes = [
   {
-    label: "偏大",
-    value: "large"
+    label: '偏大',
+    value: 'large',
   },
   {
-    label: "中等",
-    value: "medium"
+    label: '中等',
+    value: 'medium',
   },
   {
-    label: "偏小",
-    value: "small"
+    label: '偏小',
+    value: 'small',
   },
   {
-    label: "隐藏",
-    value: "hide"
-  }
-];
+    label: '隐藏',
+    value: 'hide',
+  },
+]
+
+const langOption = [
+  {
+    label: '简体中文(zhCn)',
+    value: 'zhCn',
+  },
+  {
+    label: 'English(en)',
+    value: 'en',
+  },
+]
 </script>
 
 <style scoped>
@@ -118,11 +167,11 @@ const scrollSizes = [
   justify-content: space-between;
   align-items: center;
   margin-bottom: 8px;
+}
 
-  .label {
-    font-weight: 400;
-    font-size: 14px;
-    color: #525252;
-  }
+.label {
+  font-weight: 400;
+  font-size: 14px;
+  color: #525252;
 }
 </style>

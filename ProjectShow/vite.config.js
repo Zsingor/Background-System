@@ -26,7 +26,9 @@ export default defineConfig({
           // 当图标集名字过长时，可使用集合别名
           alias: {
             system: 'system-uicons'
-          }
+          },
+          // 标识自定义图标集
+          customCollections: ['home']
         })
       ]
     }),

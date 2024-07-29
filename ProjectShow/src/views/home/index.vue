@@ -1,13 +1,17 @@
 <template>
   <div>
-    <IconBaseline5g />
+    <IconIcBaseline5g />
     <el-icon color="#004B5C" size="50">
-      <IcBaseline14mp/>
+      <IconIcBaseline14mp/>
     </el-icon>
 
     <el-icon color="#004B5C" size="50">
-      <IconHomeCSDN/>
+      <IconHomeCsdn/>
     </el-icon>
+
+    <div>
+      {{ $t("translate") }}
+    </div>
 
     <div class="container">
       <img class="logo" src="@/assets/img.png" alt="logo">
@@ -20,11 +24,14 @@
 </template>
 
 <script setup>
+// import IconBaseline5g from '~icons/ic/baseline-5g'
+// import IconBaseline14mp from '~icons/ic/baseline-14mp'
+// import IconHomeCSDN from '~icons/home/csdn'
 import {onMounted} from "vue";
 import {gsap} from 'gsap'
-import IconBaseline5g from '~icons/ic/baseline-5g'
-import IcBaseline14mp from '~icons/ic/baseline-14mp'
-import IconHomeCSDN from '~icons/home/csdn'
+// import { useI18n } from 'vue-i18n';
+
+// const { t } = useI18n()
 
 onMounted(()=>{
   //gsap.to('.logo',{duration:3,x:300,scale:1.5,rotation:360})

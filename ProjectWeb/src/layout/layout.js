@@ -67,6 +67,7 @@ export const windowConfig = reactive({
 export const persistentConfig = reactive({
     routeTags: [],                // 路由标签集合
     closeWaterMark:false,          //关闭水印
+    localeLang:"zhCn",             //语言选择
     isCollapse: false,            // 菜单栏是否缩放
     openKeepalive: true,          //是否开启缓存
     defaultPageSize:25,           // 表格默认分页大小
@@ -109,6 +110,15 @@ export function initPersistentConfig(config) {
     }
     if (!isEmpty(config.scroll)) {
         persistentConfig.scroll = config.scroll;
+    }
+    if (!isEmpty(config.localeLang)) {
+        persistentConfig.localeLang = config.localeLang;
+    }
+    if (!isEmpty(config.drawerPosition)) {
+        persistentConfig.drawerPosition = config.drawerPosition;
+    }
+    if (!isEmpty(config.notiPosition)) {
+        persistentConfig.notiPosition = config.notiPosition;
     }
     persistentConfig.closeWaterMark = config.closeWaterMark;
 

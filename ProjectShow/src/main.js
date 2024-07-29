@@ -6,12 +6,14 @@ import * as ElementPlusIconsVue from '@element-plus/icons' //导入图标
 import pinia from "@/stores/index.js"; //引入pinia实例
 import router from "@/router/index.js";
 import "@/styles/index.scss"
+import i18n from "@/i18n/index"
 
 const app = createApp(App)
 
 app.use(ElementPlus)
 app.use(pinia)
 app.use(router)
+app.use(i18n)
 
 //引入所有的element-plus的icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {

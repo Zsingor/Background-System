@@ -107,25 +107,19 @@ public class UserServiceImpl implements UserService {
     // 用户注册
     @Override
     public int useradd(User user) {
-        try {
-            User user1 = userMapper.userNamequery(user);
-            if(user1!=null)
-            {
-                return 2;
-            }
-            else
-            {
-                user.setId(UUIDUtils.getUUID());
-                Date createtime=new Date(System.currentTimeMillis());
-                user.setCreateTime(createtime);
-                userMapper.useradd(user);
-                return 1;
-            }
-        }
-        catch (Exception error)
+        User user1 = userMapper.userNamequery(user);
+        if(user1!=null)
         {
-            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();
-            return 0;
+            return 2;
+        }
+        else
+        {
+            user.setId(UUIDUtils.getUUID());
+            Date createtime=new Date(System.currentTimeMillis());
+            user.setCreateTime(createtime);
+            userMapper.useradd(user);
+            userAssignRole(user);
+            return 1;
         }
     }
 
@@ -141,7 +135,6 @@ public class UserServiceImpl implements UserService {
         {
             user.setRolesidSize(user.getRolesid().size());
         }
-        System.out.println("你好");
         List<User> data=userMapper.userquery(user);
         //列表去重
         //data=data.stream().distinct().collect(Collectors.toList());
@@ -242,7 +235,10 @@ public class UserServiceImpl implements UserService {
         }
         else {
             userRolesMapper.deleteUserRoles(user);
-            userRolesMapper.addUserRoles(user.getId(),roleList);
+            if(!roleList.isEmpty())
+            {
+                userRolesMapper.addUserRoles(user.getId(),roleList);
+            }
         }
     }
 

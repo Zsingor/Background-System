@@ -5,7 +5,7 @@ import en from './language/en.js'
 
 const i18n = createI18n({
   legacy: false, // 设置为 false，启用 composition API 模式
-  locale: localStorage.getItem("localeLang") || 'zhCn',
+  locale: 'zhCn',
   messages: {
     zhCn,
     en,
