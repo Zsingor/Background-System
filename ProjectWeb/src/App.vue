@@ -59,9 +59,14 @@ onResize()
 
 // 开始监听persistentConfig，当属性发生改变时同步到localStorage进行持久化
 watch(persistentConfig, (value) => {
-  proxy.$i18n.locale = persistentConfig.localeLang
-  locale.value=persistentConfig.localeLang==="zhCn"? zhCn : en
   localStorage.setItem('Global_Config', JSON.stringify(value))
+})
+
+// 监听全局语言的选择，改变系统语言
+watch(()=>persistentConfig.localeLang, (value) => {
+  proxy.$i18n.locale = value
+  //改变element-plus的国际化语言
+  locale.value=value==="zhCn"? zhCn : en
 })
 
 onMounted(() => {
