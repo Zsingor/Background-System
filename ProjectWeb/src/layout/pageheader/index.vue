@@ -8,13 +8,13 @@
         </el-icon>
       </div>
       <div class="app-logo">
-        {{ projectName }}
+        {{ $t('header.projectName') }}
       </div>
     </div>
     <div class="navbar-right">
       <div class="header-search" :class="{'select-hide':activeHide }">
         <div class="operate-button" @click="search">
-          <el-icon style="font-size: 20px;" title="搜索">
+          <el-icon style="font-size: 20px;" :title="$t('header.search')">
             <Search/>
           </el-icon>
         </div>
@@ -24,7 +24,7 @@
               filterable
               remote
               :remote-method="remoteMethod"
-              placeholder="搜索菜单"
+              :placeholder="$t('header.searchMenu')"
               @change="choosePath"
           >
             <el-option
@@ -37,34 +37,34 @@
         </div>
       </div>
       <div class="operate-button" @click="fullscreen">
-        <el-icon style="font-size: 20px;" title="全屏">
+        <el-icon style="font-size: 20px;" :title="$t('header.fullscreen')">
           <FullScreen/>
         </el-icon>
       </div>
       <div class="operate-button" @click="refreshpage">
-        <el-icon style="font-size: 20px;" title="刷新页面">
+        <el-icon style="font-size: 20px;" :title="$t('header.refresh')">
           <RefreshRight/>
         </el-icon>
       </div>
       <div class="operate-button" @click="controls.showGlobalSetting=true">
-        <el-icon style="font-size: 20px;" title="设置">
+        <el-icon style="font-size: 20px;" :title="$t('header.setting')">
           <Setting/>
         </el-icon>
       </div>
       <div class="operate-button" @click="skipMessage">
         <el-badge v-if="userInfo.unread_count>0" class="item-button" :value="userInfo.unread_count" :min="0" :max="99">
-          <el-icon style="font-size: 20px;" title="我的消息">
+          <el-icon style="font-size: 20px;" :title="$t('header.message')">
             <Message/>
           </el-icon>
         </el-badge>
-        <el-icon v-else style="font-size: 20px;" title="我的信息">
+        <el-icon v-else style="font-size: 20px;" :title="$t('header.message')">
           <Message/>
         </el-icon>
       </div>
       <div class="user-info">
         <el-dropdown v-if="isLogin()" trigger="click">
           <div class="user-info-text el-dropdown-link">
-            我的
+            {{ $t('header.my') }}
             <el-icon>
               <ArrowDown/>
             </el-icon>
@@ -75,20 +75,20 @@
                 <el-icon>
                   <User/>
                 </el-icon>
-                个人信息
+                {{ $t('header.person') }}
               </el-dropdown-item>
               <el-dropdown-item @click="gologout">
                 <el-icon>
                   <SwitchButton/>
                 </el-icon>
-                退出登录
+                {{ $t('header.logout') }}
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>
         </el-dropdown>
 
         <div v-else @click="logout" class="user-info-text el-dropdown-link">
-          登录
+          {{ $t('header.login') }}
         </div>
 
       </div>
@@ -99,7 +99,6 @@
 
 <script setup>
 import GlobalSetting from "@/layout/pageheader/components/setting/index.vue"
-import {projectName} from "@/setup.js";
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import {createRouteAndMenu} from "@/router/routeUtils.js";
 import {reloadPage} from "@/layout/tags/tag.js";

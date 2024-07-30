@@ -129,7 +129,6 @@ const resetForm = () => {
       name:"",
       password:"",
       email:"",
-      roleid:-1,
       description:"",
       status:"1",
       rolesid:[]

@@ -12,8 +12,8 @@
       </el-card>
       <el-card class="table-card">
         <div slot="header" style="display: flex;justify-content: space-between;padding-left:2%;padding-right: 2% ">
-          <span class="important-font">系统通知</span>
-          <el-button :icon="RefreshRight" circle title="刷新" @click="initSystemNotice"/>
+          <span class="important-font">{{ $t('home.notify') }}</span>
+          <el-button :icon="RefreshRight" circle :title="$t('home.notify')" @click="initSystemNotice"/>
         </div>
         <div v-loading="notifyLoading" class="card-table" v-if="!isEmpty(notifications)">
           <div v-for="(item,index) in notifications" :key="index" class="card-item">
@@ -31,7 +31,7 @@
           </div>
         </div>
         <div v-else class="visitor-card">
-          暂无通知
+          {{ $t('home.noNotify') }}
         </div>
       </el-card>
     </div>
@@ -40,8 +40,10 @@
         <el-card style="width: 32%;height: 100%;margin-right: 1%">
           <div style="width: 100%;height: 100%;" id="pieEcharts" ref="pieEcharts"></div>
         </el-card>
+
         <el-card style="width: 32%;height: 100%;margin-right: 1%">
-          <div class="card-image" onclick="window.location.href='https://github.com/Zsingor';">
+          <a href="https://github.com/Zsingor" target="_blank">
+            <div class="card-image">
             <div style="width: 100%;display: flex;justify-content: center;align-items: center">
               <img style="width: 100px; height: 100px" src="@/assets/github.jpg"/>
             </div>
@@ -49,9 +51,12 @@
               <p style="font-size: 20px">GitHub</p>
             </div>
           </div>
+          </a>
         </el-card>
+
         <el-card style="width: 32%;height: 100%;margin-right: 1%">
-          <div class="card-image" onclick="window.location.href='https://cn.vuejs.org/';">
+          <a href="https://cn.vuejs.org/" target="_blank">
+            <div class="card-image">
             <div style="width: 100%;display: flex;justify-content: center;align-items: center">
               <img style="width: 100px; height: 100px" src="@/assets/vue.png"/>
             </div>
@@ -59,6 +64,7 @@
               <p style="font-size: 20px">Vue</p>
             </div>
           </div>
+          </a>
         </el-card>
       </div>
       <div class="background-rightBottom">
@@ -70,7 +76,7 @@
                   <p :class="data.isSelected ? 'is-selected' : ''">
                     <div>
                       {{ data.day.split('-').slice(2).join('') }}
-                      <span v-if="restDay(data)" class="rest">休</span>
+                      <span v-if="restDay(data)" class="rest">{{ $t('home.rest') }}</span>
                     </div>
                     <div>
                       {{ data.isSelected ? '✔️' : '' }}

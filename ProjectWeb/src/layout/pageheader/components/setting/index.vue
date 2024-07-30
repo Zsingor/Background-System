@@ -1,5 +1,5 @@
 <template>
-  <el-drawer title="全局设置" append-to-body
+  <el-drawer :title="$t('setting.title')" append-to-body
              :size="drawerSize"
              :modal="false"
              class="scrollbar-wrapper"
@@ -8,10 +8,10 @@
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <div class="drawer_content">
         <el-tabs v-model="tabIndex">
-          <el-tab-pane label="基础设置" name="1">
+          <el-tab-pane :label="$t('setting.baseSetting')" name="1">
             <BaseSetting/>
           </el-tab-pane>
-          <el-tab-pane label="主题设置" name="2">
+          <el-tab-pane :label="$t('setting.themeSetting')" name="2">
             <ThemeSetting/>
           </el-tab-pane>
         </el-tabs>

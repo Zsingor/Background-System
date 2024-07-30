@@ -24,6 +24,11 @@ html, body, #app {
   height: 100%;
 }
 
+a {
+  text-decoration: none;
+  color: black;
+}
+
 /* 重置浏览器上的滚动条 */
 .app-scroll *::-webkit-scrollbar {
   width: var(--scroll-size) !important;

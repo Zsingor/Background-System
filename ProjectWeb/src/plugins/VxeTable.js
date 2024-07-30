@@ -2,6 +2,7 @@ import XEUtils from "xe-utils";
 import VXETable from "vxe-table";
 import VXETablePluginExportXLSX from "vxe-table-plugin-export-xlsx"; //导入vxe-table的xlsx导出插件
 import 'vxe-table/lib/style.css' //导入vxe-table的样式
+import i18n from '@/i18n/index.js'
 
 VXETable.use(VXETablePluginExportXLSX);
 
@@ -26,5 +27,10 @@ VXETable.commands.add("showForm", (params) => {
   $grid.recalculate(true).then(() => {
   });
 });
+
+VXETable.setConfig({
+  // 对组件内置的提示语进行国际化翻译
+  i18n: (key, args) => i18n.global.t(key, args)
+})
 
 export default VXETable;

@@ -33,9 +33,11 @@ import {
 import zhCn from '@/plugins/language/zh-cn.js'
 import en from '@/plugins/language/en.js'
 
-const language = ref('zh-cn')
 const { proxy } = getCurrentInstance()
-const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
+
+//const language = ref('zh-cn')
+//const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
+let locale=ref(zhCn)
 
 const onResize = () => {
   window.innerWidth > 1024
@@ -58,6 +60,7 @@ onResize()
 // 开始监听persistentConfig，当属性发生改变时同步到localStorage进行持久化
 watch(persistentConfig, (value) => {
   proxy.$i18n.locale = persistentConfig.localeLang
+  locale.value=persistentConfig.localeLang==="zhCn"? zhCn : en
   localStorage.setItem('Global_Config', JSON.stringify(value))
 })
 

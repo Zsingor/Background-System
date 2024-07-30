@@ -1,3 +1,4 @@
+/*抽屉样式调整*/
 .el-drawer__body{
     padding: 0;
 }
@@ -12,14 +13,17 @@
     padding-right: 20px;
 }
 
+/*弹窗样式调整*/
 .el-dialog__body {
     height: calc(100% - 40px);
 }
 
+/*标签页样式调整*/
 .el-tabs, .el-tabs__content, .el-tab-pane {
     height: 100%;
 }
 
+/*卡片样式调整*/
 .el-card{
     border: none;
 }
@@ -30,6 +34,7 @@
     height: 100%;
 }
 
+/*日历样式调整*/
 .el-calendar{
     height: 500px;
 }

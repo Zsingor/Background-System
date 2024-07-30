@@ -19,5 +19,57 @@ export default {
     validpwd: "Please confirm your password",
     email: "Please enter your email (optional)",
     welcome: "Welcome to the back-end management system",
+  },
+  header:{
+    projectName:"Backstage-Management-System",
+    search:"Search",
+    searchMenu:"Search the menu",
+    fullscreen:"Full screen",
+    refresh:"Refresh the page",
+    setting:"Setting",
+    message:"My message",
+    my:"My",
+    person:"Personal Information",
+    logout:"Logout",
+    login:"Login"
+  },
+  setting:{
+    title:"Global settings",
+    baseSetting:"Basic settings",
+    themeSetting:"Theme settings"
+  },
+  baseSetting:{
+    title_1:"General settings",
+    cache:"Turn on caching: ",
+    watermark:"Turn off watermarks:",
+    language:"Language: ",
+    pagination:"Default table pagination size:",
+    errorTips:"After the modification, you need to refresh the browser for it to take effect",
+    drawer:"Edit the Drawer position: ",
+    notification:"Edit Notification Location:",
+    title_2:"Scrollbar settings",
+    scroll:"Turn on the custom scrollbar:",
+    size:"Custom scrollbar size:",
+    errorTips_2:"This attribute is only supported by browsers with the WebKit kernel",
+  },
+  themeSetting:{
+    reset:"Restore default settings",
+    title_1:"Preset themes",
+    title_2:"Theme styles",
+    theme_1:"Top Navigation Background:",
+    theme_2:"Top navigation progress bar:",
+    theme_3:"Navigation tabs activate the background color:",
+    theme_4:"Navigation tabs activate text colors:",
+    theme_5:"Sidebar Background:",
+    theme_6:"Sidebar text color:",
+    theme_7:"Sidebar Activate Text Color:",
+    theme_8:"Sidebar Activate Background Color:",
+    title_3:"Button style",
+  },
+  home:{
+    notify:"System Notifications",
+    refresh:"refresh",
+    noNotify:"No notice yet",
+    rest:"rest"
   }
 }

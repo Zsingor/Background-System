@@ -10,8 +10,6 @@ import {
 } from "@/layout/layout.js";
 import {userInfo} from "@/layout/user.js";
 
-export const projectName = ref("后台管理系统");
-
 /**
  * 项目启动前进行初始化配置
  */

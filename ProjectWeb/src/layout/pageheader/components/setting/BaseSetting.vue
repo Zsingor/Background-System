@@ -1,17 +1,18 @@
 <template>
   <div>
     <el-divider content-position="left">
-      <h3>通用设置</h3>
+      <h3>{{ $t('baseSetting.title_1') }}</h3>
     </el-divider>
     <el-form label-width="140px" label-position="left" size="default">
-      <el-form-item label="开启缓存：">
+      <el-form-item class="fold_label" :label="$t('baseSetting.cache')">
         <el-switch v-model="persistentConfig.openKeepalive" />
       </el-form-item>
-      <el-form-item label="关闭水印：">
+      <el-form-item class="fold_label" :label="$t('baseSetting.watermark')">
         <el-switch v-model="persistentConfig.closeWaterMark" />
       </el-form-item>
       <el-form-item
-        label="语言："
+        class="fold_label"
+        :label="$t('baseSetting.language')"
       >
         <el-select v-model="persistentConfig.localeLang">
           <el-option
@@ -24,8 +25,9 @@
         </el-select>
       </el-form-item>
       <el-form-item
-        label="表格分页默认大小："
-        error="修改后需要刷新浏览器才可生效！"
+        class="fold_label err_label"
+        :label="$t('baseSetting.pagination')"
+        :error="$t('baseSetting.errorTips')"
       >
         <el-select v-model="persistentConfig.defaultPageSize">
           <el-option
@@ -37,7 +39,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="编辑Drawer位置：">
+      <el-form-item class="fold_label" :label="$t('baseSetting.drawer')">
         <el-select v-model="persistentConfig.drawerPosition">
           <el-option
             v-for="position in drawerPositions"
@@ -48,7 +50,7 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="编辑通知位置：">
+      <el-form-item class="fold_label" :label="$t('baseSetting.notification')">
         <el-select v-model="persistentConfig.notiPosition">
           <el-option
             v-for="position in notiPositions"
@@ -61,18 +63,19 @@
       </el-form-item>
     </el-form>
     <el-divider content-position="left">
-      <h3>滚动条设置</h3>
+      <h3>{{ $t('baseSetting.title_2') }}</h3>
     </el-divider>
     <el-form label-width="140px" label-position="left" size="default">
-      <el-form-item label="开启自定义滚动条：">
+      <el-form-item class="fold_label" :label="$t('baseSetting.scroll')">
         <el-switch
           size="default"
           v-model="persistentConfig.scroll.openCustom"
         />
       </el-form-item>
       <el-form-item
-        label="自定义滚动条尺寸："
-        error="该属性仅支持webkit内核的浏览器"
+        class="fold_label err_label"
+        :label="$t('baseSetting.size')"
+        :error="$t('baseSetting.errorTips_2')"
       >
         <el-select v-model="persistentConfig.scroll.size" size="default">
           <el-option
@@ -173,5 +176,14 @@ const langOption = [
   font-weight: 400;
   font-size: 14px;
   color: #525252;
+}
+
+.fold_label :deep(.el-form-item__label){
+  white-space: pre-line;
+  line-height: 20px;
+}
+
+.err_label :deep(.el-form-item__content){
+  margin-bottom: 30px;
 }
 </style>
