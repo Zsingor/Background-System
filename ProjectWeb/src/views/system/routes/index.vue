@@ -7,7 +7,7 @@
         v-on="gridEvents"
         @cell-dblclick="dbclickHandler"
       >
-        <template #toolbar_buttons>
+        <template #toolbar_buttons> 
           <vxe-button status="primary" @click="addmessage">新增菜单</vxe-button>
           <vxe-button
             status="danger"

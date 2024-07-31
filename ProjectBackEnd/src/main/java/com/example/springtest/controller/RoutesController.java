@@ -73,8 +73,11 @@ public class RoutesController {
         }
         else if(flag==2)
         {
-            System.out.println("错误");
             return Result.error("该标识已存在");
+        }
+        else if(flag==3)
+        {
+            return Result.error("该url已存在");
         }
         else {
             return Result.error("添加失败");

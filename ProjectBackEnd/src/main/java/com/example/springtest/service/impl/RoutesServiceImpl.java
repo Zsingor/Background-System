@@ -57,10 +57,24 @@ public class RoutesServiceImpl implements RoutesService {
     public int routesadd(Routes routes) {
         Routes newr=new Routes();
         List<Routes> routesall = routesMapper.routesAllquery(newr);
+        //判断菜单的唯一标识和url是否已存在
         String name = routes.getName();
-        if (routesall.stream().anyMatch(route -> Objects.equals(route.getName(), name))) {
-            return 2;
+        String parentId=routes.getParentid();
+        String path=routes.getPath();
+        String type=routes.getType();
+        for(Routes temp : routesall)
+        {
+            if (Objects.equals(temp.getName(), name)) {
+                return 2;
+            }
+            else if(Objects.equals(temp.getParentid(), parentId) &&
+                    Objects.equals(temp.getPath(), path) &&
+                    Objects.equals(temp.getType(), type))
+            {
+                return 3;
+            }
         }
+        //新增菜单
         Date createtime=new Date(System.currentTimeMillis());
         routes.setCreateTime(createtime);
         routes.setId(UUIDUtils.getUUID());

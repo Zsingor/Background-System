@@ -20,7 +20,7 @@
     </select>
 
     <select id="userquery" parameterType="com.example.springtest.entity.User" resultMap="UserResultMap">
-        SELECT * FROM sys_data.user
+        SELECT id,name,email,description,status,create_time FROM sys_data.user
         WHERE type = 1
         <if test="id != null and id != ''">
             AND id = #{id}

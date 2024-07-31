@@ -19,7 +19,7 @@ export function getTableConfig() {
                 {min: 1, max: 30, message: '长度在 1 到 30 个字符'}
             ],
             password: [
-                {required: true, message: '请选择密码'},
+                {required: true, message: '请输入密码'},
                 {min: 6, max: 30, message: '长度在 6 到 30 个字符'}
             ],
             email:[
@@ -32,13 +32,12 @@ export function getTableConfig() {
             {type: 'seq', width: 50},
             {field: 'id', visible: false, title: 'ID',minWidth:200},
             {field: 'name', title: '用户名',minWidth:120},
-            {field: 'password', visible: false, title: '密码',minWidth:120},
             {field: 'roleid', minWidth:120,title: '所属角色',slots: {default: 'role'}},
             {field: 'email', minWidth:120,title: '邮箱'},
             {field: 'description', minWidth:120,title: '账号描述'},
             {field: 'status', minWidth:120,title: '状态',slots: {default: 'status'}},
             {field: 'createTime', minWidth:180,title: '创建时间',formatter: "formatDate"},
-            {title: '操作', minWidth: 280, fixed: 'right', slots: {default: 'operate'}}
+            {title: '操作', minWidth: 240, fixed: 'right', slots: {default: 'operate'}}
         ],
         queryData:{
             name:"",

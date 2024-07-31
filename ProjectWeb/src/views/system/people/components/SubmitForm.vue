@@ -16,7 +16,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="24">
-              <el-form-item label="密码:" prop="password">
+              <el-form-item label="密码:" prop="password" v-if="!rootData.selectRow">
                 <el-input size="large" v-model="rootData.formData.password" clearable/>
               </el-form-item>
             </el-col>
@@ -74,6 +74,8 @@ import request from "@/request/index.js";
 import {message} from "@/utils/message.js";
 import {inject, ref} from "vue";
 import {persistentConfig} from "@/layout/layout.js";
+import { encodeData } from "@/utils/rsa.js";
+import _ from 'lodash'
 
 const rootData = inject("rootData");
 const xGrid = inject("xGrid");
@@ -96,7 +98,9 @@ const submitForm = () => {
         })
       } else {
         rootData.formData.type=1
-        request.post("/user/add", rootData.formData).then(res => {
+        let editForm=_.cloneDeep(rootData.formData)
+        editForm.password=encodeData(editForm.password)
+        request.post("/user/add", editForm).then(res => {
           if(res.code===1)
           {
             rootData.showForm = false

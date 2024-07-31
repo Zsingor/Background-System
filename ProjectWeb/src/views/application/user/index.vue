@@ -21,7 +21,6 @@
     >
       <el-table-column type="selection" width="55" align="center"/>
       <el-table-column prop="name" label="用户名" width="180" align="center"></el-table-column>
-      <el-table-column prop="password" label="密码" align="center"></el-table-column>
       <el-table-column prop="email" label="邮箱" align="center"></el-table-column>
       <el-table-column prop="description" label="账号描述" align="center"></el-table-column>
       <el-table-column prop="createTime" label="创建时间" width="180" align="center"

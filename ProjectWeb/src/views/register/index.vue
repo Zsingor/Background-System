@@ -47,11 +47,13 @@
 
 <script setup>
 
-import {onMounted, onUnmounted, reactive, ref} from "vue";
-import {persistentConfig} from "@/layout/layout.js";
-import request from "@/request/index.js";
-import {message} from "@/utils/message.js";
-import {isEmpty} from "@/utils/commons.js";
+import {onMounted, onUnmounted, reactive, ref} from "vue"
+import {persistentConfig} from "@/layout/layout.js"
+import request from "@/request/index.js"
+import {message} from "@/utils/message.js"
+import {isEmpty} from "@/utils/commons.js"
+import { encodeData } from "@/utils/rsa.js"
+import _ from 'lodash'
 
 const registerRef=ref(null)
 
@@ -115,7 +117,9 @@ const register=()=>{
           return
         }
       }
-      request.post("/user/register",user).then(res => {
+      let editForm=_.cloneDeep(user)
+      editForm.password=encodeData(editForm.password)
+      request.post("/user/register",editForm).then(res => {
         if(res.code===1)
         {
           message("申请成功，请等待管理员回复")

@@ -75,20 +75,27 @@ public class UserController {
 
     //用户申请账号
     @PostMapping("/register")
-    public Result userRegister(@RequestBody User user)
-    {
-        user.setType(0);
-        user.setStatus("1");
-        int flag=userService.useradd(user);
-        if (flag==1)
-        {
-            return Result.success();
+    public Result userRegister(@RequestBody User user) throws Exception {
+        try {
+            String pas= RsaUtils.decrypt(user.getPassword());
+            user.setPassword(pas);
+            user.setType(0);
+            user.setStatus("1");
+            int flag=userService.useradd(user);
+            if (flag==1)
+            {
+                return Result.success();
+            }
+            else if (flag==2)
+            {
+                return Result.error(2,"用户名已存在");
+            }
+            else {
+                return Result.error("申请失败");
+            }
         }
-        else if (flag==2)
-        {
-            return Result.error(2,"用户名已存在");
-        }
-        else {
+        catch (Exception e){
+            System.out.println(e.getMessage());
             return Result.error("申请失败");
         }
     }
@@ -109,8 +116,9 @@ public class UserController {
     @PostMapping("/add")
     @PreAuthorize("/user/add")
     @AutoLog(module = "用户管理",operate = "添加用户")
-    public Result useradd(@RequestBody User user)
-    {
+    public Result useradd(@RequestBody User user) throws Exception {
+        String pas= RsaUtils.decrypt(user.getPassword());
+        user.setPassword(pas);
         int flag=userService.useradd(user);
         if (flag==1)
         {
@@ -221,6 +229,15 @@ public class UserController {
     @PreAuthorize("/user/updatePwd")
     @AutoLog(module = "用户管理",operate = "修改个人密码")
     public Result updatePwd(@RequestBody User user) throws Exception {
+        userService.userUpdatePwd(user);
+        return Result.success();
+    }
+
+    //管理员修改用户密码
+    @PostMapping("/updateUserPwd")
+    @PreAuthorize("/user/updateUserPwd")
+    @AutoLog(module = "用户管理",operate = "修改用户密码")
+    public Result updateUserPwd(@RequestBody User user) throws Exception {
         userService.userUpdatePwd(user);
         return Result.success();
     }

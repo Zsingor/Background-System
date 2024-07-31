@@ -235,7 +235,7 @@ public class UserServiceImpl implements UserService {
         }
         else {
             userRolesMapper.deleteUserRoles(user);
-            if(!roleList.isEmpty())
+            if(roleList!=null&&!roleList.isEmpty())
             {
                 userRolesMapper.addUserRoles(user.getId(),roleList);
             }

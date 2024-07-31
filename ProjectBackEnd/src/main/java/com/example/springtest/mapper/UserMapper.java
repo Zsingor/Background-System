@@ -15,7 +15,7 @@ public interface UserMapper {
     //查询用户信息
     List<User> userquery(User user);
 
-    @Select("select * from sys_data.user where type=0 order by create_time desc ")
+    @Select("select id,name,email,description,status,create_time from sys_data.user where type=0 order by create_time desc ")
     List<User> applicationQuery();
 
     //返回消息的用户信息
@@ -27,7 +27,7 @@ public interface UserMapper {
     User userNamequery(User user);
 
     //根据对应的主键查询用户
-    @Select("select * from sys_data.user where id=#{id}")
+    @Select("select id,name,email,description,status,create_time from sys_data.user where id=#{id}")
     User userPrimaryquery(String id);
 
     //删除用户信息
@@ -37,7 +37,7 @@ public interface UserMapper {
     void useragree(List<String> userlist);
 
     //更新用户信息
-    @Update("update sys_data.user set name=#{name},password=#{password},email=#{email},"+
+    @Update("update sys_data.user set name=#{name},email=#{email},"+
             "description=#{description},status=#{status} where id=#{id}")
     void userupdate(User user);
 
