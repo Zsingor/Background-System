@@ -76,26 +76,20 @@ public class UserController {
     //用户申请账号
     @PostMapping("/register")
     public Result userRegister(@RequestBody User user) throws Exception {
-        try {
-            String pas= RsaUtils.decrypt(user.getPassword());
-            user.setPassword(pas);
-            user.setType(0);
-            user.setStatus("1");
-            int flag=userService.useradd(user);
-            if (flag==1)
-            {
-                return Result.success();
-            }
-            else if (flag==2)
-            {
-                return Result.error(2,"用户名已存在");
-            }
-            else {
-                return Result.error("申请失败");
-            }
+        String pas= RsaUtils.decrypt(user.getPassword());
+        user.setPassword(pas);
+        user.setType(0);
+        user.setStatus("1");
+        int flag=userService.useradd(user);
+        if (flag==1)
+        {
+            return Result.success();
         }
-        catch (Exception e){
-            System.out.println(e.getMessage());
+        else if (flag==2)
+        {
+            return Result.error(2,"用户名已存在");
+        }
+        else {
             return Result.error("申请失败");
         }
     }
