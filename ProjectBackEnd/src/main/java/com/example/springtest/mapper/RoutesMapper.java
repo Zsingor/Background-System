@@ -23,8 +23,8 @@ public interface RoutesMapper {
     Routes routesqueryById(String id);
 
     //添加新路由
-    @Insert("insert into sys_data.routes(id,name,title,path,level,status,icon,parentid,position,type)"+
-            "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid},#{position},#{type})")
+    @Insert("insert into sys_data.routes(id,name,title,path,level,status,icon,parentid,position,type,create_time,creator_id)"+
+            "values(#{id},#{name},#{title},#{path},#{level},#{status},#{icon},#{parentid},#{position},#{type},#{createTime},#{creatorId})")
     void routesadd(Routes routes);
 
     //修改路由

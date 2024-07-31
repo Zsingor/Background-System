@@ -10,8 +10,8 @@ import java.util.List;
 public interface RolesMapper {
 
     //角色添加
-    @Insert("insert into sys_data.roles(id,name,description)"+
-            "values(#{id},#{name},#{description})")
+    @Insert("insert into sys_data.roles(id,name,description,create_time,creator_id)"+
+            "values(#{id},#{name},#{description},#{createTime},#{creatorId})")
     void rolesadd(Roles roles);
 
 

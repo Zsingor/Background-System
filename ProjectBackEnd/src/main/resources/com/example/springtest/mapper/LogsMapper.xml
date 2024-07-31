@@ -7,6 +7,9 @@
     <select id="logsquery" parameterType="com.example.springtest.entity.Logs" resultType="com.example.springtest.entity.Logs">
         SELECT * FROM sys_data.logs
         WHERE 1=1
+        <if test="userid != null and userid != ''">
+            AND userid = #{userid}
+        </if>
         <if test="username != null and username != ''">
             AND username LIKE CONCAT('%', #{username}, '%')
         </if>

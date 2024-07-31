@@ -13,6 +13,9 @@
         <if test="description != null and description != ''">
             AND description LIKE CONCAT('%', #{description}, '%')
         </if>
+        <if test="creatorId != null and creatorId != ''">
+            AND creator_id = #{creatorId}
+        </if>
     </select>
 
     <delete id="rolesdelete" parameterType="java.util.List">

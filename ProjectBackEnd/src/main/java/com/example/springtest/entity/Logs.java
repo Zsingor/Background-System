@@ -23,6 +23,7 @@ public class Logs {
     @JsonProperty(value = "errMsg")
     private String errMsg;
     private Date operatedate;
+
     private Date startDate;
     private Date endDate;
 }

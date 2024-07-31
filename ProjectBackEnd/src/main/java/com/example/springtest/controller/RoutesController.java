@@ -38,13 +38,13 @@ public class RoutesController {
 
     //查询全部路由
     @PostMapping("/queryAll")
-    public Result routesqueryAll(@RequestBody Routes routes)
+    public Result routesqueryAll(@RequestBody String json)
     {
         try {
-            List<Routes> data=routesService.routesall(routes);
+            JSONObject data=routesService.routesall(json);
             return Result.success(data);
         }catch (Exception e){
-            return Result.error("查询失败");
+            return Result.error(e.getMessage());
         }
     }
 

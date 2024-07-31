@@ -8,6 +8,9 @@
     <select id="routesAllquery" parameterType="com.example.springtest.entity.Routes" resultType="com.example.springtest.entity.Routes">
         SELECT * FROM sys_data.routes
         WHERE 1=1
+        <if test="creatorId != null and creatorId != ''">
+            AND creator_id = #{creatorId}
+        </if>
         <if test="type != null and type != ''">
             AND type = #{type}
         </if>

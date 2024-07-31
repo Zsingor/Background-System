@@ -30,6 +30,8 @@ public class RolesServiceImpl implements RolesService {
     @Override
     public void rolesadd(Roles roles) {
         roles.setId(UUIDUtils.getUUID());
+        Date createtime=new Date(System.currentTimeMillis());
+        roles.setCreateTime(createtime);
         rolesMapper.rolesadd(roles);
     }
 

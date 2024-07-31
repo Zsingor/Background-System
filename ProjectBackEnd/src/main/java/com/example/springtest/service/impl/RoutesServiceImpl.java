@@ -1,16 +1,20 @@
 package com.example.springtest.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Roles;
 import com.example.springtest.entity.Routes;
 import com.example.springtest.mapper.RolesRoutesMapper;
 import com.example.springtest.mapper.RoutesMapper;
 import com.example.springtest.service.RoutesService;
+import com.example.springtest.utils.QueryResult;
 import com.example.springtest.utils.UUIDUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -33,9 +37,14 @@ public class RoutesServiceImpl implements RoutesService {
     }
 
     @Override
-    public List<Routes> routesall(Routes routes) {
+    public JSONObject routesall(String json) {
+        JSONObject jsonObject= JSON.parseObject(json);
+        Routes routes=jsonObject.getObject("queryForm",Routes.class);
+        int currentPage=jsonObject.getInteger("currentPage");
+        int pageSize=jsonObject.getInteger("pageSize");
         List<Routes> routesList=routesMapper.routesAllquery(routes);
-        return Routeprocess(routesList);
+        List<Routes> data=Routeprocess(routesList);
+        return QueryResult.getResult(data,currentPage,pageSize);
     }
 
     @Override
@@ -52,6 +61,8 @@ public class RoutesServiceImpl implements RoutesService {
         if (routesall.stream().anyMatch(route -> Objects.equals(route.getName(), name))) {
             return 2;
         }
+        Date createtime=new Date(System.currentTimeMillis());
+        routes.setCreateTime(createtime);
         routes.setId(UUIDUtils.getUUID());
         routesMapper.routesadd(routes);
         return 1;

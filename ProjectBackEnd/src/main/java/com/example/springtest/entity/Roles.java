@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -15,4 +16,6 @@ public class Roles {
     private String name;
     private String description;
     private List<String> routesid;
+    private Date createTime;
+    private String creatorId;
 }
