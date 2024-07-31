@@ -85,6 +85,7 @@ import IconDialog from "@/components/icons/IconDialog.vue";
 import {ElNotification} from "element-plus";
 import _ from "lodash";
 import {persistentConfig} from "@/layout/layout.js";
+import { userInfo } from "@/layout/user";
 
 const rootData = inject("rootData")
 const xGrid = inject("xGrid")
@@ -143,6 +144,7 @@ const submitForm = () => {
       }
       else
       {
+        rootData.formData.creatorId=userInfo.baseInfo.user_id
         request.post("/routes/add", rootData.formData).then(res => {
           if (res.code === 0) {
             message(res.msg,"error")

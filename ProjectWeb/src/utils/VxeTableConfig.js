@@ -34,7 +34,6 @@ export const VxeTableCommonsConfig = {
     },
     //个性化信息配置项
     customConfig: {
-
         storage: true //是否将列操作状态保存在本地
     },
     //设置分页

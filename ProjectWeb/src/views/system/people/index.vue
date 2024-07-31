@@ -208,7 +208,7 @@ const gridOptions = reactive({
         xGrid.value.clearCheckboxRow()
         const params={
           currentPage:1,
-          pageSize:1000000,
+          pageSize:-1,
           queryForm:rootData.queryData
         }
         return new Promise((resolve, reject) => {

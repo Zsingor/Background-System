@@ -1,6 +1,9 @@
 <template>
   <el-row :gutter="8" style="padding-bottom: 8px" >
     <el-col :span="6">
+      <el-input size="default" v-model="rootData.queryData.userid" clearable placeholder="用户ID" />
+    </el-col>
+    <el-col :span="6">
       <el-input size="default" v-model="rootData.queryData.username" clearable placeholder="用户名" />
     </el-col>
     <el-col :span="6">
@@ -43,7 +46,7 @@
           value-format="x"
       />
     </el-col>
-    <el-col :span="24" class="centered-buttons">
+    <el-col :span="6" class="centered-buttons">
       <el-button size="default" type="primary" @click="querydata">查询</el-button>
       <el-button size="default" @click="resetForm">重置</el-button>
     </el-col>
@@ -80,7 +83,7 @@ const resetForm=()=>{
 <style scoped>
 
 .centered-buttons {
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .el-col{

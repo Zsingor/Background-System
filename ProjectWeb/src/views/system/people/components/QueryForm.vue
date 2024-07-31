@@ -1,6 +1,9 @@
 <template>
   <el-row :gutter="8" style="padding-bottom: 8px" >
     <el-col :span="6">
+      <el-input size="default" v-model="rootData.queryData.id" clearable placeholder="用户ID" />
+    </el-col>
+    <el-col :span="6">
       <el-input size="default" v-model="rootData.queryData.name" clearable placeholder="用户名" />
     </el-col>
     <el-col :span="6">

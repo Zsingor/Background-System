@@ -136,6 +136,7 @@ const gridOptions = reactive({
   columns: [
     {type: 'checkbox', width: 50, fixed: 'left'},
     {type: 'seq', width: 50},
+    {field: 'userid', visible: false, title: '用户ID', minWidth: 100},
     {field: 'username', title: '用户名称', minWidth: 100},
     {field: 'module', title: '操作模块', minWidth: 100},
     {field: 'operate', title: '操作内容', minWidth: 100},
@@ -144,7 +145,7 @@ const gridOptions = reactive({
     {field: 'errMsg', title: '错误信息', minWidth: 100,slots: {default: 'errMsg'},exportMethod:exportErrmsg},
     {field: 'ip', title: 'IP地址', minWidth: 100},
     {field: 'operatedate', title: '操作时间', minWidth: 150, formatter: "formatDate"},
-    {title: '操作', minWidth: 50, fixed: 'right', slots: {default: 'operate'}}
+    {title: '操作', minWidth: 60, fixed: 'right', slots: {default: 'operate'}}
   ],
   proxyConfig: {
     seq: true,
@@ -191,7 +192,7 @@ const gridOptions = reactive({
         xGrid.value.clearCheckboxRow()
         const params = {
           currentPage: 1,
-          pageSize: 1000000,
+          pageSize: -1,
           queryForm: rootData.queryData
         }
         return new Promise((resolve, reject) => {
