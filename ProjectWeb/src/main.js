@@ -3,7 +3,10 @@ import App from './App.vue'
 
 import ElementPlus from 'element-plus' //导入element-plus
 import 'element-plus/dist/index.css' //导入element-plus的样式
-import * as ElementPlusIconsVue from '@element-plus/icons' //导入图标
+
+import * as ElementPlusIconsVue from '@element-plus/icons-vue' //导入图标
+import * as AntIcon from '@ant-design/icons-vue'   //导入图标
+
 import VxeTable from './plugins/VxeTable' //导入vxe-table
 import router from './router' //导入路由
 import "@/router/permission.js" //导入路由守卫
@@ -41,6 +44,11 @@ Object.keys(registerComponents).forEach((key) => {
 
 //引入所有的element-plus的icon
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component)
+}
+
+//引入所有的ant-design的icon
+for (const [key, component] of Object.entries(AntIcon)) {
     app.component(key, component)
 }
 
