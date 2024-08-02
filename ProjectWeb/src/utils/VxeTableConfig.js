@@ -56,17 +56,22 @@ export const VxeTableCommonsConfig = {
 
 //双击复制数据
 export const dbclickHandler = (event) => {
-    const clipboard = new Clipboard(event.$event.target, {
-        text: () => event.cell.innerText
-    })
-    clipboard.on('success', () => {
-        message('复制成功')
-        clipboard.destroy()
-    })
-    clipboard.on('error', () => {
-        message('复制失败', 'error')
-        clipboard.destroy()
-    })
+    try{
+        const clipboard = new Clipboard(event.$event.target, {
+            text: () => event.cell.innerText
+        })
+        clipboard.on('success', () => {
+            message('复制成功')
+            clipboard.destroy()
+        })
+        clipboard.on('error', () => {
+            message('复制失败', 'error')
+            clipboard.destroy()
+        })
+    }
+    catch{
+        
+    }
 }
 
 //获取分页数据，如果直接使用persistentConfig.defaultPageSize会有初始化问题

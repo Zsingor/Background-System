@@ -7,6 +7,11 @@
             <icon-selected class="icon-select" :icons="Object.keys(ElIcon)" @selectedIcon="setIcon"/>
           </div>
         </el-tab-pane>
+        <el-tab-pane label="Ant-Design Icons" name="2">
+          <div style="height: 100%">
+            <icon-selected class="icon-select" :icons="Object.keys(AntIcon)" @selectedIcon="setIcon"/>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </div>
   </el-dialog>
@@ -14,6 +19,7 @@
 
 <script setup>
 import * as ElIcon from '@element-plus/icons-vue'
+import * as AntIcon from '@ant-design/icons-vue'
 import IconSelected from "@/components/icons/IconSelected.vue";
 import {ref} from "vue";
 
