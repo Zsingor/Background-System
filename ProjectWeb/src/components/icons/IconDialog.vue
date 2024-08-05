@@ -9,7 +9,7 @@
         </el-tab-pane>
         <el-tab-pane label="Ant-Design Icons" name="2">
           <div style="height: 100%">
-            <icon-selected class="icon-select" :icons="Object.keys(AntIcon)" @selectedIcon="setIcon"/>
+            <icon-selected class="icon-select" :icons="antIconList" @selectedIcon="setIcon"/>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -23,6 +23,7 @@ import * as AntIcon from '@ant-design/icons-vue'
 import IconSelected from "@/components/icons/IconSelected.vue";
 import {ref} from "vue";
 
+const antIconList=Object.keys(AntIcon).slice(0, -4)
 
 const emit = defineEmits(["setIcon", "update:modelValue"]);
 

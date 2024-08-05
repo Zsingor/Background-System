@@ -13,9 +13,9 @@
                   <component :is="item"></component>
                 </el-icon>
               </div>
-              <div class="icon-span">
+              <span class="icon-span">
                 {{ item }}
-              </div>
+              </span>
             </div>
           </div>
         </div>
@@ -141,6 +141,7 @@ const selectedHandler = (item) => {
     word-break: break-all;
     word-wrap: break-word;
     white-space: pre-wrap;
+    text-overflow: ellipsis;
   }
 
   .disabled {
