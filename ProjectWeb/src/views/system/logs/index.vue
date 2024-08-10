@@ -2,12 +2,16 @@
   <div class="background">
     <vxe-grid ref="xGrid" v-bind="gridOptions" @cell-dblclick="dbclickHandler" class="table1">
       <!--  表格上方的查询表单    -->
-      <template #form>
-        <query-form/>
+      <template #form >
+        <query-form v-show="queryShow"/>
       </template>
-      <!--  表格上方的按钮组    -->
+      <!--  表格上方左侧的按钮组    -->
       <template #toolbar_buttons class="buttons">
         <vxe-button status="danger" @click="deleteTableData(xGrid,'/logs/delete',true)">批量删除</vxe-button>
+      </template>
+      <!--  表格上方右侧的按钮组    -->
+      <template #toolbar_tools>
+        <vxe-button @click="changeSearch" style="margin-right: 10px" icon="vxe-icon-search" circle></vxe-button>
       </template>
       <!--  详细内容    -->
       <template #details="{ row }">
@@ -61,7 +65,7 @@
 </template>
 
 <script setup>
-import {provide, reactive, ref, onMounted, onActivated, onDeactivated} from 'vue'
+import {provide, reactive, ref, onMounted, onActivated, onDeactivated, unref} from 'vue'
 import QueryForm from "@/views/system/logs/components/QueryForm.vue";
 import request from "@/request/index.js";
 import {
@@ -81,10 +85,16 @@ defineOptions({
 })
 
 const xGrid = ref()
+//显示详细内容窗口
 let showdialog=ref(false)
+//详细内容信息
 let rowDetails=ref("")
+//显示错误信息窗口
 let showErrDialog=ref(false)
+//错误信息内容
 let rowErrmsg=ref("")
+//显示上方查询表单
+let queryShow=ref(true)
 
 const rootData = reactive({
   queryData: {},
@@ -100,6 +110,14 @@ const showDetails=(row)=>{
 const showErrmsg=(row)=>{
   rowErrmsg.value=row.errMsg
   showErrDialog.value=true
+}
+
+//控制搜索部分的显示与否
+const changeSearch=()=>{
+  queryShow.value=!queryShow.value
+  setTimeout(() => {
+    xGrid.value.recalculate(true)
+  }, 200)
 }
 
 //自定义详细内容的导出格式
@@ -121,6 +139,9 @@ const gridOptions = reactive({
   toolbarConfig: {
     ...getToolbarConfig(),
     export: true,
+    slots: {
+      tools: 'toolbar_tools'
+    }
   },
   exportConfig: {
     types: ["csv", "xlsx", "html", "xml", "txt"],
