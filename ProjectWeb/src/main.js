@@ -31,24 +31,24 @@ app.config.globalProperties.$baseUrl=import.meta.env.VITE_BASE_API;
 //初始化配置信息
 loadConfig()
 
+app.use(pinia)
 app.use(ElementPlus)
 app.use(VxeTable)
 app.use(router)
-app.use(pinia)
 app.use(i18n)
 
-//导入全部组件
+//导入全部自定义的组件
 Object.keys(registerComponents).forEach((key) => {
     app.component(key, registerComponents[key]);
 })
 
-//引入所有的element-plus的icon
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+//引入所有的ant-design的icon
+for (const [key, component] of Object.entries(AntIcon)) {
     app.component(key, component)
 }
 
-//引入所有的ant-design的icon
-for (const [key, component] of Object.entries(AntIcon)) {
+//引入所有的element-plus的icon
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
 

@@ -132,12 +132,20 @@ const restDay=(data)=>{
   );
 }
 
+const upload=(e)=>{
+  console.log("上传: "+e.loaded," ",e.total)
+}
+
+const download=(e)=>{
+  console.log("下载: "+e.loaded," ",e.total)
+}
+
 //初始化用户数据
 const initUser=()=>{
   if(loginFlag.value)
   {
     user.value.id = userInfo.baseInfo.user_id
-    request.post("/user/querymsssage", user.value).then(res => {
+    request.post("/user/querymsssage", user.value,{onUploadProgress:upload,onDownloadProgress:download}).then(res => {
       user.value = res.data
     }).catch(error => {
       console.log(error)
