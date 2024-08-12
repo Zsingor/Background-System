@@ -10,7 +10,6 @@ import * as AntIcon from '@ant-design/icons-vue'   //导入图标
 import VxeTable from './plugins/VxeTable' //导入vxe-table
 import router from './router' //导入路由
 import "@/router/permission.js" //导入路由守卫
-import * as echarts from 'echarts' //导入echarts
 import "exceljs" //导入excel文件导出工具
 
 import {loadConfig} from "@/setup.js";
@@ -51,8 +50,5 @@ for (const [key, component] of Object.entries(AntIcon)) {
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
     app.component(key, component)
 }
-
-// 全局挂载 echarts
-app.provide('echarts', echarts);
 
 app.mount('#app')
