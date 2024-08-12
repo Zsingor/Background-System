@@ -6,10 +6,10 @@ import en from './language/en.js'
 import zhCN from 'vxe-table/lib/locale/lang/zh-CN'
 import enUS from 'vxe-table/lib/locale/lang/en-US'
 
-const config=JSON.parse(localStorage.getItem("Global_Config"))
+let config=JSON.parse(localStorage.getItem("Global_Config"))
 if(isEmpty(config))
 {
-  config.localeLang='zhCn'
+  config={localeLang:'zhCn'}
 }
 
 const messages = {
