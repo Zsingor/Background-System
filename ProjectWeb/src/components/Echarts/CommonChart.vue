@@ -134,7 +134,7 @@ const chartResize = () => {
 watch(
   () => options,
   async () => {
-    charts.value && charts.value.setOption(options.value, true)
+    charts.value && charts.value.setOption(options.value, true,chartResize)
   },
   { deep: true }
 )
