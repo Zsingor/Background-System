@@ -18,9 +18,7 @@ router.beforeEach((to, from, next) => {
         next();
     }
     else {
-        localStorage.removeItem("User_Info")
-        userInfo.user_menus=[]
-        next("/login");
+        next("/404");
     }
 });
 

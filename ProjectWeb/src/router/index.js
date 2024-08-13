@@ -1,6 +1,7 @@
 import {createRouter, createWebHashHistory, createWebHistory} from 'vue-router'
 import login from '@/views/login/index.vue'
 import register from '@/views/register/index.vue'
+import errorPage from '@/views/errorPage/index.vue'
 import layoutRoutes from "@/router/routes/LayoutRoutes.js";
 
 
@@ -19,6 +20,11 @@ export const routes = [
         path: '/register',
         name: 'register',
         component: register
+    },
+    {
+        path: '/404',
+        name: 'errorPage',
+        component: errorPage
     },
 ]
 

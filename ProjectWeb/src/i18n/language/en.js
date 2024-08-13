@@ -71,5 +71,12 @@ export default {
     refresh:"refresh",
     noNotify:"No notice yet",
     rest:"rest"
+  },
+  error:{
+    title:"Oh! You're lost.",
+    subtitle:"The page you're looking for doesn't exist. You don't know how you got here, but you can click the button below to go back to the homepage, the previous page, or the landing page.",
+    home:"HOME",
+    back:"BACK",
+    login:"LOGIN",
   }
 }

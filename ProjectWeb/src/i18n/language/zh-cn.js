@@ -71,5 +71,12 @@ export default {
     refresh:"刷新",
     noNotify:"暂无通知",
     rest:"休"
+  },
+  error:{
+    title:"哦！你迷路了。",
+    subtitle:"您正在查找的页面不存在。虽然不知道您是怎么来到这里的，但是您可以单击下面的按钮返回主页、上一页或前往登录页。",
+    home:"主 页",
+    back:"返 回",
+    login:"登 录",
   }
 }
