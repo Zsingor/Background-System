@@ -23,6 +23,15 @@
       </el-upload>
     </el-card>
 
+    <el-card class="card-item">
+      <template #header>
+        <div class="card-header">
+          <span>文件的分片上传</span>
+        </div>
+      </template>
+      <FileUpload></FileUpload>
+    </el-card>
+
 
     <el-card class="card-item">
       <template #header>
@@ -40,7 +49,6 @@
           :limit="1"
           :auto-upload="false"
           list-type="picture">
-
         <template #trigger>
           <el-button type="primary">选择文件</el-button>
         </template>
@@ -173,7 +181,6 @@ import {message} from "@/utils/message.js";
 import {userInfo} from "@/layout/user.js";
 import request from "@/request/index.js";
 import {ref} from "vue";
-import {Delete, Download, Plus, UploadFilled, ZoomIn} from "@element-plus/icons";
 import {genFileId} from "element-plus";
 
 defineOptions({
@@ -256,6 +263,8 @@ const handleAddSuccess=(res)=>{
 
 //移除文件列表的回调
 const handleRemove=(file,fileLists)=>{
+  console.log(file);
+  
   request.post(`/files/deletefile/${file.response.data}`).then(res=>{
     if(res.code===1)
     {

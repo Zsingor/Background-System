@@ -5,6 +5,7 @@ import com.example.springtest.entity.Result;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -17,5 +18,11 @@ public interface FilesService {
 
     void deleteFile(String fileName);
 
+    void deleteChunkFile(String fileName);
+
     JSONObject uploadEditor(MultipartFile file) throws IOException;
+
+    void upLoadChunk(MultipartFile chunk,String filename) throws IOException;
+
+    String mergeChunk(String hash,String filename) throws IOException;
 }
