@@ -5,7 +5,7 @@
       <el-upload
         ref="uploadRef"
         action="#"
-        drag
+        :drag="props.draggable"
         v-model:file-list="fileList"
         :accept="props.fileAccept"
         :disabled="disable"
@@ -14,8 +14,9 @@
         :on-change="handleChange"
         :on-remove="handleRemove"
       >
-        <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+        <slot name="content">
+          <el-button type="primary">上传文件</el-button>
+        </slot>
 
         <template #tip>
           <div class="el-upload__tip">
@@ -26,34 +27,51 @@
     </div>
 
     <!-- 进度显示 -->
-    <el-progress
-      class="progress-line"
-      :text-inside="true"
-      :percentage="percent.toFixed()"
-      :stroke-width="20"
-    />
-    <div class="progress-box">
-      <span>上传进度：{{ percent.toFixed() }}%</span>
-      <div>
-        <el-button
-          type="success"
-          size="small"
-          @click="sendRequest"
-          :disabled="!disable"
-          >上传</el-button
-        >
-        <el-button type="primary" size="small" @click="handleClickBtn">{{
-          upload ? '暂停' : '继续'
-        }}</el-button>
-        <el-button
-          type="warning"
-          size="small"
-          @click="clearUpload"
-          :disabled="!disable"
-          >清空</el-button
-        >
+    <slot name="progress">
+      <el-progress
+        class="progress-line"
+        :text-inside="true"
+        :percentage="percent.toFixed()"
+        :stroke-width="20"
+      />
+    </slot>
+
+    <!-- 底部操作区域 -->
+    <slot name="box">
+      <div class="progress-box">
+        <span>上传进度：{{ percent.toFixed() }}%</span>
+        <div>
+          <el-button
+            type="success"
+            size="small"
+            @click="sendRequest"
+            :disabled="!btnFlag || autoUpload"
+            >上传</el-button
+          >
+          <el-button
+            type="primary"
+            size="small"
+            v-show="upload"
+            @click="handlePause"
+            >暂停</el-button
+          >
+          <el-button
+            type="primary"
+            size="small"
+            v-show="!upload"
+            @click="handleContinue"
+            >继续</el-button
+          >
+          <el-button
+            type="warning"
+            size="small"
+            @click="clearUpload"
+            :disabled="!btnFlag"
+            >清空</el-button
+          >
+        </div>
       </div>
-    </div>
+    </slot>
   </div>
 </template>
   
@@ -64,11 +82,6 @@ import { message } from '@/utils/message.js'
 import { onMounted, ref } from 'vue'
 
 const props = defineProps({
-  //分片文件大小，单位MB
-  chunkSize: {
-    type: Number,
-    default: 2,
-  },
   //组件的宽度
   divWidth: {
     type: String,
@@ -79,28 +92,57 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  //允许上传的文件类型
+  //是否可拖动
+  draggable: {
+    type: Boolean,
+    default: false,
+  },
+  //是否自动上传
+  autoUpload: {
+    type: Boolean,
+    default: false,
+  },
+  //分片文件大小，单位MB
+  chunkSize: {
+    type: Number,
+    default: 2,
+  },
+  //允许上传的文件类型，格式".csv,.doc,.png"
   fileAccept: {
     type: String,
-    default: '.csv,.doc,.png',
+    default: '',
   },
   //允许上传的文件最大大小
   fileSize: {
     type: Number,
     default: 0,
   },
+  //发送分片的请求url
+  sendUrl: {
+    type: String,
+    default: '/files/chunk',
+  },
+  //发送合并的请求url
+  completeUrl: {
+    type: String,
+    default: '/files/merge',
+  },
 })
+
+const emit = defineEmits(['handleRemove', 'handleComplete'])
 
 const uploadRef = ref(null)
 
 //上传成功的文件列表
 let fileList = ref([])
 //进度
-let percent = ref(0)
+const percent = defineModel('percent', { type: Number, default: 0 })
 //控制上传的暂停与继续
 let upload = ref(true)
-//控制是否能上传
+//控制是否禁止上传
 let disable = ref(false)
+//控制是否允许按钮操作
+let btnFlag = ref(false)
 //每一个分片的大小占比
 let percentCount = ref(0)
 //当前正在上传的文件
@@ -116,7 +158,7 @@ let sendNum = ref(0)
 // 存放每个分片的请求
 let requestList = ref([])
 //存放允许的后缀集合
-let acceptedExtensions = ref({})
+let acceptedExtensions = ref(null)
 
 const handleChange = async (file) => {
   if (!file) return
@@ -133,6 +175,7 @@ const handleChange = async (file) => {
 
   curFile.value = file
   disable.value = true
+  btnFlag.value = true
   percent.value = 0
   percentCount.value = 0
 
@@ -151,8 +194,10 @@ const handleChange = async (file) => {
   const suffix = /\.([0-9A-z]+)$/.exec(fileObj.name)[1]
   const spark = new SparkMD5.ArrayBuffer()
   spark.append(buffer)
+  //获取文件的哈希值
   const fileHash = spark.end()
 
+  //将文件分片
   let curChunk = 0
   const chunkListLength = Math.ceil(fileObj.size / chunkSize)
   for (let i = 0; i < chunkListLength; i++) {
@@ -164,18 +209,24 @@ const handleChange = async (file) => {
     chunkList.value.push(item)
   }
   hash.value = fileHash
-  //sendRequest()
+  if (props.autoUpload) {
+    sendRequest()
+  }
 }
 
 //发送请求
 const sendRequest = async () => {
+  if (!btnFlag.value) {
+    return
+  }
+  btnFlag.value = false
   chunkList.value.forEach((item, index) => {
     const fn = () => {
       const formData = new FormData()
       formData.append('chunk', item.chunk)
       formData.append('filename', item.fileName)
       return request
-        .post('/files/chunk', formData)
+        .post(props.sendUrl, formData)
         .then((res) => {
           if (res.code === 1) {
             // 成功
@@ -204,7 +255,7 @@ const sendRequest = async () => {
 
 //递归调用每个分片的发送请求
 const send = async () => {
-  if (!upload.value) return
+  if (!upload.value||requestList.value.length===0) return
   if (sendNum.value >= requestList.value.length) {
     // 发送完毕
     complete()
@@ -213,6 +264,27 @@ const send = async () => {
   await requestList.value[sendNum.value]()
   sendNum.value++
   send()
+}
+
+// 文件切片全部发送完毕后,把文件的 hash 传递给服务器,让服务器合并文件
+const complete = () => {
+  request
+    .get(props.completeUrl, {
+      params: {
+        hash: hash.value,
+        filename: filename.value,
+      },
+    })
+    .then((res) => {
+      if (res.code === 1) {
+        curFile.value.response = res
+        emit('handleComplete', curFile.value, fileList.value)
+        message('文件上传成功')
+      }
+    })
+    .finally(() => {
+      resetStatus()
+    })
 }
 
 //重置上传状态
@@ -225,30 +297,17 @@ const resetStatus = () => {
   curFile.value = null
 }
 
-// 文件切片全部发送完毕后,把文件的 hash 传递给服务器,让服务器合并文件
-const complete = () => {
-  request
-    .get('/files/merge', {
-      params: {
-        hash: hash.value,
-        filename: filename.value,
-      },
-    })
-    .then((res) => {
-      if (res.code === 1) {
-        curFile.value.response = res
-        message('文件上传成功')
-      }
-    })
-    .finally(() => {
-      resetStatus()
-    })
+// 按下暂停按钮
+const handlePause = () => {
+  if (requestList.value.length > 0) {
+    upload.value = false
+  }
 }
 
-// 按下暂停按钮
-const handleClickBtn = () => {
+// 按下继续按钮
+const handleContinue = () => {
   if (requestList.value.length > 0) {
-    upload.value = !upload.value
+    upload.value = true
     // 如果不暂停则继续上传
     if (upload.value) {
       send()
@@ -258,15 +317,17 @@ const handleClickBtn = () => {
 
 //按下清空按钮
 const clearUpload = () => {
-  fileList.value = fileList.value.filter((item) =>
-    item.hasOwnProperty('response')
-  )
-  resetStatus()
+  if (btnFlag.value) {
+    fileList.value = fileList.value.filter((item) =>
+      item.hasOwnProperty('response')
+    )
+    resetStatus()
+  }
 }
 
 //校验文件的类型是否正确
 const checkFile = (mimeName) => {
-  if (acceptedExtensions.value.length === 0) {
+  if (acceptedExtensions.value.size === 0) {
     return true
   }
   const extension = '.' + mimeName.split('.').pop().toLowerCase()
@@ -295,6 +356,7 @@ const handleRemove = (file, fileLists) => {
     .post(`/files/delChunkFile/${file.response.data}`)
     .then((res) => {
       if (res.code === 1) {
+        emit('handleRemove', file, fileLists)
         message('移除文件成功')
       } else {
         message('移除文件失败', 'error')
@@ -305,6 +367,14 @@ const handleRemove = (file, fileLists) => {
       message('移除文件失败', 'error')
     })
 }
+
+//将组件的上传，暂停，清空方法暴露出去
+defineExpose({
+  sendRequest,
+  handlePause,
+  handleContinue,
+  clearUpload,
+})
 
 onMounted(() => {
   if (props.fileAccept !== '') {
@@ -323,6 +393,10 @@ onMounted(() => {
   width: 100%;
 }
 
+.progress-line {
+  width: 100%;
+}
+
 .progress-box {
   box-sizing: border-box;
   width: 100%;
@@ -334,9 +408,5 @@ onMounted(() => {
   background-color: #ecf1ff;
   font-size: 14px;
   border-radius: 4px;
-}
-
-.progress-line {
-  width: 100%;
 }
 </style>
