@@ -92,7 +92,7 @@ const props = defineProps({
     type: String,
     default: '',
   },
-  //是否可拖动
+  //是否可拖拽上传
   draggable: {
     type: Boolean,
     default: false,
@@ -126,6 +126,11 @@ const props = defineProps({
   completeUrl: {
     type: String,
     default: '/files/merge',
+  },
+  //删除文件的请求url
+  removeUrl: {
+    type: String,
+    default: '/files/delChunkFile',
   },
 })
 
@@ -353,7 +358,7 @@ const fileToBuffer = (file) => {
 //移除文件列表的回调
 const handleRemove = (file, fileLists) => {
   request
-    .post(`/files/delChunkFile/${file.response.data}`)
+    .post(props.removeUrl+`/${file.response.data}`)
     .then((res) => {
       if (res.code === 1) {
         emit('handleRemove', file, fileLists)
