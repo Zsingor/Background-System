@@ -28,12 +28,7 @@
           <span>文件的分片上传</span>
         </div>
       </template>
-      <FileUpload :draggable="true">
-        <template #content>
-          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
-          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-        </template>
-      </FileUpload>
+      <FileUpload> </FileUpload>
     </el-card>
 
     <el-card class="card-item">

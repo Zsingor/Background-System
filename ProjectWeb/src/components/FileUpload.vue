@@ -15,7 +15,8 @@
         :on-remove="handleRemove"
       >
         <slot name="content">
-          <el-button type="primary">上传文件</el-button>
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         </slot>
 
         <template #tip>
@@ -31,8 +32,9 @@
       <el-progress
         class="progress-line"
         :text-inside="true"
-        :percentage="percent.toFixed()"
+        :percentage="process.toFixed()"
         :stroke-width="20"
+        :format="progressFormat"
       />
     </slot>
 
@@ -79,7 +81,7 @@
 import SparkMD5 from 'spark-md5'
 import request from '@/request'
 import { message } from '@/utils/message.js'
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
 const props = defineProps({
   //组件的宽度
@@ -95,7 +97,7 @@ const props = defineProps({
   //是否可拖拽上传
   draggable: {
     type: Boolean,
-    default: false,
+    default: true,
   },
   //是否自动上传
   autoUpload: {
@@ -132,24 +134,31 @@ const props = defineProps({
     type: String,
     default: '/files/delChunkFile',
   },
+  //处理的进度
+  process:{
+    type: Number,
+    default: 0,
+  }
 })
 
-const emit = defineEmits(['handleRemove', 'handleComplete'])
+let process = ref(props.process); 
+
+const emit = defineEmits(['handleRemove', 'handleComplete','handleProcess','handleUpload','handleClear','update:process'])
 
 const uploadRef = ref(null)
 
 //上传成功的文件列表
 let fileList = ref([])
-//进度
+//上传进度
 const percent = defineModel('percent', { type: Number, default: 0 })
+//每一个分片的大小占比
+let percentCount = ref(0)
 //控制上传的暂停与继续
 let upload = ref(true)
 //控制是否禁止上传
 let disable = ref(false)
 //控制是否允许按钮操作
 let btnFlag = ref(false)
-//每一个分片的大小占比
-let percentCount = ref(0)
 //当前正在上传的文件
 let curFile = ref(null)
 //文件名
@@ -165,6 +174,10 @@ let requestList = ref([])
 //存放允许的后缀集合
 let acceptedExtensions = ref(null)
 
+//进度条的文字显示
+const progressFormat = (percentage) => (percentage === '100' ? '处理完毕' : `${percentage}%`)
+
+//选择文件后的回调
 const handleChange = async (file) => {
   if (!file) return
   if (!checkFile(file.raw.name)) {
@@ -180,8 +193,8 @@ const handleChange = async (file) => {
 
   curFile.value = file
   disable.value = true
-  btnFlag.value = true
   percent.value = 0
+  process.value = 0
   percentCount.value = 0
 
   // 获取文件并转成 ArrayBuffer 对象
@@ -205,6 +218,10 @@ const handleChange = async (file) => {
   //将文件分片
   let curChunk = 0
   const chunkListLength = Math.ceil(fileObj.size / chunkSize)
+  if (percentCount.value === 0) {
+    percentCount.value = 100 / chunkListLength
+  }
+  console.log("分片占比",percentCount.value);
   for (let i = 0; i < chunkListLength; i++) {
     const item = {
       chunk: fileObj.slice(curChunk, curChunk + chunkSize),
@@ -212,8 +229,16 @@ const handleChange = async (file) => {
     }
     curChunk += chunkSize
     chunkList.value.push(item)
+    process.value=Math.min(process.value + percentCount.value, 100)
+    emit("update:process",process.value)
   }
+
+  //获得文件的哈希值
   hash.value = fileHash
+  //允许按钮操作
+  btnFlag.value = true
+  //文件分片成功的回调,hash文件哈希值,chunkList分片文件列表
+  emit('handleProcess', hash.value, chunkList.value)
   if (props.autoUpload) {
     sendRequest()
   }
@@ -234,18 +259,7 @@ const sendRequest = async () => {
         .post(props.sendUrl, formData)
         .then((res) => {
           if (res.code === 1) {
-            // 成功
-            if (percentCount.value === 0) {
-              percentCount.value = 100 / chunkList.value.length
-            }
-            if (percent.value >= 100) {
-              percent.value = 100
-            } else {
-              percent.value += percentCount.value // 改变进度
-            }
-            if (percent.value >= 100) {
-              percent.value = 100
-            }
+            percent.value = Math.min(percent.value + percentCount.value, 99)
             chunkList.value.splice(index, 1) // 一旦上传成功就删除这一个 chunk，方便断点续传
           }
         })
@@ -260,9 +274,11 @@ const sendRequest = async () => {
 
 //递归调用每个分片的发送请求
 const send = async () => {
-  if (!upload.value||requestList.value.length===0) return
+  if (!upload.value || requestList.value.length === 0) return
   if (sendNum.value >= requestList.value.length) {
     // 发送完毕
+    //分片文件上传成功的回调,hash文件哈希值,filename文件名
+    emit('handleUpload',hash.value,filename.value)
     complete()
     return
   }
@@ -283,8 +299,13 @@ const complete = () => {
     .then((res) => {
       if (res.code === 1) {
         curFile.value.response = res
+        percent.value=100
+        //分片文件合并成功的回调,curFile合并成功的文件信息,fileList当前的文件列表
         emit('handleComplete', curFile.value, fileList.value)
         message('文件上传成功')
+      }
+      else{
+        message('文件上传失败')
       }
     })
     .finally(() => {
@@ -327,6 +348,8 @@ const clearUpload = () => {
       item.hasOwnProperty('response')
     )
     resetStatus()
+    //清空列表成功的回调,fileList当前的文件列表
+    emit('handleClear',fileList.value)
   }
 }
 
@@ -358,9 +381,10 @@ const fileToBuffer = (file) => {
 //移除文件列表的回调
 const handleRemove = (file, fileLists) => {
   request
-    .post(props.removeUrl+`/${file.response.data}`)
+    .post(props.removeUrl + `/${file.response.data}`)
     .then((res) => {
       if (res.code === 1) {
+        //文件删除成功的回调,file删除的文件信息,fileLists删除后的文件列表
         emit('handleRemove', file, fileLists)
         message('移除文件成功')
       } else {
