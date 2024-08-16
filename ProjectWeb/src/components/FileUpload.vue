@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div :style="{ width: props.divWidth }">
     <div class="uploadWrapper">
@@ -221,7 +220,6 @@ const handleChange = async (file) => {
   if (percentCount.value === 0) {
     percentCount.value = 100 / chunkListLength
   }
-  console.log("分片占比",percentCount.value);
   for (let i = 0; i < chunkListLength; i++) {
     const item = {
       chunk: fileObj.slice(curChunk, curChunk + chunkSize),
@@ -260,6 +258,7 @@ const sendRequest = async () => {
         .then((res) => {
           if (res.code === 1) {
             percent.value = Math.min(percent.value + percentCount.value, 99)
+            console.log(percent.value)
             chunkList.value.splice(index, 1) // 一旦上传成功就删除这一个 chunk，方便断点续传
           }
         })
@@ -334,10 +333,7 @@ const handlePause = () => {
 const handleContinue = () => {
   if (requestList.value.length > 0) {
     upload.value = true
-    // 如果不暂停则继续上传
-    if (upload.value) {
-      send()
-    }
+    send()
   }
 }
 
