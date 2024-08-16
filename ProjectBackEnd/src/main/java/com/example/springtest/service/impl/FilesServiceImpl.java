@@ -24,6 +24,10 @@ public class FilesServiceImpl implements FilesService {
     @Value("${server.port}")
     String port;
 
+    private final static int BUFFER_SIZE = 1024 * 1024 * 20;
+    //分片大小
+    private final static long CHUNK_SIZE = 1024 * 1024 * 2;
+
     private static final String ROOT_PATH = System.getProperty("user.dir") + File.separator + "resource";
     private static final String IMAGES_PATH = ROOT_PATH + File.separator + "images";
     private static final String VIDEOS_PATH = ROOT_PATH + File.separator + "videos";
@@ -212,6 +216,70 @@ public class FilesServiceImpl implements FilesService {
         }
         randomAccessFileWriter.close();
         return filename;
+    }
+
+    @Override
+    public void downloadChunk(String rangeHeader, HttpServletResponse response) throws IOException {
+        String fileName = "test.csv";
+        String filePath = FILES_PATH + File.separator + fileName;
+//        String filePath = "D:/zhaiyan/files/aaaa.csv";
+        File file = new File(filePath);
+        long fileSize = file.length();
+
+        // 设置文件的基本信息
+        response.setContentType("application/octect-stream;charset=UTF-8");
+        response.setHeader("Access-Control-Expose-Headers", "Content-Disposition");
+        response.setHeader("Content-Disposition", "attachment; filename=" + fileName);
+        response.setHeader("Accept-Ranges", "bytes");
+
+        if (rangeHeader == null) {
+            // 下载全部文件
+            response.setHeader("Content-Length", fileSize +"-"+ CHUNK_SIZE);
+            InputStream in = new FileInputStream(file);
+            OutputStream out = response.getOutputStream();
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int bytesRead = -1;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                out.write(buffer, 0, bytesRead);
+                out.flush();
+            }
+            in.close();
+            out.close();
+        } else {
+            // Download partial content
+            long start = 0;
+            long end;
+            String[] range = rangeHeader.split("=")[1].split("-");
+            if (range.length == 1) {
+                start = Long.parseLong(range[0]);
+                end = fileSize - 1;
+            } else {
+                start = Long.parseLong(range[0]);
+                end = Long.parseLong(range[1]);
+            }
+            long contentLength = end - start + 1;
+            // 返回头里存放每次读取的开始和结束字节
+            response.setHeader("Content-Length", String.valueOf(contentLength));
+            response.setHeader("Content-Range", "bytes " + start + "-" + end + "/" + fileSize);
+            InputStream in = new FileInputStream(file);
+            OutputStream out = response.getOutputStream();
+            // 跳到第start字节
+            in.skip(start);
+            byte[] buffer = new byte[BUFFER_SIZE];
+            int bytesRead;
+            long bytesWritten = 0;
+            while ((bytesRead = in.read(buffer)) != -1) {
+                if (bytesWritten + bytesRead > contentLength) {
+                    out.write(buffer, 0, (int) (contentLength - bytesWritten));
+                    break;
+                } else {
+                    out.write(buffer, 0, bytesRead);
+                    bytesWritten += bytesRead;
+                }
+            }
+            in.close();
+            out.close();
+        }
     }
 
     //根据文件后缀名获取文件存储路径

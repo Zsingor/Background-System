@@ -25,4 +25,6 @@ public interface FilesService {
     void upLoadChunk(MultipartFile chunk,String filename) throws IOException;
 
     String mergeChunk(String hash,String filename) throws IOException;
+
+    void downloadChunk(String rangeHeader,HttpServletResponse response) throws IOException;
 }

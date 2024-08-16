@@ -1,24 +1,17 @@
 package com.example.springtest.controller;
 
-import cn.hutool.core.io.FileUtil;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Result;
 import com.example.springtest.service.FilesService;
-import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.io.*;
 import java.util.Arrays;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,6 +20,7 @@ public class FilesController {
     @Autowired
     private FilesService filesService;
 
+    //文件上传
     @PostMapping("/upload")
     public Result upload(MultipartFile file) {
         try {
@@ -37,6 +31,7 @@ public class FilesController {
         }
     }
 
+    //多文件上传
     @PostMapping("/mutiFileUpload")
     public Result mutiFileUpload(MultipartFile[] files) {
         try {
@@ -65,13 +60,13 @@ public class FilesController {
         }
     }
 
-
     //下载文件
     @GetMapping("/download/{fileName}")
     public void downloads(@PathVariable String fileName, HttpServletResponse response) throws IOException {
         filesService.downloads(fileName, response);
     }
 
+    //删除文件
     @PostMapping("/deletefile/{fileName}")
     public Result deleteFile(@PathVariable String fileName) {
         try {
@@ -82,6 +77,7 @@ public class FilesController {
         }
     }
 
+    //接收文件分片
     @PostMapping("/chunk")
     public Result upLoadChunk(@RequestParam("chunk") MultipartFile chunk,
                               @RequestParam("filename") String filename)
@@ -95,6 +91,7 @@ public class FilesController {
         }
     }
 
+    //合并文件分片
     @GetMapping("/merge")
     public Result MergeChunk(@RequestParam("hash") String hash,
                                       @RequestParam("filename") String filename) {
@@ -108,6 +105,7 @@ public class FilesController {
         }
     }
 
+    //删除合并后的文件
     @PostMapping("/delChunkFile/{fileName}")
     public Result deleteChunkFile(@PathVariable String fileName) {
         try {
@@ -116,5 +114,10 @@ public class FilesController {
         } catch (Exception error) {
             return Result.error("删除文件失败");
         }
+    }
+
+    @GetMapping("/downloadChunk")
+    public void downloadChunk(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        filesService.downloadChunk(request.getHeader("Range"),response);
     }
 }

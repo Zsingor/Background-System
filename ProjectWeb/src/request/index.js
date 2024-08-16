@@ -13,7 +13,7 @@ const request = axios.create({
     timeout: 6000 //响应时间
 })
 
-// request拦截器
+// 拦截器
 // 可以在请求发送前对请求做一些处理
 request.interceptors.request.use(request => {
     userInfo.baseInfo = JSON.parse(localStorage.getItem("User_Info"));

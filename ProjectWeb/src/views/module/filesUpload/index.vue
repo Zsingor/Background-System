@@ -29,6 +29,7 @@
         </div>
       </template>
       <FileUpload> </FileUpload>
+      <FileDownload></FileDownload>
     </el-card>
 
     <el-card class="card-item">
