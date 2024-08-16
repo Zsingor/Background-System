@@ -25,11 +25,14 @@
     <el-card class="card-item">
       <template #header>
         <div class="card-header">
-          <span>文件的分片上传</span>
+          <span>文件的分片上传与下载</span>
         </div>
       </template>
-      <FileUpload> </FileUpload>
-      <FileDownload></FileDownload>
+      <div style="display: flex;justify-content: space-around;align-items: center">
+        <FileUpload> </FileUpload>
+        <FileDownload></FileDownload>
+      </div>
+
     </el-card>
 
     <el-card class="card-item">
