@@ -13,7 +13,7 @@
 
     <slot name="buttons">
       <div class="progress-box">
-        <span>上传进度：{{ percent.toFixed() }}%</span>
+        <span>下载进度：{{ percent.toFixed() }}%</span>
         <div class="buttons">
         <el-button type="success" size="small" @click="downloadFile" :disabled="btnFlag">下 载</el-button>
         <el-button
