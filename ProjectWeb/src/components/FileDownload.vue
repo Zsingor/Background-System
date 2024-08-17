@@ -12,10 +12,13 @@
     </slot>
 
     <slot name="buttons">
-      <div class="buttons">
-        <el-button type="success" @click="downloadFile" :disabled="btnFlag">下 载</el-button>
+      <div class="progress-box">
+        <span>上传进度：{{ percent.toFixed() }}%</span>
+        <div class="buttons">
+        <el-button type="success" size="small" @click="downloadFile" :disabled="btnFlag">下 载</el-button>
         <el-button
             type="primary"
+            size="small"
             v-show="download"
             @click="handlePause"
         >暂 停
@@ -23,11 +26,13 @@
         >
         <el-button
             type="primary"
+            size="small"
             v-show="!download"
             @click="handleContinue"
         >继 续
         </el-button
         >
+      </div>
       </div>
     </slot>
   </div>
@@ -89,7 +94,7 @@ const downloadFile = async () => {
   const url = import.meta.env.VITE_BASE_API + props.downloadUrl;
   percent.value = 0
   // 获得文件的大小，名字，分片大小
-  const response = await http.get(url);
+  const response = await http.head(url);
   fileName.value = response.headers['content-disposition'].match(/filename=([^;]+)/)[1];
   let parts = response.headers['content-length'].split("-");
   fileSize.value = parseInt(parts[0])
@@ -188,11 +193,21 @@ defineExpose({
 </script>
 
 <style scoped lang='scss'>
-.buttons {
-  margin-top: 10px;
+.progress-box {
+  box-sizing: border-box;
   width: 100%;
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-around;
+  margin-top: 10px;
+  padding: 8px 10px;
+  background-color: #ecf1ff;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
 }
 </style>
