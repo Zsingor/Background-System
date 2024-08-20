@@ -26,7 +26,7 @@ public class FilesServiceImpl implements FilesService {
 
     private final static int BUFFER_SIZE = 1024 * 1024 * 20;
     //分片大小
-    private final static long CHUNK_SIZE = 1024 * 1024 * 2;
+    private final static int CHUNK_SIZE = 1024 * 1024 * 2;
 
     private static final String ROOT_PATH = System.getProperty("user.dir") + File.separator + "resource";
     private static final String IMAGES_PATH = ROOT_PATH + File.separator + "images";
@@ -237,7 +237,7 @@ public class FilesServiceImpl implements FilesService {
             response.setHeader("Content-Length", fileSize +"-"+ CHUNK_SIZE);
             InputStream in = new FileInputStream(file);
             OutputStream out = response.getOutputStream();
-            byte[] buffer = new byte[BUFFER_SIZE];
+            byte[] buffer = new byte[(int)fileSize];
             int bytesRead = -1;
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
@@ -265,7 +265,7 @@ public class FilesServiceImpl implements FilesService {
             OutputStream out = response.getOutputStream();
             // 跳到第start字节
             in.skip(start);
-            byte[] buffer = new byte[BUFFER_SIZE];
+            byte[] buffer = new byte[CHUNK_SIZE];
             int bytesRead;
             long bytesWritten = 0;
             while ((bytesRead = in.read(buffer)) != -1) {
