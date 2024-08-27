@@ -26,5 +26,5 @@ public interface FilesService {
 
     String mergeChunk(String hash,String filename) throws IOException;
 
-    void downloadChunk(String rangeHeader,HttpServletResponse response) throws IOException;
+    void downloadChunk(String rangeHeader,HttpServletResponse response,String filename) throws IOException;
 }

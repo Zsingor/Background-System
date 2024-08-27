@@ -117,7 +117,7 @@ public class FilesController {
     }
 
     @GetMapping("/downloadChunk")
-    public void downloadChunk(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        filesService.downloadChunk(request.getHeader("Range"),response);
+    public void downloadChunk(HttpServletRequest request, HttpServletResponse response,@RequestParam("filename") String filename) throws IOException {
+        filesService.downloadChunk(request.getHeader("Range"),response,filename);
     }
 }

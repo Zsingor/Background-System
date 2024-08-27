@@ -219,8 +219,7 @@ public class FilesServiceImpl implements FilesService {
     }
 
     @Override
-    public void downloadChunk(String rangeHeader, HttpServletResponse response) throws IOException {
-        String fileName = "test.csv";
+    public void downloadChunk(String rangeHeader, HttpServletResponse response,String fileName) throws IOException {
         String filePath = FILES_PATH + File.separator + fileName;
 //        String filePath = "D:/zhaiyan/files/aaaa.csv";
         File file = new File(filePath);

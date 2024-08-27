@@ -3,11 +3,11 @@
     <!-- 进度显示 -->
     <slot name="progress">
       <el-progress
-          class="progress-line"
-          :text-inside="true"
-          :percentage="percent.toFixed()"
-          :stroke-width="20"
-          :format="progressFormat"
+        class="progress-line"
+        :text-inside="true"
+        :percentage="percent.toFixed()"
+        :stroke-width="20"
+        :format="progressFormat"
       />
     </slot>
 
@@ -15,32 +15,36 @@
       <div class="progress-box">
         <span>下载进度：{{ percent.toFixed() }}%</span>
         <div class="buttons">
-        <el-button type="success" size="small" @click="downloadFile" :disabled="btnFlag">下 载</el-button>
-        <el-button
+          <el-button
+            type="success"
+            size="small"
+            @click="downloadFile"
+            :disabled="btnFlag"
+            >下 载</el-button
+          >
+          <el-button
             type="primary"
             size="small"
             v-show="download"
             @click="handlePause"
-        >暂 停
-        </el-button
-        >
-        <el-button
+            >暂 停
+          </el-button>
+          <el-button
             type="primary"
             size="small"
             v-show="!download"
             @click="handleContinue"
-        >继 续
-        </el-button
-        >
-      </div>
+            >继 续
+          </el-button>
+        </div>
       </div>
     </slot>
   </div>
 </template>
 
 <script setup>
-import {ref} from 'vue';
-import http from "@/request/http.js";
+import { ref } from 'vue'
+import http from '@/request/http.js'
 
 const props = defineProps({
   //组件的宽度
@@ -48,19 +52,26 @@ const props = defineProps({
     type: String,
     default: '360px',
   },
+  //下载的请求url
   downloadUrl: {
     type: String,
     default: '/files/downloadChunk',
   },
-  percent:{
+  //下载的进度
+  percent: {
     type: Number,
     default: 0,
   },
+  //要下载的文件名
+  filename:{
+    type: String,
+    default: 'test.csv',
+  }
 })
 
 //下载进度
-let percent = ref(props.percent);
-const emit = defineEmits(['handleProcess', 'handleComplete','update:percent'])
+let percent = ref(props.percent)
+const emit = defineEmits(['handleProcess', 'handleComplete', 'update:percent'])
 
 //请求的列表
 let requestList = ref([])
@@ -73,7 +84,7 @@ let rangeEnd = ref(0)
 //发送的次数
 let sendNum = ref(0)
 //文件的名称
-let fileName = ref("")
+let fileName = ref('')
 //文件的大小
 let fileSize = ref(0)
 //分片的大小
@@ -86,50 +97,70 @@ let btnFlag = ref(false)
 let percentCount = ref(0)
 
 //进度条的文字显示
-const progressFormat = (percentage) => (percentage === '100' ? '下载完成' : `${percentage}%`)
+const progressFormat = (percentage) =>
+  percentage === '100' ? '下载完成' : `${percentage}%`
 
 const downloadFile = async () => {
   if (btnFlag.value) return
   btnFlag.value = true
-  const url = import.meta.env.VITE_BASE_API + props.downloadUrl;
+  const url = import.meta.env.VITE_BASE_API + props.downloadUrl
   percent.value = 0
-  // 获得文件的大小，名字，分片大小
-  const response = await http.head(url);
-  fileName.value = response.headers['content-disposition'].match(/filename=([^;]+)/)[1];
-  let parts = response.headers['content-length'].split("-");
+
+  const response = await http.head(url, {
+    params: {
+      filename: props.filename,
+    },
+  })
+
+  //获得文件的名字
+  fileName.value =
+    response.headers['content-disposition'].match(/filename=([^;]+)/)[1]
+
+  let parts = response.headers['content-length'].split('-')
+  //获得文件的大小
   fileSize.value = parseInt(parts[0])
+  //获得分片的大小
   chunkSize.value = parseInt(parts[1])
-  rangeStart.value = 0;
-  rangeEnd.value = chunkSize.value - 1;
+  rangeStart.value = 0
+  rangeEnd.value = chunkSize.value - 1
 
   // 计算分片的数量
-  const numChunks = Math.ceil(fileSize.value / chunkSize.value);
+  const numChunks = Math.ceil(fileSize.value / chunkSize.value)
   percentCount.value = 100 / numChunks
   if (fileSize.value < chunkSize.value) {
-    rangeEnd.value = fileSize.value - 1;
+    rangeEnd.value = fileSize.value - 1
   }
 
   // 下载分片
   for (let i = 0; i < numChunks; i++) {
     const fn = () => {
-      const range = `bytes=${rangeStart.value}-${rangeEnd.value}`;
+      const range = `bytes=${rangeStart.value}-${rangeEnd.value}`
       const config = {
-        headers: {
-          Range: range
+        params: {
+          filename: props.filename,
         },
-        responseType: 'arraybuffer'
-      };
-      return http.get(props.downloadUrl, config).then(res => {
-        chunks.value.push(res.data);
-        rangeStart.value = rangeEnd.value + 1;
-        rangeEnd.value = Math.min(rangeEnd.value + chunkSize.value, fileSize.value - 1)
-        percent.value = Math.min(percent.value + percentCount.value, 100)
-        emit('update:percent',percent.value)
-      }).catch(() => {
-        download.value = false
-      })
+        headers: {
+          Range: range,
+        },
+        responseType: 'arraybuffer',
+      }
+      return http
+        .get(props.downloadUrl, config)
+        .then((res) => {
+          chunks.value.push(res.data)
+          rangeStart.value = rangeEnd.value + 1
+          rangeEnd.value = Math.min(
+            rangeEnd.value + chunkSize.value,
+            fileSize.value - 1
+          )
+          percent.value = Math.min(percent.value + percentCount.value, 100)
+          emit('update:percent', percent.value)
+        })
+        .catch(() => {
+          download.value = false
+        })
     }
-    requestList.value.push(fn);
+    requestList.value.push(fn)
   }
   emit('handleProcess', fileSize.value, chunkSize.value, fileName.value)
   send()
@@ -161,7 +192,7 @@ const complete = () => {
 
 //重置状态
 const resetStatus = () => {
-  requestList.value.length = 0;
+  requestList.value.length = 0
   chunks.value.length = 0
   rangeStart.value = 0
   rangeEnd.value = 0
