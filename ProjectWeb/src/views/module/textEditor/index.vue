@@ -1,7 +1,10 @@
 <template>
   <div>
-    <el-button @click="sendHtml">确定</el-button>
     <RichEditor v-model="valueHtml" :width="calculatedWidth"></RichEditor>
+    <div class="btn">
+      <el-button @click="sendHtml" type="primary" plain>显示</el-button>
+      <el-button @click="clearHtml" type="warning" plain>清空</el-button>
+    </div>
   </div>
 </template>
 
@@ -22,8 +25,17 @@ const sendHtml = () => {
   console.log(valueHtml.value)
 }
 
+const clearHtml=()=>{
+  valueHtml.value=""
+}
+
 </script>
 
 <style scoped>
-
+.btn{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+}
 </style>

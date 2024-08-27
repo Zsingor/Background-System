@@ -8,14 +8,12 @@
         style="border-bottom: 1px solid #ccc"
         :editor="editorRef"
         :defaultConfig="toolbarConfig"
-        :mode="mode"
     />
     <Editor
-        :style="{ height: height + 'px', overflowY: 'hidden'}"
+        :style="{ height: height, overflowY: 'hidden'}"
         class="EditorDom"
         v-model="editValue"
-        :defaultConfig="editorConfig"
-        :mode="mode"
+        :defaultConfig="props.editorConfig"
         @onCreated="handleCreated"
         @onChange="handleChange"
     />
@@ -33,28 +31,28 @@ import {message} from "@/utils/message.js";
 
 
 const props = defineProps({
+  //组件的宽度
   width: {
     type: String,
     default: "calc(100vw)",
   },
+  //组件的高度
   height: {
-    type: Number,
-    default: 600,
-  },
-  mode: {
-    default: "default",
     type: String,
+    default: '450px',
   },
+  //编辑器的配置
   editorConfig: {
+    type: Object,
     default: () => ({
       placeholder: "请输入内容...",
       MENU_CONF: {},
-    }),
-    type: Object,
+    })
   },
+  //编辑器的内容
   modelValue: {
-    required: true,
     type: String,
+    required: true,
   }
 })
 
@@ -78,6 +76,7 @@ const editorRef = shallowRef();
 
 let loading = ref(false)
 
+//为了防止破坏单向数据流，使用computed对modelValue做拦截
 const editValue = computed({
   get() {
     return props.modelValue;
@@ -88,7 +87,7 @@ const editValue = computed({
 })
 
 const handleCreated = (editor) => {
-  editorRef.value = editor; // 记录 editor 实例，重要！
+  editorRef.value = editor; // 记录 editor 实例
 }
 
 // 内容改变
