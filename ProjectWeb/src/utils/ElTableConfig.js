@@ -2,7 +2,12 @@ import {isEmpty, parseDate} from "@/utils/commons.js";
 import * as XLSX from "xlsx";
 
 
-//解析日期
+/**
+ * 解析日期
+ * @param {*} row 
+ * @param {*} column 
+ * @returns 正确的日期格式
+ */
 export const formatDate=(row,column)=>{
     // 获取单元格数据
     let data = row[column.property]

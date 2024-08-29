@@ -1,9 +1,7 @@
 //常见公共工具类
 
-import { useRouter } from 'vue-router'
-import {dayjs} from "element-plus";
-
-const router = useRouter()
+import { dayjs } from "element-plus";
+import { customRef } from "vue";
 
 
 /**
@@ -39,7 +37,11 @@ export function parseDate(date, format) {
     }
 }
 
-// 图片转base64
+/**
+ * 图片转base64
+ * @param {*} file 
+ * @returns 
+ */
 export function blobToBase64(file) {
     return new Promise((resolve, reject) => {
         if (file) {
@@ -56,7 +58,10 @@ export function blobToBase64(file) {
     })
 }
 
-/* 获取浏览器信息：类型和版本号 */
+/**
+ * 获取浏览器信息：类型和版本号
+ * @returns {Object}
+ */
 export function getExplorerInfo() {
     let explorerInfo = null;                                                 // 浏览器信息对象
     const explorer = navigator.userAgent;                                    // 获取浏览器信息
@@ -103,12 +108,15 @@ export function getExplorerInfo() {
     return explorerInfo;
 }
 
-//canvas指纹追踪技术(编码生成)
-export const uuid=()=>{
+/**
+ * 编码生成浏览器指纹
+ * @returns {string}
+ */
+export const uuid = () => {
     const canvas = document.createElement('canvas')
     const ctx = canvas.getContext('2d');
-    const txt='backstage management system'
-    ctx.fillText(txt,20,20)
+    const txt = 'backstage management system'
+    ctx.fillText(txt, 20, 20)
     return canvas.toDataURL()
 }
 
@@ -153,7 +161,7 @@ export const arrRemoveRepeat = arr => {
  * @param {Array} arr  数组
  * @param {Boolean} ascendFlag   升序,默认为 true
  */
-export const arrOrderAscend = (arr, ascendFlag=true) => {
+export const arrOrderAscend = (arr, ascendFlag = true) => {
     return arr.sort((a, b) => {
         return ascendFlag ? a - b : b - a
     })
@@ -165,4 +173,78 @@ export const arrOrderAscend = (arr, ascendFlag=true) => {
  */
 export const strTrimLeftOrRight = str => {
     return str.replace(/(^\s*)|(\s*$)/g, "")
+}
+
+/**
+ * 并发请求处理函数
+ * @param {Array} tsakList 任务列表
+ * @param {Number} maxNum 最大并发数
+ * @returns {Promise<Array>}
+ */
+export const concurTask = (tsakList, maxNum) => {
+    return new Promise((resolve) => {
+        if (tsakList.length === 0) {
+            resolve([])
+        }
+        //记录当前请求的下标
+        let index = 0
+        //用于记录已完成的请求数
+        let count = 0
+        //用于存储异步函数的返回值
+        const result = []
+
+        async function doTask() {
+            let current = index
+            const task = tsakList[index]
+            index++
+            try {
+                let res = await task()
+                result[current] = res
+            }
+            catch (err) {
+                result[current] = err
+            }
+            finally {
+                count++
+                if (count === tsakList.length) {
+                    resolve(result)
+                }
+                if (index < tsakList.length) {
+                    doTask()
+                }
+            }
+        }
+
+        for (let i = 0; i < Math.min(tsakList.length, maxNum); i++) {
+            doTask()
+        }
+    })
+}
+
+/**
+ * 支持防抖的响应式变量
+ * @param {*} value 要添加防抖的响应式数据
+ * @param {number} duration 持续时间
+ * @returns 
+ */
+export const debounceRef = (value, duration = 1000) => {
+    let timer
+    return customRef((track, trigger) => {
+        return {
+            get() {
+                //收集依赖
+                track()
+                return value
+            },
+            set(val) {
+                clearTimeout(timer)
+                timer = setTimeout(() => {
+                    //派发更新
+                    trigger()
+                    value = val
+                }, duration);
+
+            }
+        }
+    })
 }

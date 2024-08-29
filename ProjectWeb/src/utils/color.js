@@ -1,8 +1,10 @@
 //颜色工具类
 
 /**
- * 判断是否 十六进制颜色值.
+ * 判断是否十六进制颜色值.
  * 输入形式可为 #fff000 #f00
+ * @param {string} color 
+ * @returns 
  */
 export function isHexColor(color) {
     const reg = /^#([0-9a-fA-F]{3}|[0-9a-fA-f]{6})$/;
@@ -11,6 +13,8 @@ export function isHexColor(color) {
 
 /**
  * 将16进制颜色值转换成rgb
+ * @param {string} hex #ffffff
+ * @returns 
  */
 export function hexToRGB(hex) {
     let sHex = hex.toLowerCase();
@@ -31,8 +35,11 @@ export function hexToRGB(hex) {
     return sHex;
 }
 
+
 /**
  * 判断颜色是否为深色
+ * @param {string} color #ffffff
+ * @returns 
  */
 export function colorIsDark(color) {
     if (!isHexColor(color)) return;

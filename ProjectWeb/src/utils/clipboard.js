@@ -19,7 +19,10 @@ export default function handleClipboard(text, event) {
 }
 
 
-// 输入框复制文本事件回调(将复制带样式的文本样式清空, 只保留纯文本)
+/**
+ * 输入框复制文本事件回调(将复制带样式的文本样式清空, 只保留纯文本)
+ * @param {*} e 
+ */
 export const handlePaste = (e) => {
   e.preventDefault()
   let text

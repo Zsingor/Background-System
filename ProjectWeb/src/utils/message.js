@@ -1,22 +1,32 @@
 //消息工具类
+
 import {ElMessage, ElNotification} from "element-plus";
 import {persistentConfig} from "@/layout/layout.js";
 
 
 /**
  * 基于element-plus通用的消息提示函数
- * @param text
- * @param type
+ * @param text 消息的文本
+ * @param type 消息的类型 success|error|warning
+ * @param plain 是否设置plain背景 success|error|warning
  */
-export function message(text, type) {
+export function message(text, type,plain) {
     ElMessage({
         message: text,
         type: type || "success",
+        plain: plain||false,
         duration: 2000,
         showClose: true
     });
 }
 
+/**
+ * 基于element-plus通用的通知提示函数
+ * @param {String} title 通知的标题
+ * @param {String} content 通知的内容
+ * @param {Number} duration 通知的持续时间
+ * @param {String} type 通知的类型
+ */
 export function notification(title,content,duration, type){
     ElNotification({
         title: title || null,
