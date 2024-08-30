@@ -1,7 +1,7 @@
 //常见公共工具类
 
 import { dayjs } from "element-plus";
-import { customRef } from "vue";
+import { customRef, onUnmounted, ref } from "vue";
 
 
 /**
@@ -247,4 +247,128 @@ export const debounceRef = (value, duration = 1000) => {
             }
         }
     })
+}
+
+/**
+ * 大数相加
+ * @param {string} x 
+ * @param {string} y 
+ */
+export const plusBigNum=(x,y)=>{
+    let result=""
+    let maxlen=Math.max(x.length,y.length)
+    x=x.padStart(maxlen,'0')
+    y=y.padStart(maxlen,'0')
+    //进位
+    let carry=0
+    for(let i=maxlen-1;i>=0;i--)
+    {
+        const sum= Number(x[i])+ Number(y[i])+carry
+        carry=Math.floor(sum/10)
+        result=(sum%10)+result
+    }
+    if(carry>0)
+    {
+        result=carry+result
+    }
+    return result
+}
+
+/**
+ * 借助defer来优化前端渲染时间
+ * @param {number} maxCount 最大计时数
+ * @returns
+ */
+export const useDefer=(maxCount=60)=>{
+    const frameCount=ref(0)
+    let currentId
+    function updateFrameCount(){
+        currentId=requestAnimationFrame(()=>{
+            frameCount.value++
+            if(frameCount.value>=maxCount)
+            {
+                return
+            }
+            updateFrameCount()
+        })
+    }
+    updateFrameCount()
+    onUnmounted(() => {
+        cancelAnimationFrame(currentId)
+    })
+    //n标识多少帧之后开始渲染
+    return function defer(n){
+        return frameCount.value>=n
+    }
+}
+
+/**
+ * 深度克隆函数
+ * @param {*} value 
+ * @returns 
+ */
+export const deepClone=(value)=>{
+    //使用WeakMap以便js进行内存回收
+    const cache=new WeakMap()
+    function _deepClone(value){
+        if(value===null||typeof value!=='object'){
+            return value
+        }
+        if(cache.has(value)){
+            return cache.get(value)
+        }
+        const result =Array.isArray(value)?[]:{}
+        cache.set(value,result)
+        for(let key in value){
+            if(value.hasOwnProperty(key)){
+                result[key]=_deepClone(value[key])
+            }
+        }
+        return result
+    }
+    return _deepClone(value)
+}
+
+export class specialStr{
+    constructor(value){
+        this.str=value
+    }
+
+    //获取字符串的码点数量
+    pointLength(){
+        let len=0
+        for(let i=0;i<this.str.length;)
+        {
+            const codePoint=this.str.codePointAt(i)
+            i+=codePoint>65535?2:1
+            len++
+        }
+        return len
+    }
+
+    //获取字符串对应下标的码点
+    pointAt(index){
+        //码元的下标
+        let curIndex=0
+        for(let i=0;i<this.str.length;)
+        {
+            const codePoint=this.str.codePointAt(i)
+            if(curIndex===index){
+                return String.fromCodePoint(codePoint)
+            }
+            i+=codePoint>65535?2:1
+            curIndex++
+        }
+        return undefined
+    }
+
+    //根据码点的范围截取字符串
+    sliceByPoint(start,end=this.pointLength()){
+        let res=""
+        for(let i=start;i<end;i++)
+        {
+            res+=this.pointAt(i)
+        }
+        return res
+    }
 }
