@@ -1,15 +1,15 @@
 <template>
   <el-row :gutter="8" style="padding-bottom: 8px" >
     <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.title" clearable placeholder="通知标题" />
+      <el-input size="default" v-model="queryData.title" clearable placeholder="通知标题" />
     </el-col>
     <el-col :span="6">
-      <el-input size="default" v-model="rootData.queryData.content" clearable placeholder="通知内容" />
+      <el-input size="default" v-model="queryData.content" clearable placeholder="通知内容" />
     </el-col>
     <el-col :span="6">
       <el-date-picker
           style="width: 100%"
-          v-model="rootData.queryData.createTime"
+          v-model="queryData.createTime"
           type="datetime"
           placeholder="发送起始时间"
           format="YYYY-MM-DD hh:mm:ss"
@@ -19,7 +19,7 @@
     <el-col :span="6">
       <el-date-picker
           style="width: 100%"
-          v-model="rootData.queryData.endTime"
+          v-model="queryData.endTime"
           type="datetime"
           placeholder="发送终止时间"
           format="YYYY-MM-DD hh:mm:ss"
@@ -34,18 +34,32 @@
 </template>
 
 <script setup>
-import {inject} from "vue";
+import {computed} from "vue";
 
-const emit=defineEmits(['query'])
+const props=defineProps({
+  modelValue:{
+    type:Object,
+    Required:true
+  }
+})
 
-const rootData=inject('rootData')
+const emit=defineEmits(['query',"update:modelValue"])
+
+const queryData=computed({
+  get(){
+    return props.modelValue
+  },
+  set(value){
+    emit("update:modelValue",value)
+  }
+})
 
 const querydata=()=>{
   emit("query")
 }
 
 const resetForm=()=>{
-  rootData.queryData = Object.assign({}, {});
+  queryData.value=Object.assign({}, {})
   emit("query")
 }
 </script>
