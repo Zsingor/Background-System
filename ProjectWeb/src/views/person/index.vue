@@ -4,11 +4,7 @@
     <div class="top">
       <el-card style="width: 100%; height: 100%">
         <div class="card-top">
-          <el-image
-            class="userAvatar"
-            :src="getImageUrl('avatar.png')"
-            :fit="'cover'"
-          />
+          <img style="width: 200px; height: 140px" src="@/assets/work.png"/>
           <div class="userInfo">
             <p class="important-font">{{ user.name }}</p>
             <p class="secondary-font">{{ user.description }}</p>
@@ -356,12 +352,12 @@ onMounted(() => {
 
 .top {
   width: 100%;
-  height: 20%;
+  height: 25%;
 }
 
 .bottom {
   width: 100%;
-  height: 77%;
+  height: 72%;
   margin-top: 1%;
 }
 
@@ -370,6 +366,7 @@ onMounted(() => {
   height: 100%;
   display: flex;
   align-content: center;
+  align-items: center;
 }
 
 .userAvatar {

@@ -3,7 +3,7 @@
     <div class="background-left">
       <el-card shadow="always" class="user-card">
         <div class="user-div">
-          <el-image class="userAvatar" :src="getImageUrl('avatar.png')" :fit="'cover'"/>
+          <img style="width: 200px; height: 140px" src="@/assets/work.png"/>
           <div class="userInfo">
             <p class="important-font">{{ user.name }}</p>
             <p class="secondary-font">{{ user.description }}</p>
@@ -246,6 +246,7 @@ onMounted(() => {
 .user-div {
   height: 100%;
   display: flex;
+  align-items: center;
   border-bottom: 2px solid #dcdfe6;
   border-radius: 4px;
 }
@@ -267,6 +268,7 @@ onMounted(() => {
 
 .userInfo {
   width: 70%;
+  height: 100%;
   padding: 6% 0 0 6%;
   overflow: hidden;
 }
