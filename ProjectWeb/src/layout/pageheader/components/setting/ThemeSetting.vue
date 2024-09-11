@@ -6,18 +6,18 @@
     <div class="theme-container">
       <div class="theme-container-item" @click="setLayoutTheme('theme-1')">
         <el-container>
-          <el-header height="20px" style="background: #16aad8" />
+          <el-header height="20px" style="background: hsl(240, 28%, 27%)" />
           <el-container>
-            <el-aside width="40px" style="height: 100px; background: #545c64" />
+            <el-aside width="40px" style="height: 100px; background: #323259" />
             <el-main style="background: #f8f8f8"></el-main>
           </el-container>
         </el-container>
       </div>
       <div class="theme-container-item" @click="setLayoutTheme('theme-2')">
         <el-container>
-          <el-header height="20px" style="background: #5d28e9" />
+          <el-header height="20px" style="background: hsl(262, 87%, 51%)" />
           <el-container>
-            <el-aside width="40px" style="height: 100px; background: #ebebeb" />
+            <el-aside width="40px" style="height: 100px; background: #D9D9D9" />
             <el-main style="background: #f8f8f8"></el-main>
           </el-container>
         </el-container>
@@ -33,9 +33,9 @@
       </div>
       <div class="theme-container-item" @click="setLayoutTheme('theme-4')">
         <el-container>
-          <el-header height="20px" style="background: hsl(61, 0%, 19%)" />
+          <el-header height="20px" style="background: hsl(223, 34%, 20%)" />
           <el-container>
-            <el-aside width="40px" style="height: 100px; background: #3c3f41" />
+            <el-aside width="40px" style="height: 100px; background: #001529" />
             <el-main style="background: #f8f8f8"></el-main>
           </el-container>
         </el-container>
@@ -195,19 +195,19 @@ import {
 const setLayoutTheme = (type) => {
   switch (type) {
     case 'theme-1':
-      updateHeader('#16aad8')
-      updateTag('#16aad8')
-      updateAside('#545c64')
-      setNprogressColor('#dc2626')
+      updateHeader('hsl(240, 28%, 27%)')
+      updateTag('hsl(261, 85%, 57%)')
+      updateAside('#323259')
+      setNprogressColor('#9116D8')
       persistentConfig.theme.aside.fontColor = '#ffffff'
-      persistentConfig.theme.aside.fontActiveColor = '#ffd04b'
-      persistentConfig.theme.aside.backgroundColor = '#337DBE'
+      persistentConfig.theme.aside.fontActiveColor = '#A16EFF'
+      persistentConfig.theme.aside.backgroundColor = '#323259'
       break
     case 'theme-2':
-      updateHeader('#5D29E5')
+      updateHeader('hsl(262, 87%, 51%)')
       updateTag('hsl(241, 70%, 67%)')
       updateAside('#EBEBEB')
-      setNprogressColor('#dc2626')
+      setNprogressColor('#16D2D8')
       persistentConfig.theme.aside.fontColor = '#3D3737'
       persistentConfig.theme.aside.fontActiveColor = '#4700FF'
       persistentConfig.theme.aside.backgroundColor = '#D9D9D9'
@@ -222,13 +222,13 @@ const setLayoutTheme = (type) => {
       persistentConfig.theme.aside.backgroundColor = '#2C486D'
       break
     case 'theme-4':
-      updateHeader('hsl(61, 0%, 19%)')
+      updateHeader('hsl(223, 34%, 20%)')
       updateTag('hsl(61, 0%, 19%)')
-      updateAside('#3c3f41')
-      setNprogressColor('#16aad8')
+      updateAside('#001529')
+      setNprogressColor('#1677FF')
       persistentConfig.theme.aside.fontColor = '#DBDBDB'
       persistentConfig.theme.aside.fontActiveColor = '#ffffff'
-      persistentConfig.theme.aside.backgroundColor = '#5178F9'
+      persistentConfig.theme.aside.backgroundColor = '#1677FF'
   }
 }
 
