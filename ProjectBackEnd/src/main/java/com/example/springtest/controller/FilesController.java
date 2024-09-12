@@ -1,5 +1,7 @@
 package com.example.springtest.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Result;
 import com.example.springtest.service.FilesService;
@@ -12,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -92,12 +95,16 @@ public class FilesController {
     }
 
     //合并文件分片
-    @GetMapping("/merge")
-    public Result MergeChunk(@RequestParam("hash") String hash,
-                                      @RequestParam("filename") String filename) {
+    @PostMapping("/merge")
+    public Result MergeChunk(@RequestBody String json) {
         try {
-            System.out.println(hash);
-            String data=filesService.mergeChunk(hash,filename);
+            JSONObject jsonObject= JSON.parseObject(json);
+            String filename=jsonObject.getString("filename");
+            JSONArray hashList=jsonObject.getJSONArray("chunkList");
+
+            System.out.println(filename);
+            System.out.println(hashList);
+            String data=filesService.mergeChunk(filename,hashList);
             return Result.success(data);
         } catch (Exception e) {
             System.out.println(e.getMessage());

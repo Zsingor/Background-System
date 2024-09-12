@@ -10,7 +10,7 @@ const request = axios.create({
     //跨域的路径，见vite.config.js
     baseURL: "/api", //代理的ip地址
 
-    timeout: 6000 //响应时间
+    timeout: 10000 //响应时间 10s
 })
 
 // 拦截器

@@ -329,6 +329,7 @@ export const deepClone=(value)=>{
     return _deepClone(value)
 }
 
+//特殊字符串类
 export class specialStr{
     constructor(value){
         this.str=value

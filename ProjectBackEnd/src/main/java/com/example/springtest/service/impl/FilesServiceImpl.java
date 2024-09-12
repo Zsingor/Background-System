@@ -1,8 +1,8 @@
 package com.example.springtest.service.impl;
 
 import cn.hutool.core.io.FileUtil;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.example.springtest.entity.Result;
 import com.example.springtest.service.FilesService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -181,7 +181,7 @@ public class FilesServiceImpl implements FilesService {
     }
 
     @Override
-    public String mergeChunk(String hash, String filename) throws IOException {
+    public String mergeChunk(String filename, JSONArray hashlist) throws IOException {
         // 文件分片所在的文件夹
         File chunkFileFolder = new File(CHUNK_PATH);
         //如果文件名已存在则随机创建新的文件名
@@ -190,17 +190,21 @@ public class FilesServiceImpl implements FilesService {
         }
         // 合并后的文件的路径
         File mergeFile = new File(CHUNK_PATH + File.separator + filename);
+
+        List<String> hashList = JSONObject.parseArray(hashlist.toJSONString(), String.class);
+
         // 得到文件分片所在的文件夹下的所有文件
         File[] chunks = chunkFileFolder.listFiles();
         assert chunks != null;
         // 按照hash值过滤出对应的文件分片
+        File[] files = filterFilesByHashList(hashList, chunks);
         // 排序
-        File[] files = Arrays.stream(chunks)
-                .filter(file -> file.getName().startsWith(hash))
-                // 分片文件命名为"hash值_id.文件后缀名"
-                // 按照id值排序
-                .sorted(Comparator.comparing(o -> Integer.valueOf(o.getName().split("\\.")[0].split("_")[1])))
-                .toArray(File[]::new);
+//        File[] files = Arrays.stream(chunks)
+//                .filter(file -> file.getName().startsWith(hash))
+//                // 分片文件命名为"hash值_id.文件后缀名"
+//                // 按照id值排序
+//                .sorted(Comparator.comparing(o -> Integer.valueOf(o.getName().split("\\.")[0].split("_")[1])))
+//                .toArray(File[]::new);
 
         // 合并文件
         RandomAccessFile randomAccessFileWriter = new RandomAccessFile(mergeFile, "rw");
@@ -219,7 +223,7 @@ public class FilesServiceImpl implements FilesService {
     }
 
     @Override
-    public void downloadChunk(String rangeHeader, HttpServletResponse response,String fileName) throws IOException {
+    public void downloadChunk(String rangeHeader, HttpServletResponse response, String fileName) throws IOException {
         String filePath = FILES_PATH + File.separator + fileName;
 //        String filePath = "D:/zhaiyan/files/aaaa.csv";
         File file = new File(filePath);
@@ -233,10 +237,10 @@ public class FilesServiceImpl implements FilesService {
 
         if (rangeHeader == null) {
             // 下载全部文件
-            response.setHeader("Content-Length", fileSize +"-"+ CHUNK_SIZE);
+            response.setHeader("Content-Length", fileSize + "-" + CHUNK_SIZE);
             InputStream in = new FileInputStream(file);
             OutputStream out = response.getOutputStream();
-            byte[] buffer = new byte[(int)fileSize];
+            byte[] buffer = new byte[(int) fileSize];
             int bytesRead = -1;
             while ((bytesRead = in.read(buffer)) != -1) {
                 out.write(buffer, 0, bytesRead);
@@ -282,8 +286,7 @@ public class FilesServiceImpl implements FilesService {
     }
 
     //根据文件后缀名获取文件存储路径
-    String getPath(String extName)
-    {
+    String getPath(String extName) {
         if (isImage(extName)) {
             return IMAGES_PATH;
         } else if (isVideo(extName)) {
@@ -309,5 +312,25 @@ public class FilesServiceImpl implements FilesService {
         } else {
             return false;
         }
+    }
+
+    //根据文件名列表筛选出顺序的文件列表
+    public static File[] filterFilesByHashList(List<String> hashList, File[] chunks) {
+        List<File> filteredFiles = new ArrayList<>();
+        for (String hash : hashList) {
+            try {
+                for (File chunk : chunks) {
+                    if (chunk.getName().equals(hash)) {
+                        filteredFiles.add(chunk);
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                // 处理解析JSON时可能发生的异常，这里简单打印堆栈跟踪
+                e.printStackTrace();
+            }
+        }
+
+        return filteredFiles.toArray(new File[0]);
     }
 }

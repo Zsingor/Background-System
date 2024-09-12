@@ -77,10 +77,10 @@
 </template>
   
 <script setup>
-import SparkMD5 from 'spark-md5'
 import request from '@/request'
 import { message } from '@/utils/message.js'
 import { computed, onMounted, ref } from 'vue'
+import Worker from './worker?worker&inline'
 
 const props = defineProps({
   //组件的宽度
@@ -134,15 +134,22 @@ const props = defineProps({
     default: '/files/delChunkFile',
   },
   //处理的进度
-  process:{
+  process: {
     type: Number,
     default: 0,
-  }
+  },
 })
 
-let process = ref(props.process); 
+let process = ref(props.process)
 
-const emit = defineEmits(['handleRemove', 'handleComplete','handleProcess','handleUpload','handleClear','update:process'])
+const emit = defineEmits([
+  'handleRemove',
+  'handleComplete',
+  'handleProcess',
+  'handleUpload',
+  'handleClear',
+  'update:process',
+])
 
 const uploadRef = ref(null)
 
@@ -164,8 +171,8 @@ let curFile = ref(null)
 let filename = ref('')
 //存放每个分片
 let chunkList = ref([])
-// 存放文件的MD5哈希值
-let hash = ref('')
+// 存放文件的MD5哈希值列表
+let hashList = ref([])
 // 记录发送的请求个数
 let sendNum = ref(0)
 // 存放每个分片的请求
@@ -174,7 +181,8 @@ let requestList = ref([])
 let acceptedExtensions = ref(null)
 
 //进度条的文字显示
-const progressFormat = (percentage) => (percentage === '100' ? '处理完毕' : `${percentage}%`)
+const progressFormat = (percentage) =>
+  percentage === '100' ? '处理完毕' : `${percentage}%`
 
 //选择文件后的回调
 const handleChange = async (file) => {
@@ -196,47 +204,23 @@ const handleChange = async (file) => {
   process.value = 0
   percentCount.value = 0
 
-  // 获取文件并转成 ArrayBuffer 对象
   const fileObj = file.raw
   filename.value = fileObj.name
-  let buffer
-  try {
-    buffer = await fileToBuffer(fileObj)
-  } catch (e) {
-    console.log(e)
-    return
-  }
-
   const chunkSize = props.chunkSize * 1024 * 1024
-  const suffix = /\.([0-9A-z]+)$/.exec(fileObj.name)[1]
-  const spark = new SparkMD5.ArrayBuffer()
-  spark.append(buffer)
-  //获取文件的哈希值
-  const fileHash = spark.end()
 
-  //将文件分片
-  let curChunk = 0
+  //计算每一个分片的百分比
   const chunkListLength = Math.ceil(fileObj.size / chunkSize)
   if (percentCount.value === 0) {
     percentCount.value = 100 / chunkListLength
   }
-  for (let i = 0; i < chunkListLength; i++) {
-    const item = {
-      chunk: fileObj.slice(curChunk, curChunk + chunkSize),
-      fileName: `${fileHash}_${i}.${suffix}`,
-    }
-    curChunk += chunkSize
-    chunkList.value.push(item)
-    process.value=Math.min(process.value + percentCount.value, 100)
-    emit("update:process",process.value)
-  }
 
-  //获得文件的哈希值
-  hash.value = fileHash
+  //获得文件分片列表
+  chunkList.value = await getChunkList(fileObj)
+
   //允许按钮操作
   btnFlag.value = true
-  //文件分片成功的回调,hash文件哈希值,chunkList分片文件列表
-  emit('handleProcess', hash.value, chunkList.value)
+  //文件分片成功的回调,chunkList分片文件列表
+  emit('handleProcess', chunkList.value)
   if (props.autoUpload) {
     sendRequest()
   }
@@ -253,12 +237,12 @@ const sendRequest = async () => {
       const formData = new FormData()
       formData.append('chunk', item.chunk)
       formData.append('filename', item.fileName)
+      hashList.value.push(item.fileName)
       return request
         .post(props.sendUrl, formData)
         .then((res) => {
           if (res.code === 1) {
             percent.value = Math.min(percent.value + percentCount.value, 99)
-            console.log(percent.value)
             chunkList.value.splice(index, 1) // 一旦上传成功就删除这一个 chunk，方便断点续传
           }
         })
@@ -276,8 +260,8 @@ const send = async () => {
   if (!upload.value || requestList.value.length === 0) return
   if (sendNum.value >= requestList.value.length) {
     // 发送完毕
-    //分片文件上传成功的回调,hash文件哈希值,filename文件名
-    emit('handleUpload',hash.value,filename.value)
+    //分片文件上传成功的回调,filename文件名,hashList文件的哈希列表
+    emit('handleUpload', filename.value, hashList.value)
     complete()
     return
   }
@@ -289,21 +273,18 @@ const send = async () => {
 // 文件切片全部发送完毕后,把文件的 hash 传递给服务器,让服务器合并文件
 const complete = () => {
   request
-    .get(props.completeUrl, {
-      params: {
-        hash: hash.value,
-        filename: filename.value,
-      },
+    .post(props.completeUrl, {
+      filename: filename.value,
+      chunkList: hashList.value,
     })
     .then((res) => {
       if (res.code === 1) {
         curFile.value.response = res
-        percent.value=100
+        percent.value = 100
         //分片文件合并成功的回调,curFile合并成功的文件信息,fileList当前的文件列表
         emit('handleComplete', curFile.value, fileList.value)
         message('文件上传成功')
-      }
-      else{
+      } else {
         message('文件上传失败')
       }
     })
@@ -320,6 +301,52 @@ const resetStatus = () => {
   sendNum.value = 0
   disable.value = false
   curFile.value = null
+  hashList.value.length = 0
+}
+
+//使用多线程获取分片列表
+const getChunkList = (file) => {
+  let reso, reje
+  const p = new Promise((resolve, reject) => {
+    reso = resolve
+    reje = reject
+  })
+
+  let result = []
+  let finishCount = 0
+  //根据cpu内核数的3/4分配线程数
+  const THREAD_COUNT = Math.ceil((navigator.hardwareConcurrency * 3) / 4) || 4
+  //分片大小
+  const chunkSize = props.chunkSize * 1024 * 1024
+  //分片数量
+  const chunkCount = Math.ceil(file.size / chunkSize)
+  //每个线程的任务数
+  const threadChunkCount = Math.ceil(chunkCount / THREAD_COUNT)
+  //每个线程的进度百分比
+  let processCount = 100 / chunkCount
+  //分配线程任务
+  for (let i = 0; i < THREAD_COUNT; i++) {
+    const worker = new Worker()
+    const start = i * threadChunkCount
+    const end = Math.min((i + 1) * threadChunkCount, chunkCount)
+    worker.postMessage({ file, start, end, chunkSize })
+    worker.onmessage = (e) => {
+      if (typeof e.data !== 'object') {
+        process.value = Math.min(process.value + processCount, 100)
+        //更新文件处理的进度
+        emit('update:process', process.value)
+      } else {
+        result[i] = e.data
+        worker.terminate
+        finishCount++
+        if (finishCount === THREAD_COUNT) {
+          reso(result.flat())
+        }
+      }
+    }
+  }
+
+  return p
 }
 
 // 按下暂停按钮
@@ -337,7 +364,7 @@ const handleContinue = () => {
   }
 }
 
-//按下清空按钮
+//按下清空按钮,清除处理完成但是未上传的文件
 const clearUpload = () => {
   if (btnFlag.value) {
     fileList.value = fileList.value.filter((item) =>
@@ -345,7 +372,7 @@ const clearUpload = () => {
     )
     resetStatus()
     //清空列表成功的回调,fileList当前的文件列表
-    emit('handleClear',fileList.value)
+    emit('handleClear', fileList.value)
   }
 }
 
@@ -358,20 +385,6 @@ const checkFile = (mimeName) => {
 
   // 检查扩展名是否在集合中
   return acceptedExtensions.value.has(extension)
-}
-
-// 将 File 对象转为 ArrayBuffer
-const fileToBuffer = (file) => {
-  return new Promise((resolve, reject) => {
-    const fr = new FileReader()
-    fr.onload = (e) => {
-      resolve(e.target.result)
-    }
-    fr.readAsArrayBuffer(file)
-    fr.onerror = () => {
-      reject(new Error('转换文件格式发生错误'))
-    }
-  })
 }
 
 //移除文件列表的回调

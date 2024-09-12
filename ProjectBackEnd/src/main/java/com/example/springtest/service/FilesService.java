@@ -1,5 +1,6 @@
 package com.example.springtest.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.example.springtest.entity.Result;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ public interface FilesService {
 
     void upLoadChunk(MultipartFile chunk,String filename) throws IOException;
 
-    String mergeChunk(String hash,String filename) throws IOException;
+    String mergeChunk(String filename, JSONArray hashList) throws IOException;
 
     void downloadChunk(String rangeHeader,HttpServletResponse response,String filename) throws IOException;
 }
