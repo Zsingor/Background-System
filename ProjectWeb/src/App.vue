@@ -22,6 +22,7 @@
 
 <script setup>
 import { persistentConfig, windowConfig } from '@/layout/layout.js'
+import { i18nChangeLanguage } from '@wangeditor/editor'
 import {
   computed,
   onMounted,
@@ -38,6 +39,7 @@ const { proxy } = getCurrentInstance()
 //const language = ref('zh-cn')
 //const locale = computed(() => (language.value === 'zh-cn' ? zhCn : en))
 let locale=ref(zhCn)
+let language = ref('zh-CN')
 
 const onResize = () => {
   window.innerWidth > 1024
@@ -67,9 +69,21 @@ watch(()=>persistentConfig.localeLang, (value) => {
   proxy.$i18n.locale = value
   //改变element-plus的国际化语言
   locale.value=value==="zhCn"? zhCn : en
+  //改变wangEditor的国际化语言
+  language.value=value==="zhCn"?"zh-CN":"en"
+  i18nChangeLanguage(language.value)
 })
 
+//初始化系统语言
+const languageInit=()=>{
+  locale.value=persistentConfig.localeLang==="zhCn"? zhCn : en
+  language.value=persistentConfig.localeLang==="zhCn"?"zh-CN":"en"
+  i18nChangeLanguage(language.value)
+}
+
 onMounted(() => {
+  languageInit()
+
   // 开启窗口变化监听
   window.addEventListener('resize', onResize, { passive: true })
 
