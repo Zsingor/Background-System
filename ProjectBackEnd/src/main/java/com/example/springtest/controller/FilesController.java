@@ -101,9 +101,6 @@ public class FilesController {
             JSONObject jsonObject= JSON.parseObject(json);
             String filename=jsonObject.getString("filename");
             JSONArray hashList=jsonObject.getJSONArray("chunkList");
-
-            System.out.println(filename);
-            System.out.println(hashList);
             String data=filesService.mergeChunk(filename,hashList);
             return Result.success(data);
         } catch (Exception e) {

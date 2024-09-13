@@ -177,9 +177,9 @@ public class FilesServiceImpl implements FilesService {
         fileOutputStream.write(chunk.getBytes());
         fileOutputStream.close();
         chunk.transferTo(saveFile);
-        System.out.println(filename);
     }
 
+    //合并分片文件
     @Override
     public String mergeChunk(String filename, JSONArray hashlist) throws IOException {
         // 文件分片所在的文件夹

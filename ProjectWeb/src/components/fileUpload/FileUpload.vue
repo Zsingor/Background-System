@@ -140,7 +140,10 @@ const props = defineProps({
   },
 })
 
+//处理文件的进度
 let process = ref(props.process)
+//上传文件的进度
+const percent = defineModel('percent', { type: Number, default: 0 })
 
 const emit = defineEmits([
   'handleRemove',
@@ -155,8 +158,6 @@ const uploadRef = ref(null)
 
 //上传成功的文件列表
 let fileList = ref([])
-//上传进度
-const percent = defineModel('percent', { type: Number, default: 0 })
 //每一个分片的大小占比
 let percentCount = ref(0)
 //控制上传的暂停与继续
@@ -258,8 +259,8 @@ const sendRequest = async () => {
 //递归调用每个分片的发送请求
 const send = async () => {
   if (!upload.value || requestList.value.length === 0) return
+  // 发送完毕
   if (sendNum.value >= requestList.value.length) {
-    // 发送完毕
     //分片文件上传成功的回调,filename文件名,hashList文件的哈希列表
     emit('handleUpload', filename.value, hashList.value)
     complete()
@@ -272,23 +273,32 @@ const send = async () => {
 
 // 文件切片全部发送完毕后,把文件的 hash 传递给服务器,让服务器合并文件
 const complete = () => {
-  request
-    .post(props.completeUrl, {
-      filename: filename.value,
-      chunkList: hashList.value,
-    })
+  const data = {
+    filename: filename.value,
+    chunkList: hashList.value,
+  }
+
+  request({
+    timeout: 20000,
+    url: props.completeUrl,
+    method: 'post',
+    data: data,
+  })
     .then((res) => {
       if (res.code === 1) {
         curFile.value.response = res
-        percent.value = 100
-        //分片文件合并成功的回调,curFile合并成功的文件信息,fileList当前的文件列表
-        emit('handleComplete', curFile.value, fileList.value)
         message('文件上传成功')
       } else {
-        message('文件上传失败')
+        message('文件上传失败', 'error')
       }
     })
+    .catch((err) => {
+      message('文件上传失败', 'error')
+    })
     .finally(() => {
+      percent.value = 100
+      //分片文件合并成功的回调,curFile合并成功的文件信息,fileList当前的文件列表
+      emit('handleComplete', curFile.value, fileList.value)
       resetStatus()
     })
 }
@@ -332,8 +342,8 @@ const getChunkList = (file) => {
     worker.postMessage({ file, start, end, chunkSize })
     worker.onmessage = (e) => {
       if (typeof e.data !== 'object') {
-        process.value = Math.min(process.value + processCount, 100)
         //更新文件处理的进度
+        process.value = Math.min(process.value + processCount, 100)
         emit('update:process', process.value)
       } else {
         result[i] = e.data
