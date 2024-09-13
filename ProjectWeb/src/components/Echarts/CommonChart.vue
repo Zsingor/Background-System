@@ -8,20 +8,22 @@
 <script setup>
 import { onMounted, computed, watch, onUnmounted, shallowRef } from 'vue'
 import { persistentConfig } from '@/layout/layout.js'
-const props = defineProps([
-  'title', //通用配置
-  'legend', //通用配置
-  'tooltip', //通用配置
-  'xAxis',
-  'grid', //网格
-  'yAxis',
-  'series',
-  'toolbox', //通用配置
-  'saveAsImageName',
-  'dataZoom',
-])
-// const echarts = inject('echarts')
 import * as echarts from 'echarts'
+
+const props = defineProps([
+  'title', //标题
+  'legend', //图表上方按钮显示
+  'tooltip', //图表提示
+  'xAxis', //图表的x轴信息
+  'grid', //图表的位置
+  'yAxis', //图表的y轴信息
+  'series', //图表的数据
+  'toolbox', //图表右上方的工具设置
+  'dataZoom', //图表的滑块
+])
+
+const emit = defineEmits(['handleClick'])
+
 const chartDom = shallowRef()
 const charts = shallowRef()
 
@@ -117,6 +119,17 @@ const options = computed(() => {
       },
       ...props.yAxis,
     },
+    toolbox: {
+      show: false, 
+      feature: {
+        mark: { show: true },
+        dataView: { show: true,readOnly: false },
+        magicType: { show: true,type: ['line', 'bar'] },
+        restore: { show: true, },
+        saveAsImage: { show: true,name:"图表", type: 'png' },
+      },
+      ...props.toolbox,
+    },
     series: props.series,
     dataZoom: props.dataZoom,
   }
@@ -125,20 +138,25 @@ const options = computed(() => {
 const chartInit = () => {
   charts.value = echarts.init(chartDom.value)
   charts.value.setOption(options.value, true)
+  charts.value.on('click', (params) => {
+    emit('handleClick', params)
+  })
 }
 
 const chartResize = () => {
   charts.value.resize()
 }
 
+//当列表的值发生改变时重新渲染
 watch(
   () => options,
   async () => {
-    charts.value && charts.value.setOption(options.value, true,chartResize)
+    charts.value && charts.value.setOption(options.value, true, chartResize)
   },
   { deep: true }
 )
 
+//当侧边栏伸缩时图表要进行重渲染
 watch(
   () => persistentConfig.isCollapse,
   async () => {
