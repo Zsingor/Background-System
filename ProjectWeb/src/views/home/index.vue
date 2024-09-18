@@ -3,11 +3,13 @@
     <div class="background-left">
       <el-card shadow="always" class="user-card">
         <div class="user-div">
-          <img style="width: 200px; height: 140px" src="@/assets/work.png"/>
+          <context-menu :menu="[{label:'复制'},{label:'粘贴信息'}]">
+            <img style="width: 200px; height: 140px" src="@/assets/work.png"/>
+          </context-menu>
           <div class="userInfo">
-            <p class="important-font">{{ user.name }}</p>
-            <p class="secondary-font">{{ user.description }}</p>
-          </div>
+              <p class="important-font">{{ user.name }}</p>
+              <p class="secondary-font">{{ user.description }}</p>
+            </div>
         </div>
       </el-card>
       <el-card class="table-card">
@@ -100,7 +102,6 @@ import request from '@/request/index.js'
 import { getImageUrl } from '@/utils/resource.js'
 import { RefreshRight } from '@element-plus/icons'
 
-
 defineOptions({
   name: 'home',
 })
@@ -183,7 +184,7 @@ let option = reactive({
     formatter: '{a} <br/>{b} : {d}%',
   },
   legend: {
-    data:['Vue3',"Java",'JavaScript','Other'],
+    data: ['Vue3', 'Java', 'JavaScript', 'Other'],
     top: '0%',
     left: 'left',
   },
