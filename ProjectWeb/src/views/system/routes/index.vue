@@ -44,10 +44,6 @@
           </div>
         </template>
         <template #menustatus="{ row }">
-          <!--          <vxe-switch v-model="row.status"-->
-          <!--                      @click="switchUpdateHandler(row)"-->
-          <!--                      open-label="启用" close-label="禁用"-->
-          <!--                      open-value="1" close-value="0"></vxe-switch>-->
           <div v-if="row.status === '1'">
             <span style="color: #16aad8">已启用</span>
           </div>
@@ -188,32 +184,10 @@ async function copyMenu(row, event) {
   message('复制成功')
 }
 
-const switchUpdateHandler = (row) => {
-  console.log('row', row)
-}
-
 const gridOptions = reactive({
   id: 'routes',
   rowId: 'id',
   ...VxeTableCommonsConfig,
-  // height: 'auto',
-  // align: 'center',
-  // showOverflow: true,
-  // highlightHoverRow: true,
-  // loading: false,
-  // toolbarConfig: {
-  //   refresh: true,
-  //   zoom: true,
-  //   custom: true,
-  //   tools: [],
-  //   slots: {
-  //     buttons: 'toolbar_buttons',
-  //   },
-  // },
-  // //允许列拖动
-  // columnConfig: {
-  //   resizable: true,
-  // },
   checkboxConfig: {
     labelField: 'title',
     reserve: true, // 是否保留勾选状态

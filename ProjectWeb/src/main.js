@@ -12,7 +12,7 @@ import router from './router' //导入路由
 import "@/router/permission.js" //导入路由守卫
 import "exceljs" //导入excel文件导出工具
 
-import {loadConfig} from "@/setup.js";
+import { loadConfig } from "@/setup.js";
 import registerComponents from '@/components/index.js' //导入组件自动化注册
 import pinia from "@/stores/index.js"; //引入pinia实例
 // 引入国际化i18n
@@ -25,7 +25,7 @@ const app = createApp(App)
 //关闭警告信息
 app.config.warnHandler = () => null;
 //声明全局使用的baseurl
-app.config.globalProperties.$baseUrl=import.meta.env.VITE_BASE_API;
+app.config.globalProperties.$baseUrl = import.meta.env.VITE_BASE_API;
 
 //初始化配置信息
 loadConfig()
@@ -41,9 +41,13 @@ Object.keys(registerComponents).forEach((key) => {
     app.component(key, registerComponents[key]);
 })
 
+const keysList = ['BellFilled', 'CameraFilled', 'ChromeFilled', 'DeleteFilled', 'HomeFilled', 'PhoneFilled', 'PictureFilled', 'StarFilled', 'VideoCameraFilled','WalletFilled','WarningFilled']
+
 //引入所有的ant-design的icon
 for (const [key, component] of Object.entries(AntIcon)) {
-    app.component(key, component)
+    if(keysList.indexOf(key)==-1){
+        app.component(key, component)
+    }
 }
 
 //引入所有的element-plus的icon

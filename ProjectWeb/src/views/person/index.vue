@@ -4,7 +4,7 @@
     <div class="top">
       <el-card style="width: 100%; height: 100%">
         <div class="card-top">
-          <img style="width: 200px; height: 140px" src="@/assets/work.png"/>
+          <img style="width: 200px; height: 140px" src="/public/static/work.png"/>
           <div class="userInfo">
             <p class="important-font">{{ user.name }}</p>
             <p class="secondary-font">{{ user.description }}</p>

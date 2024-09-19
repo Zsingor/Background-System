@@ -43,7 +43,6 @@ const y = ref(0)
 const visible = ref(false)
 
 const handleClick = (item) => {
-  console.log(item.label)
   emit('select', item)
 }
 
@@ -58,7 +57,7 @@ const handleEnter=(el)=>{
     requestAnimationFrame(()=>{
         requestAnimationFrame(()=>{
             el.style.height=h+'px'
-            el.style.transition='0.3s'
+            el.style.transition='0.2s'
         })
     })
 }

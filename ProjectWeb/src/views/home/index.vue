@@ -3,8 +3,8 @@
     <div class="background-left">
       <el-card shadow="always" class="user-card">
         <div class="user-div">
-          <context-menu :menu="[{label:'复制'},{label:'粘贴信息'}]">
-            <img style="width: 200px; height: 140px" src="@/assets/work.png"/>
+          <context-menu :menu="[{id:1,label:'下载'},{id:2,label:'获取信息'},{id:3,label:'获取指纹'}]" @select="select">
+            <img style="width: 200px; height: 140px" src="/public/static/work.png"/>
           </context-menu>
           <div class="userInfo">
               <p class="important-font">{{ user.name }}</p>
@@ -95,12 +95,20 @@
 </template>
 
 <script setup>
-import { inject, onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { userInfo } from '@/layout/user.js'
-import { isEmpty, parseDate } from '@/utils/commons.js'
+import {
+  isEmpty,
+  parseDate,
+  getExplorerInfo,
+  getuuid,
+} from '@/utils/commons.js'
 import request from '@/request/index.js'
-import { getImageUrl } from '@/utils/resource.js'
+import { downloadLocalTemplate } from '@/utils/resource.js'
 import { RefreshRight } from '@element-plus/icons'
+import useClipboard from 'vue-clipboard3'
+import { message } from '@/utils/message'
+const { toClipboard } = useClipboard()
 
 defineOptions({
   name: 'home',
@@ -114,6 +122,7 @@ let notifications = ref([])
 //处理通知的加载
 let notifyLoading = ref(false)
 
+//时间
 const dateValue = ref(new Date())
 
 const user = ref({
@@ -122,6 +131,22 @@ const user = ref({
   description: '暂无描述',
 })
 
+//右键菜单选择回调
+const select = async (item) => {
+  if (item.id===1) {
+    downloadLocalTemplate('/public/static/work.png', 'work.png')
+  } else if (item.id===2) {
+    let msg = getExplorerInfo()
+    await toClipboard(JSON.stringify(msg))
+    message('浏览器信息已复制')
+  } else if (item.id===3) {
+    let msg = getuuid()
+    await toClipboard(JSON.stringify(msg))
+    message('浏览器指纹已复制')
+  }
+}
+
+//休息日
 const restDay = (data) => {
   let date = new Date(data.day)
   let dayofWeek = date.getDay()
@@ -129,11 +154,11 @@ const restDay = (data) => {
 }
 
 const upload = (e) => {
-  console.log('上传: ' + e.loaded, ' ', e.total)
+  console.log('用户数据上传: ' + e.loaded, ' ', e.total)
 }
 
 const download = (e) => {
-  console.log('下载: ' + e.loaded, ' ', e.total)
+  console.log('用户数据下载: ' + e.loaded, ' ', e.total)
 }
 
 //初始化用户数据
