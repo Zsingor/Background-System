@@ -41,6 +41,8 @@ const onResize = () => {
     : (windowConfig.isPc = false)
   if (!windowConfig.isPc) {
     persistentConfig.isCollapse = true
+  }else if(windowConfig.showAside){
+    windowConfig.showAside=false
   }
   if (window.innerWidth <= 600) {
     windowConfig.breakpoint = 'xs'

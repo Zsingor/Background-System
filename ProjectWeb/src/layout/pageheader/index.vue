@@ -130,6 +130,9 @@ const controls = reactive({
 const operAside=()=>{
   if(windowConfig.isPc)
   {
+    if(windowConfig.showAside){
+      windowConfig.showAside=false
+    }
     persistentConfig.isCollapse=!persistentConfig.isCollapse
   }
   else if(persistentConfig.isCollapse)

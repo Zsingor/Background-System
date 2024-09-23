@@ -1,5 +1,5 @@
 <template>
-  <div id="app-tags" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}" :class="{mainShow:windowConfig.showAside}">
+  <div id="app-tags" :style="{width: 'calc(100% - '+sidebarWidth+'px)',left: sidebarWidth+'px'}">
     <tag-scroll>
       <div id="tag-sortable-container">
         <div class="tag-item" :class="{'is-active': isActive(tag.path)}"
@@ -111,10 +111,6 @@ onMounted(() => {
   position: fixed;
   transition-property: width, left;
   transition-duration: 0.3s;
-}
-
-.mainShow{
-  filter: brightness(50%);
 }
 
 .lineview{
