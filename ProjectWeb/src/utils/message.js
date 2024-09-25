@@ -62,7 +62,6 @@ class OnceMessage {
         if (single) {
             //获取页面所有已经存在的message
             let doms = document.getElementsByClassName('el-message');
-            //el-message__content
             //设置值控制显示当前message
             let canShow = true;
             //遍历获取到的message DOM集合

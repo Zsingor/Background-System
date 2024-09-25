@@ -241,8 +241,7 @@ const handleRemoveFile = (file) => {
       }
     })
     .catch((err) => {
-      console.log(err)
-      message('移除文件失败', 'error')
+      message('移除文件失败: '+err, 'error')
     })
   uploadRef2.value.handleRemove(file)
 }
@@ -264,8 +263,6 @@ const handleAddSuccess = (res) => {
 
 //移除文件列表的回调
 const handleRemove = (file, fileLists) => {
-  console.log(file)
-
   request
     .post(`/files/deletefile/${file.response.data}`)
     .then((res) => {
@@ -276,8 +273,7 @@ const handleRemove = (file, fileLists) => {
       }
     })
     .catch((err) => {
-      console.log(err)
-      message('移除文件失败', 'error')
+      message('移除文件失败:'+err, 'error')
     })
 }
 

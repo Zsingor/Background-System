@@ -117,7 +117,7 @@ const login=()=>{
             message(res.msg,"error")
           }
         }).catch(error => {
-          console.log(error);
+          message(error,"error")
         })
       }
       else

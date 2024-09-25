@@ -227,7 +227,6 @@ const submitEvent = () => {
         rootData.showForm = false
         xGrid.value.commitProxy('query')
         message('修改成功')
-        console.log(res)
       })
       .catch(() => {
         message('修改失败', 'error')
@@ -243,7 +242,6 @@ const submitEvent = () => {
         rootData.showForm = false
         xGrid.value.commitProxy('query')
         message('添加成功')
-        console.log(res)
       })
       .catch(() => {
         message('添加失败', 'error')

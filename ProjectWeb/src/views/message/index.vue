@@ -224,11 +224,10 @@ onMounted(async () => {
   const res1=await getConversation(userInfo.baseInfo.user_id)
   userList.value=res1.data
 
-  let temp=route.query
-  console.log(temp)
-  if(!_.isEmpty(temp))
+  let query=route.query
+  if(!_.isEmpty(query))
   {
-    const index = userList.value.findIndex(user => user.id === temp.senderId);
+    const index = userList.value.findIndex(user => user.id === query.senderId);
     await activeFun(index)
   }
 })

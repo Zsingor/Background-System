@@ -3,7 +3,6 @@ import {onceMessage} from "@/utils/message.js";
 import {isEmpty} from "@/utils/commons.js";
 import {ElNotification} from "element-plus";
 import {persistentConfig} from "@/layout/layout.js";
-import {useRouter} from "vue-router";
 import router from "@/router/index.js";
 import {nextTick} from "vue";
 
@@ -39,9 +38,6 @@ const websocket = {
 
         // 监听WebSocket连接错误信息
         ws.onerror = (e) => {
-            console.log('WebSocket重连开关', isReconnecting)
-            console.log('WebSocket数据传输发生错误', e)
-            console.log("11111111111",url)
             onceMessage.error('WebSocket传输发生错误')
             // 打开重连
             reconnect()
@@ -126,7 +122,6 @@ const websocket = {
 window.onbeforeunload = function () {
     // 在窗口关闭时关闭 WebSocket 连接
     websocket.Close()
-    console.log('WebSocket窗口关闭事件触发')
 }
 
 // 浏览器刷新重新连接
@@ -145,7 +140,6 @@ if (performance.getEntriesByType('navigation')[0].type === 'reload') {
 
 // 重连方法
 function reconnect() {
-    console.log('WebSocket重连开关', isReconnecting)
     // 判断是否主动关闭连接或未登录
     if (isReconnecting||isEmpty(localStorage.getItem("User_Info"))) {
         return
@@ -153,7 +147,7 @@ function reconnect() {
     // 重连定时器-每次WebSocket错误方法onerror触发它都会触发
     reconnectTimer && clearTimeout(reconnectTimer)
     reconnectTimer = setTimeout(function () {
-        console.log('WebSocket执行断线重连...')
+        onceMessage.error('WebSocket执行断线重连...')
         const userid=JSON.parse(localStorage.getItem("User_Info")).user_id
         websocket.Init(userid)
         isReconnecting = false

@@ -142,7 +142,6 @@ export function moveToTarget(activeTag) {
 
 // 重新加载页面
 export function reloadPage() {
-    console.log("刷新")
     reloadCurrentRoute.value = true;
     nextTick(() => {
         reloadCurrentRoute.value = null;

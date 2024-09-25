@@ -25,7 +25,7 @@ request.interceptors.request.use(request => {
     }
     return request;
 }, error => {
-    console.log('request error' + error)
+    message('request error：'+error,"error")
     return Promise.reject(error)
 });
 

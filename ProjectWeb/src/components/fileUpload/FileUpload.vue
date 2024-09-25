@@ -411,8 +411,7 @@ const handleRemove = (file, fileLists) => {
       }
     })
     .catch((err) => {
-      console.log(err)
-      message('移除文件失败', 'error')
+      message(err, 'error')
     })
 }
 

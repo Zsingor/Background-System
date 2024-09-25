@@ -121,7 +121,6 @@ props.editorConfig.MENU_CONF["uploadImage"] = {
   maxNumberOfFiles: 1,
   allowedFileTypes: ["image/*"],
   async customUpload(file, insertFn) {
-    console.log("file", file)
     if (!file.type.includes("image")) {
       return message("请上传图片格式的文件！","error")
     }
@@ -172,9 +171,9 @@ props.editorConfig.MENU_CONF["uploadVideo"] = {
   },
 }
 
+//附件上传
 props.editorConfig.MENU_CONF["uploadAttachment"] = {
   async customUpload(file, insertFn) {
-    console.log(file, "uploadAttachment");
     if (file.size / 1024 / 1024 > 50) {
       return message("请上传50M以内的文件！","error")
     }

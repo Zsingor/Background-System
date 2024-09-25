@@ -328,7 +328,7 @@ const initUser = () => {
         user.value = res.data;
       })
       .catch((error) => {
-        console.log(error);
+        message(error,"error")
       });
   } else {
     user.value.name = "游客";

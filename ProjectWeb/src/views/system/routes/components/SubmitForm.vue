@@ -157,8 +157,7 @@ const submitForm = () => {
             message('添加成功')
           }
         }).catch((e) => {
-          console.log(e)
-          message("添加失败", "error")
+          message("添加失败:"+e, "error")
         }).finally(() => {
           rootData.submitLoading = false
         })

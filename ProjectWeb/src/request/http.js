@@ -1,5 +1,6 @@
 import axios from "axios";
 import { userInfo } from "@/layout/user.js";
+import { message } from "@/utils/message";
 
 //创建一个新的axios对象
 const http = axios.create({
@@ -18,7 +19,7 @@ http.interceptors.request.use(request => {
     }
     return request;
 }, error => {
-    console.log('request error' + error)
+    message(error,"error")
     return Promise.reject(error)
 });
 
