@@ -26,7 +26,7 @@
           value-format="x"
       />
     </el-col>
-    <el-col :span="6">
+    <el-col :span="24" style="display: flex;justify-content: center;">
       <el-button size="default" type="primary" @click="querydata">查询</el-button>
       <el-button size="default" @click="resetForm">重置</el-button>
     </el-col>

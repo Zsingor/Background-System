@@ -1,11 +1,11 @@
 <template>
   <div class="background">
-
-    <QueryForm
-      v-if="searchFlag"
-      @query="getTableData"
-      v-model="queryData"
-    ></QueryForm>
+    <el-card v-if="searchFlag" style="margin-bottom: 10px;">
+      <QueryForm
+        @query="getTableData"
+        v-model="queryData"
+      ></QueryForm>
+    </el-card>
 
     <el-card>
       <div class="top-button">
@@ -438,7 +438,7 @@ onMounted(() => {
   float: right;
 }
 
-.elTable{
+.elTable {
   min-height: 400px;
 }
 

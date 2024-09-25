@@ -3,32 +3,67 @@
     <div class="background-left">
       <el-card shadow="always" class="user-card">
         <div class="user-div">
-          <context-menu :menu="[{id:1,label:'下载'},{id:2,label:'获取信息'},{id:3,label:'获取指纹'}]" @select="select">
-            <img style="width: 200px; height: 140px" src="/public/static/work.png"/>
+          <context-menu
+            :menu="[
+              { id: 1, label: '下载' },
+              { id: 2, label: '获取信息' },
+              { id: 3, label: '获取指纹' },
+            ]"
+            @select="select"
+          >
+            <img
+              style="width: 200px; height: 140px"
+              src="/public/static/work.png"
+            />
           </context-menu>
           <div class="userInfo">
-              <p class="important-font">{{ user.name }}</p>
-              <p class="secondary-font">{{ user.description }}</p>
-            </div>
+            <p class="important-font">{{ user.name }}</p>
+            <p class="secondary-font">{{ user.description }}</p>
+          </div>
         </div>
       </el-card>
       <el-card class="table-card">
-        <div slot="header" style="display: flex;justify-content: space-between;padding-left:2%;padding-right: 2% ">
-          <span class="important-font">{{ $t('home.notify') }}</span>
-          <el-button :icon="RefreshRight" circle :title="$t('home.notify')" @click="initSystemNotice"/>
-        </div>
-        <div v-loading="notifyLoading" class="card-table" v-if="!isEmpty(notifications)">
-          <div v-for="(item,index) in notifications" :key="index" class="card-item">
+        <template #header>
+          <div
+            class="card-header"
+            style="
+              display: flex;
+              justify-content: space-between;
+              padding-left: 2%;
+              padding-right: 2%;
+              padding: 0;
+            "
+          >
+            <span class="important-font">{{ $t('home.notify') }}</span>
+            <el-button
+              :icon="RefreshRight"
+              circle
+              :title="$t('home.notify')"
+              @click="initSystemNotice"
+            />
+          </div>
+        </template>
+
+        <div
+          v-loading="notifyLoading"
+          class="card-table"
+          v-if="!isEmpty(notifications)"
+        >
+          <div
+            v-for="(item, index) in notifications"
+            :key="index"
+            class="card-item"
+          >
             <el-card shadow="hover">
               <div class="card-top">
                 <div class="card-top-left">
-                  {{item.title}}
+                  {{ item.title }}
                 </div>
                 <div class="card-top-right">
-                  {{parseDate(item.createTime)}}
+                  {{ parseDate(item.createTime) }}
                 </div>
               </div>
-              <div class="card-bottom">{{item.content}}</div>
+              <div class="card-bottom">{{ item.content }}</div>
             </el-card>
           </div>
         </div>
@@ -39,51 +74,91 @@
     </div>
     <div class="background-right">
       <div class="background-rightTop">
-        <el-card style="width: 32%;height: 100%;margin-right: 1%">
-           <CommonChart :tooltip="option.tooltip" :series="option.series" :legend="option.legend"></CommonChart>
+        <el-card style="width: 32%; height: 100%">
+          <CommonChart
+            :tooltip="option.tooltip"
+            :series="option.series"
+            :legend="option.legend"
+          ></CommonChart>
         </el-card>
 
-        <el-card style="width: 32%;height: 100%;margin-right: 1%">
+        <el-card style="width: 32%; height: 100%">
           <a href="https://github.com/Zsingor" target="_blank">
             <div class="card-image">
-            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
-              <img style="width: 100px; height: 100px" src="@/assets/github.jpg"/>
+              <div
+                style="
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <img
+                  style="width: 100px; height: 100px"
+                  src="@/assets/github.jpg"
+                />
+              </div>
+              <div
+                style="
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <p style="font-size: 20px">GitHub</p>
+              </div>
             </div>
-            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
-              <p style="font-size: 20px">GitHub</p>
-            </div>
-          </div>
           </a>
         </el-card>
 
-        <el-card style="width: 32%;height: 100%;margin-right: 1%">
+        <el-card style="width: 32%; height: 100%">
           <a href="https://cn.vuejs.org/" target="_blank">
             <div class="card-image">
-            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
-              <img style="width: 100px; height: 100px" src="@/assets/vue.png"/>
+              <div
+                style="
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <img
+                  style="width: 100px; height: 100px"
+                  src="@/assets/vue.png"
+                />
+              </div>
+              <div
+                style="
+                  width: 100%;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                "
+              >
+                <p style="font-size: 20px">Vue</p>
+              </div>
             </div>
-            <div style="width: 100%;display: flex;justify-content: center;align-items: center">
-              <p style="font-size: 20px">Vue</p>
-            </div>
-          </div>
           </a>
         </el-card>
       </div>
       <div class="background-rightBottom">
-        <el-card style="width:100%;height: 100%">
+        <el-card style="width: 100%; height: 100%">
           <el-scrollbar wrap-class="scrollbar-wrapper">
             <div style="height: 100%">
               <el-calendar class="calendar" v-model="dateValue">
                 <template #date-cell="{ data }">
-                  <p :class="data.isSelected ? 'is-selected' : ''">
+                  <div :class="data.isSelected ? 'is-selected' : ''">
                     <div>
                       {{ data.day.split('-').slice(2).join('') }}
-                      <span v-if="restDay(data)" class="rest">{{ $t('home.rest') }}</span>
+                      <span v-if="restDay(data)" class="rest">{{
+                        $t('home.rest')
+                      }}</span>
                     </div>
                     <div>
                       {{ data.isSelected ? '✔️' : '' }}
                     </div>
-                  </p>
+                  </div>
                 </template>
               </el-calendar>
             </div>
@@ -133,13 +208,13 @@ const user = ref({
 
 //右键菜单选择回调
 const select = async (item) => {
-  if (item.id===1) {
+  if (item.id === 1) {
     downloadLocalTemplate('/public/static/work.png', 'work.png')
-  } else if (item.id===2) {
+  } else if (item.id === 2) {
     let msg = getExplorerInfo()
     await toClipboard(JSON.stringify(msg))
     message('浏览器信息已复制')
-  } else if (item.id===3) {
+  } else if (item.id === 3) {
     let msg = getuuid()
     await toClipboard(JSON.stringify(msg))
     message('浏览器指纹已复制')
@@ -174,7 +249,7 @@ const initUser = () => {
         user.value = res.data
       })
       .catch((error) => {
-        message(error,"error")
+        message(error, 'error')
       })
   } else {
     user.value.name = '游客'
@@ -305,7 +380,6 @@ onMounted(() => {
 }
 
 .card-table {
-  margin-top: 20px;
   height: 90%;
   overflow: hidden;
   overflow-y: auto;
@@ -358,6 +432,7 @@ onMounted(() => {
 
 .background-rightTop {
   display: flex;
+  justify-content: space-between;
   width: 100%;
   height: 30%;
 }
