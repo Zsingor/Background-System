@@ -6,7 +6,7 @@
         <query-form v-show="queryShow"/>
       </template>
       <!--  表格上方左侧的按钮组    -->
-      <template #toolbar_buttons class="buttons">
+      <template #toolbar_buttons> 
         <vxe-button status="danger" @click="deleteTableData(xGrid,'/logs/delete',true)">批量删除</vxe-button>
       </template>
       <!--  表格上方右侧的按钮组    -->
@@ -139,9 +139,6 @@ const gridOptions = reactive({
   toolbarConfig: {
     ...getToolbarConfig(),
     export: true,
-    slots: {
-      tools: 'toolbar_tools'
-    }
   },
   exportConfig: {
     types: ["csv", "xlsx", "html", "xml", "txt"],

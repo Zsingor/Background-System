@@ -113,7 +113,8 @@ export function getToolbarConfig() {
         zoom: true,
         custom: true,
         slots: {
-            buttons: 'toolbar_buttons'
+            buttons: 'toolbar_buttons',
+            tools: 'toolbar_tools'
         }
     }
 }
