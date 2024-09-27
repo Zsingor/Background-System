@@ -1,7 +1,7 @@
 import router from "@/router/index.js";
 import { nextTick, reactive, ref, unref } from "vue";
 import { isEmpty } from "@/utils/commons";
-import {persistentConfig, reloadCurrentRoute} from "@/layout/layout.js";
+import {persistentConfig, reloadCurrentRoute, sidebarWidth} from "@/layout/layout.js";
 
 export const scrollbarRef = ref(null); // 滚动条dom
 
@@ -12,6 +12,32 @@ export const tagMenu = reactive({
     menuLeft: 0,                   // 菜单定位
     menuTop: 0
 });
+
+/**
+ * 处理鼠标滚轮滚动
+ * @param e  滚动事件
+ */
+export function handleScroll(e) {
+    // 如果滚轮向下滚动，e.wheelDelta为负数，则滚动条向右移动，否则向左移动
+    const wheelDelta = e.wheelDelta || -e.deltaY * 40
+	scrollbarRef.value.setScrollLeft(scrollbarRef.value.wrapRef.scrollLeft - wheelDelta)
+}
+
+/**
+ * 根据激活的路由标签所处位置自动滚动到目标标签
+ * @param activeTag    激活的标签
+ */
+export function moveToTarget(activeTag) {
+    const scrollWrapper = unref(scrollbarRef);
+    const containerWidth = scrollWrapper.wrapRef.offsetWidth;      // 获取滚动容器可视宽度
+    const targetLeftPosition = activeTag.getBoundingClientRect().left - sidebarWidth.value; // 跳转目标距离屏幕左边的距离
+    if (targetLeftPosition < containerWidth / 3) {    // 如果目标位置距离左边小于可视宽度的3分之一，则触发左滚动，若大于3分之二，则触发右滚动，处于中间则不滚动
+        scrollWrapper.wrapRef.scrollLeft = activeTag.offsetLeft - 4; // 先跳转到指定目标，此时激活标签处于第一个位置
+        scrollWrapper.wrapRef.scrollLeft -= scrollWrapper.wrapRef.offsetWidth / 3; // 在当前基础上在向左滚动3分之一，增加左边可见度
+    } else if (targetLeftPosition > containerWidth / 3 * 2) {
+        scrollWrapper.wrapRef.scrollLeft = activeTag.offsetLeft - containerWidth / 3; // 同理，触发向右滚动也需要向左滚动3分之一，增加左边可见度
+    }
+}
 
 /**
  * 新增路由标签
@@ -86,57 +112,6 @@ export function closeOtherTag() {
                 componentName: temp.componentName
             });
         });
-    }
-}
-
-/**
- * 处理鼠标滚轮滚动
- * @param e  滚动事件
- */
-export function handleScroll(e) {
-    let i = 0;        // 判断是否停止
-    const speed = 4;  // 滚动速度
-    const scrollWrapper = unref(scrollbarRef).wrap;  // 获取滚动dom
-    let interval;
-    // 如果滚轮向下滚动，e.wheelDelta为负数，则滚动条向右移动，否则向左移动
-    if (e.wheelDelta < 0) {
-        if (interval)
-            clearInterval(interval);
-        interval = setInterval(() => {
-            i -= speed;
-            if (i < e.wheelDelta) {
-                clearInterval(interval);
-            } else {
-                scrollWrapper.scrollLeft += speed;
-            }
-        }, 1);
-    } else {
-        if (interval)
-            clearInterval(interval);
-        interval = setInterval(() => {
-            i += speed;
-            if (i > e.wheelDelta) {
-                clearInterval(interval);
-            } else {
-                scrollWrapper.scrollLeft -= speed;
-            }
-        }, 1);
-    }
-}
-
-/**
- * 根据激活的路由标签所处位置自动滚动到目标标签
- * @param activeTag    激活的标签
- */
-export function moveToTarget(activeTag) {
-    const scrollWrapper = unref(scrollbarRef);
-    const containerWidth = scrollWrapper.wrap.offsetWidth;      // 获取滚动容器可视宽度
-    const targetLeftPosition = activeTag.getBoundingClientRect().left - sidebarWidth.value; // 跳转目标距离屏幕左边的距离
-    if (targetLeftPosition < containerWidth / 3) {    // 如果目标位置距离左边小于可视宽度的3分之一，则触发左滚动，若大于3分之二，则触发右滚动，处于中间则不滚动
-        scrollWrapper.wrap.scrollLeft = activeTag.offsetLeft - 4; // 先跳转到指定目标，此时激活标签处于第一个位置
-        scrollWrapper.wrap.scrollLeft -= scrollWrapper.wrap.offsetWidth / 3; // 在当前基础上在向左滚动3分之一，增加左边可见度
-    } else if (targetLeftPosition > containerWidth / 3 * 2) {
-        scrollWrapper.wrap.scrollLeft = activeTag.offsetLeft - containerWidth / 3; // 同理，触发向右滚动也需要向左滚动3分之一，增加左边可见度
     }
 }
 

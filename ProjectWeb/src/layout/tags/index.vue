@@ -24,6 +24,7 @@
 
 <script setup>
 import TagMenu from "@/layout/tags/components/TagMenu.vue";
+import TagScroll from "./components/TagScroll.vue";
 import {useRoute,useRouter} from "vue-router";
 import {persistentConfig, sidebarWidth,windowConfig} from "@/layout/layout.js";
 import {isEmpty} from "@/utils/commons.js";
@@ -62,7 +63,7 @@ watch(() => route.path, () => {
     const scrollWrapper = unref(scrollbarRef)
     // 路由发生改变时将目标路由滚动到所对应的标签
     if (!isEmpty(scrollWrapper)) {
-      const tagChilds = scrollWrapper.wrap.children[0].children[0].children
+      const tagChilds = scrollWrapper.wrapRef.children[0].children[0].children
       if (tagChilds && tagChilds.length > 0) {
         for (let i = 0; i < tagChilds.length; i++) {
           if (tagChilds[i].classList.contains("is-active")) {
