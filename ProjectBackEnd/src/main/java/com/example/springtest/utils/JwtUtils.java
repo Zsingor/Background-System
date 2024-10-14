@@ -17,7 +17,7 @@ public class JwtUtils {
         // 默认1天过期
         instance.add(Calendar.DATE, 1);
         // 20秒后令牌token失效
-        //instance.add(Calendar.SECOND,20);
+//        instance.add(Calendar.SECOND,20);
 
         //创建jwt builder
         JWTCreator.Builder builder = JWT.create();

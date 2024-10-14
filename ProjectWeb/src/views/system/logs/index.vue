@@ -15,7 +15,7 @@
       </template>
       <!--  详细内容    -->
       <template #details="{ row }">
-        <el-button type="primary" link @click="showDetails(row)">查看详情</el-button>
+        <el-link :underline="false" type="primary" @click="showDetails(row)">查看详情</el-link>
       </template>
       <!--  操作结果    -->
       <template #errFlag="{ row }">
@@ -28,7 +28,7 @@
       </template>
       <!--  错误信息    -->
       <template #errMsg="{ row }">
-        <el-button type="primary" link @click="showErrmsg(row)">查看详情</el-button>
+        <el-link :underline="false" type="primary" @click="showErrmsg(row)">查看详情</el-link>
       </template>
       <!--  操作按钮组    -->
       <template #operate="{ row }">
@@ -138,6 +138,10 @@ const gridOptions = reactive({
   stripe: true,
   toolbarConfig: {
     ...getToolbarConfig(),
+    slots: {
+      buttons: 'toolbar_buttons',
+      tools: 'toolbar_tools'
+    },
     export: true,
   },
   exportConfig: {

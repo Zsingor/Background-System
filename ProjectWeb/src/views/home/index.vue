@@ -4,16 +4,17 @@
       <el-card shadow="always" class="user-card">
         <div class="user-div">
           <context-menu
-            :menu="[
+              :menu="[
               { id: 1, label: '下载' },
               { id: 2, label: '获取信息' },
               { id: 3, label: '获取指纹' },
+              { id: 4, label:'获取网络状态'}
             ]"
-            @select="select"
+              @select="select"
           >
             <img
-              style="width: 200px; height: 140px"
-              src="/public/static/work.png"
+                style="width: 200px; height: 140px"
+                src="/public/static/work.png"
             />
           </context-menu>
           <div class="userInfo">
@@ -25,8 +26,8 @@
       <el-card class="table-card">
         <template #header>
           <div
-            class="card-header"
-            style="
+              class="card-header"
+              style="
               display: flex;
               justify-content: space-between;
               padding-left: 2%;
@@ -36,23 +37,23 @@
           >
             <span class="important-font">{{ $t('home.notify') }}</span>
             <el-button
-              :icon="RefreshRight"
-              circle
-              :title="$t('home.notify')"
-              @click="initSystemNotice"
+                :icon="RefreshRight"
+                circle
+                :title="$t('home.notify')"
+                @click="initSystemNotice"
             />
           </div>
         </template>
 
         <div
-          v-loading="notifyLoading"
-          class="card-table"
-          v-if="!isEmpty(notifications)"
+            v-loading="notifyLoading"
+            class="card-table"
+            v-if="!isEmpty(notifications)"
         >
           <div
-            v-for="(item, index) in notifications"
-            :key="index"
-            class="card-item"
+              v-for="(item, index) in notifications"
+              :key="index"
+              class="card-item"
           >
             <el-card shadow="hover">
               <div class="card-top">
@@ -76,9 +77,9 @@
       <div class="background-rightTop">
         <el-card style="width: 32%; height: 100%">
           <CommonChart
-            :tooltip="option.tooltip"
-            :series="option.series"
-            :legend="option.legend"
+              :tooltip="option.tooltip"
+              :series="option.series"
+              :legend="option.legend"
           ></CommonChart>
         </el-card>
 
@@ -86,7 +87,7 @@
           <a href="https://github.com/Zsingor" target="_blank">
             <div class="card-image">
               <div
-                style="
+                  style="
                   width: 100%;
                   display: flex;
                   justify-content: center;
@@ -94,12 +95,12 @@
                 "
               >
                 <img
-                  style="width: 100px; height: 100px"
-                  src="@/assets/github.jpg"
+                    style="width: 100px; height: 100px"
+                    src="@/assets/github.jpg"
                 />
               </div>
               <div
-                style="
+                  style="
                   width: 100%;
                   display: flex;
                   justify-content: center;
@@ -116,7 +117,7 @@
           <a href="https://cn.vuejs.org/" target="_blank">
             <div class="card-image">
               <div
-                style="
+                  style="
                   width: 100%;
                   display: flex;
                   justify-content: center;
@@ -124,12 +125,12 @@
                 "
               >
                 <img
-                  style="width: 100px; height: 100px"
-                  src="@/assets/vue.png"
+                    style="width: 100px; height: 100px"
+                    src="@/assets/vue.png"
                 />
               </div>
               <div
-                style="
+                  style="
                   width: 100%;
                   display: flex;
                   justify-content: center;
@@ -152,8 +153,8 @@
                     <div>
                       {{ data.day.split('-').slice(2).join('') }}
                       <span v-if="restDay(data)" class="rest">{{
-                        $t('home.rest')
-                      }}</span>
+                          $t('home.rest')
+                        }}</span>
                     </div>
                     <div>
                       {{ data.isSelected ? '✔️' : '' }}
@@ -170,8 +171,8 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
-import { userInfo } from '@/layout/user.js'
+import {onMounted, reactive, ref} from 'vue'
+import {userInfo} from '@/layout/user.js'
 import {
   isEmpty,
   parseDate,
@@ -179,11 +180,12 @@ import {
   getuuid,
 } from '@/utils/commons.js'
 import request from '@/request/index.js'
-import { downloadLocalTemplate } from '@/utils/resource.js'
-import { RefreshRight } from '@element-plus/icons'
+import {downloadLocalTemplate} from '@/utils/resource.js'
+import {RefreshRight} from '@element-plus/icons'
 import useClipboard from 'vue-clipboard3'
-import { message } from '@/utils/message'
-const { toClipboard } = useClipboard()
+import {message} from '@/utils/message'
+
+const {toClipboard} = useClipboard()
 
 defineOptions({
   name: 'home',
@@ -218,6 +220,17 @@ const select = async (item) => {
     let msg = getuuid()
     await toClipboard(JSON.stringify(msg))
     message('浏览器指纹已复制')
+  }else if(item.id === 4){
+    let online=navigator.onLine
+    let msg=""
+    if(!online){
+      msg={"网络状态":"离线","带宽":"离线","延迟":"离线"}
+    }else{
+      let con=navigator.connection
+      msg={"网络状态":con.effectiveType,"带宽":`${con.downlink}Mb/s`,"延迟":`${con.rtt}ms`}
+    }
+    await toClipboard(JSON.stringify(msg))
+    message('网络状态已复制')
   }
 }
 
@@ -241,16 +254,18 @@ const initUser = () => {
   if (loginFlag.value) {
     user.value.id = userInfo.baseInfo.user_id
     request
-      .post('/user/querymsssage', user.value, {
-        onUploadProgress: upload,
-        onDownloadProgress: download,
-      })
-      .then((res) => {
-        user.value = res.data
-      })
-      .catch((error) => {
-        message(error, 'error')
-      })
+        .post('/user/querymsssage', user.value, {
+          onUploadProgress: upload,
+          onDownloadProgress: download,
+        })
+        .then((res) => {
+          user.value = res.data
+        })
+        .catch((error) => {
+          if (!isEmpty(error)) {
+            message(error, 'error')
+          }
+        })
   } else {
     user.value.name = '游客'
     user.value.description = '暂无描述'
@@ -267,14 +282,15 @@ const initSystemNotice = () => {
       queryForm: {},
     }
     request
-      .post('/notification/query', params)
-      .then((res) => {
-        notifications.value = res.data.resultList
-      })
-      .catch((err) => {})
-      .finally(() => {
-        notifyLoading.value = false
-      })
+        .post('/notification/query', params)
+        .then((res) => {
+          notifications.value = res.data.resultList
+        })
+        .catch((err) => {
+        })
+        .finally(() => {
+          notifyLoading.value = false
+        })
   }
 }
 
@@ -302,10 +318,10 @@ let option = reactive({
         show: false,
       },
       data: [
-        { value: 48.1, name: 'Vue3' },
-        { value: 29.9, name: 'Java' },
-        { value: 21.6, name: 'JavaScript' },
-        { value: 0.4, name: 'Other' },
+        {value: 48.1, name: 'Vue3'},
+        {value: 29.9, name: 'Java'},
+        {value: 21.6, name: 'JavaScript'},
+        {value: 0.4, name: 'Other'},
       ],
     },
   ],

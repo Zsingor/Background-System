@@ -15,7 +15,6 @@
     "@wangeditor/editor-for-vue": "^5.1.12",
     "@wangeditor/plugin-upload-attachment": "^1.1.0",
     "axios": "^1.7.2",
-    "clipboard": "^2.0.11",
     "echarts": "^5.5.0",
     "element-plus": "^2.7.3",
     "exceljs": "^4.4.0",

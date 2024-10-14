@@ -111,6 +111,16 @@ onMounted(() => {
 
   // 开启窗口变化监听
   window.addEventListener('resize', onResize, { passive: true })
+
+  //开启页面可见度监听
+  // window.addEventListener("visibilitychange", ()=>{
+  //   if(document.visibilityState === 'visible'){
+  //     console.log("页面显示")
+  //   }else if(document.visibilityState === 'hidden'){
+  //     console.log("页面隐藏")
+  //   }
+  // })
+
 })
 </script>
 

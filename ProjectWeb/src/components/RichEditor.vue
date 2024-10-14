@@ -56,7 +56,7 @@ const props = defineProps({
   }
 })
 
-const emits = defineEmits(["update:modelValue", "setHtml"]);
+const emits = defineEmits(["update:modelValue", "getHtml"]);
 
 // 注册。要在创建编辑器之前注册，且只能注册一次，不可重复注册。
 if (Boot.plugins.length < 13) {
@@ -92,7 +92,7 @@ const handleCreated = (editor) => {
 
 // 内容改变
 const handleChange = (editor) => {
-  emits("setHtml", editor.getText(), editor.getHtml());
+  emits("getHtml", editor.getText(), editor.getHtml());
 }
 
 // 组件销毁时，也及时销毁编辑器

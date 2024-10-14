@@ -54,10 +54,10 @@
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item @click="assignRole(row)">
-                <el-button type="text"> 分配角色 </el-button>
+                <el-button type="primary" text> 分配角色 </el-button>
               </el-dropdown-item>
               <el-dropdown-item @click="updatepwd(row)">
-                <el-button type="text"> 修改密码 </el-button>
+                <el-button type="primary" text> 修改密码 </el-button>
               </el-dropdown-item>
             </el-dropdown-menu>
           </template>

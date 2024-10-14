@@ -1,23 +1,5 @@
 // 复制工具类
 
-import Clipboard from 'clipboard'
-import {message} from "@/utils/message.js";
-
-export default function handleClipboard(text, event) {
-  const clipboard = new Clipboard(event.target, {
-    text: () => text
-  })
-  clipboard.on('success', () => {
-    message('复制成功')
-    clipboard.destroy()
-  })
-  clipboard.on('error', () => {
-    message('复制失败','error')
-    clipboard.destroy()
-  })
-  clipboard.onClick(event)
-}
-
 
 /**
  * 输入框复制文本事件回调(将复制带样式的文本样式清空, 只保留纯文本)

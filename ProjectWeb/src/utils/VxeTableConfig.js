@@ -1,10 +1,12 @@
-import Clipboard from 'clipboard'
+import useClipboard from 'vue-clipboard3'
 import {message} from "@/utils/message.js";
 import _ from "lodash"
 import {persistentConfig, windowConfig} from "@/layout/layout.js";
 import {unref, watch} from "vue";
 import {ElMessageBox} from "element-plus";
 import request from "@/request/index.js";
+
+const {toClipboard} = useClipboard()
 
 export const pageSizes = [10, 25, 50, 100, 200]
 
@@ -55,22 +57,13 @@ export const VxeTableCommonsConfig = {
 }
 
 //双击复制数据
-export const dbclickHandler = (event) => {
+export const dbclickHandler = async (event) => {
     try{
-        const clipboard = new Clipboard(event.$event.target, {
-            text: () => event.cell.innerText
-        })
-        clipboard.on('success', () => {
-            message('复制成功')
-            clipboard.destroy()
-        })
-        clipboard.on('error', () => {
-            message('复制失败', 'error')
-            clipboard.destroy()
-        })
+        await toClipboard(event.cell.innerText)
+        message('复制成功')
     }
     catch{
-        
+        message('复制失败', 'error')
     }
 }
 
@@ -114,7 +107,6 @@ export function getToolbarConfig() {
         custom: true,
         slots: {
             buttons: 'toolbar_buttons',
-            tools: 'toolbar_tools'
         }
     }
 }
