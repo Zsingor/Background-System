@@ -30,8 +30,6 @@
               style="
               display: flex;
               justify-content: space-between;
-              padding-left: 2%;
-              padding-right: 2%;
               padding: 0;
             "
           >
@@ -177,7 +175,7 @@ import {
   isEmpty,
   parseDate,
   getExplorerInfo,
-  getuuid,
+  getuuid, doAnimation,
 } from '@/utils/commons.js'
 import request from '@/request/index.js'
 import {downloadLocalTemplate} from '@/utils/resource.js'
@@ -274,6 +272,7 @@ const initUser = () => {
 
 //初始化系统通知
 const initSystemNotice = () => {
+  // doAnimation(1000,10,1000,(val)=>{console.log(val)})
   if (loginFlag.value) {
     notifyLoading.value = true
     const params = {

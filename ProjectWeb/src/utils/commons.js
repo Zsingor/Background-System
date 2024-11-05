@@ -1,7 +1,7 @@
 //常见公共工具类
 
-import { dayjs } from "element-plus";
-import { customRef, onUnmounted, ref } from "vue";
+import {dayjs} from "element-plus";
+import {customRef, onUnmounted, ref} from "vue";
 import SparkMD5 from 'spark-md5'
 
 
@@ -40,8 +40,8 @@ export function parseDate(date, format) {
 
 /**
  * 图片转base64
- * @param {*} file 
- * @returns 
+ * @param {*} file
+ * @returns
  */
 export function blobToBase64(file) {
     return new Promise((resolve, reject) => {
@@ -203,11 +203,9 @@ export const concurTask = (tsakList, maxNum) => {
             try {
                 let res = await task()
                 result[current] = res
-            }
-            catch (err) {
+            } catch (err) {
                 result[current] = err
-            }
-            finally {
+            } finally {
                 count++
                 if (count === tsakList.length) {
                     resolve(result)
@@ -228,7 +226,7 @@ export const concurTask = (tsakList, maxNum) => {
  * 支持防抖的响应式变量
  * @param {*} value 要添加防抖的响应式数据
  * @param {number} duration 持续时间
- * @returns 
+ * @returns
  */
 export const debounceRef = (value, duration = 1000) => {
     let timer
@@ -254,8 +252,8 @@ export const debounceRef = (value, duration = 1000) => {
 
 /**
  * 大数相加
- * @param {string} x 
- * @param {string} y 
+ * @param {string} x
+ * @param {string} y
  */
 export const plusBigNum = (x, y) => {
     let result = ""
@@ -283,6 +281,7 @@ export const plusBigNum = (x, y) => {
 export const useDefer = (maxCount = 60) => {
     const frameCount = ref(0)
     let currentId
+
     function updateFrameCount() {
         currentId = requestAnimationFrame(() => {
             frameCount.value++
@@ -292,6 +291,7 @@ export const useDefer = (maxCount = 60) => {
             updateFrameCount()
         })
     }
+
     updateFrameCount()
     onUnmounted(() => {
         cancelAnimationFrame(currentId)
@@ -304,12 +304,13 @@ export const useDefer = (maxCount = 60) => {
 
 /**
  * 深度克隆函数
- * @param {*} value 
- * @returns 
+ * @param {*} value
+ * @returns
  */
 export const deepClone = (value) => {
     //使用WeakMap以便js进行内存回收
     const cache = new WeakMap()
+
     function _deepClone(value) {
         if (value === null || typeof value !== 'object') {
             return value
@@ -326,6 +327,7 @@ export const deepClone = (value) => {
         }
         return result
     }
+
     return _deepClone(value)
 }
 
@@ -369,4 +371,23 @@ export class specialStr {
         }
         return res
     }
+}
+
+export const doAnimation = (duration, from, to, doTask) => {
+    const speed = (to - from) / duration
+    const startTime = Date.now()
+    let value = from
+    const _run = () => {
+        const now = Date.now()
+        const time = now - startTime
+        if (time >= duration) {
+            value = to
+            doTask && doTask(value)
+            return
+        }
+        value = from + speed * time
+        doTask && doTask(value)
+        requestAnimationFrame(_run)
+    }
+    _run()
 }

@@ -188,7 +188,7 @@ import { ref } from 'vue'
 import { genFileId } from 'element-plus'
 
 defineOptions({
-  name: 'filesUpload',
+  name: 'fileTransfer',
 })
 
 const uploadRef = ref(null)

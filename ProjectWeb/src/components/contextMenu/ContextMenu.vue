@@ -16,7 +16,7 @@
             :key="item.label"
             @click="handleClick(item)"
           >
-            {{ item.label }}
+            <p>{{ item.label }}</p>
           </div>
         </div>
       </Transition>
@@ -104,9 +104,17 @@ onBeforeUnmount(() => {
   padding: 7px 10px;
   font-size: 15px;
   border-radius: 5px;
-  display: flex;
-  align-items: center;
   cursor: pointer;
+  max-width: 150px;
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+  p{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 .menu-item:hover {
