@@ -6,10 +6,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @EnableTransactionManagement
 @SpringBootApplication
-public class SpringTestApplication {
+public class ProjectBackEndApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringTestApplication.class, args);
+        SpringApplication.run(ProjectBackEndApplication.class, args);
     }
 
 }
