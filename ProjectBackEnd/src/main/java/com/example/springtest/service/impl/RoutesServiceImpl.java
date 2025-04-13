@@ -14,10 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +28,9 @@ public class RoutesServiceImpl implements RoutesService {
     @Override
     public List<Routes> routesquery(Roles roles) {
         List<String> routesIds=rolesRoutesMapper.queryRoleRoutes(roles);
+        if(routesIds.isEmpty()){
+            return Collections.emptyList();
+        }
         List<Routes> routesList=routesMapper.routesquery(routesIds);
 
         return Routeprocess(routesList);
@@ -122,7 +122,6 @@ public class RoutesServiceImpl implements RoutesService {
                     .collect(Collectors.toList());
             route.setChildren(children);
         }
-
         return parentRoutes;
     }
 }
