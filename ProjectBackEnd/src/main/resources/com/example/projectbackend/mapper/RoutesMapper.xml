@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.projectbackend.mapper.RoutesMapper">
+
+    <select id="routesAllquery" parameterType="com.example.projectbackend.entity.Routes" resultType="com.example.projectbackend.entity.Routes">
+        SELECT * FROM sys_data.routes
+        WHERE 1=1
+        <if test="creatorId != null and creatorId != ''">
+            AND creator_id = #{creatorId}
+        </if>
+        <if test="type != null and type != ''">
+            AND type = #{type}
+        </if>
+        <if test="title != null and title != ''">
+            AND title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        ORDER BY position DESC
+    </select>
+
+    <select id="routesquery" parameterType="java.util.List" resultType="com.example.projectbackend.entity.Routes">
+        SELECT * FROM sys_data.routes WHERE id IN
+        <foreach item="item" collection="routesid" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ORDER BY position DESC
+    </select>
+
+    <select id="queryAuthority" parameterType="java.util.List" resultType="com.example.projectbackend.entity.Routes">
+        SELECT * FROM sys_data.routes WHERE id IN
+        <foreach item="item" collection="routesIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        And type = '2'
+        ORDER BY position DESC
+    </select>
+
+    <delete id="routesdelete" parameterType="java.util.List">
+        DELETE FROM sys_data.routes WHERE id IN
+        <foreach item="item" collection="menulist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>

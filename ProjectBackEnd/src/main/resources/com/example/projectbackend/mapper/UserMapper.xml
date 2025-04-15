@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.projectbackend.mapper.UserMapper">
+
+    <resultMap id="UserResultMap" type="com.example.projectbackend.entity.User">
+        <id property="id" column="id" />
+        <result property="name" column="name" />
+        <result property="password" column="password" />
+        <result property="email" column="email" />
+        <result property="description" column="description" />
+        <result property="status" column="status" />
+        <collection property="rolesid" ofType="java.lang.String" select="selectUserRoles" column="id"/>
+    </resultMap>
+
+    <select id="selectUserRoles" resultType="java.lang.String">
+        SELECT roleid FROM sys_data.user_roles WHERE userid = #{id}
+    </select>
+
+    <select id="userquery" parameterType="com.example.projectbackend.entity.User" resultMap="UserResultMap">
+        SELECT id,name,email,description,status,create_time FROM sys_data.user
+        WHERE type = 1
+        <if test="id != null and id != ''">
+            AND id = #{id}
+        </if>
+        <if test="name != null and name != ''">
+            AND name LIKE CONCAT('%', #{name}, '%')
+        </if>
+        <if test="email != null and email != ''">
+            AND email LIKE CONCAT('%', #{email}, '%')
+        </if>
+        <if test="description != null and description != ''">
+            AND description LIKE CONCAT('%', #{description}, '%')
+        </if>
+        <if test="status != null and status != ''">
+            AND status = #{status}
+        </if>
+        <if test="rolesid != null and !rolesid.isEmpty()">
+            AND id IN(
+            SELECT userid
+            FROM sys_data.user_roles
+            WHERE roleid IN
+            <foreach item="roleId" collection="rolesid" open="(" separator="," close=")">
+                #{roleId}
+            </foreach>
+            GROUP BY userid HAVING COUNT(roleid) = #{rolesidSize}
+            )
+        </if>
+    </select>
+
+    <delete id="userdelete" parameterType="java.util.List">
+        DELETE FROM sys_data.user WHERE id IN
+        <foreach item="item" collection="userlist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+
+    <update id="useragree" parameterType="java.util.List">
+        UPDATE sys_data.user SET type=1 WHERE id IN
+        <foreach item="item" collection="userlist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </update>
+
+</mapper>

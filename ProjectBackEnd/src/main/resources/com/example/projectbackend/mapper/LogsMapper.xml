@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.projectbackend.mapper.LogsMapper">
+    <select id="logsquery" parameterType="com.example.projectbackend.entity.Logs" resultType="com.example.projectbackend.entity.Logs">
+        SELECT * FROM sys_data.logs
+        WHERE 1=1
+        <if test="userid != null and userid != ''">
+            AND userid = #{userid}
+        </if>
+        <if test="username != null and username != ''">
+            AND username LIKE CONCAT('%', #{username}, '%')
+        </if>
+        <if test="module != null and module != ''">
+            AND module LIKE CONCAT('%', #{module}, '%')
+        </if>
+        <if test="operate != null and operate != ''">
+            AND operate LIKE CONCAT('%', #{operate}, '%')
+        </if>
+        <if test="details != null and details != ''">
+            AND details LIKE CONCAT('%', #{details}, '%')
+        </if>
+        <if test="ip != null and ip != ''">
+            AND ip LIKE CONCAT('%', #{ip}, '%')
+        </if>
+        <if test="errFlag != null and errFlag != ''">
+            AND err_flag = #{errFlag}
+        </if>
+        <if test="startDate != null">
+            AND operatedate &gt;= #{startDate}
+        </if>
+        <if test="endDate != null">
+            AND operatedate &lt;= #{endDate}
+        </if>
+        ORDER BY operatedate DESC
+    </select>
+
+    <delete id="logsdelete" parameterType="java.util.List">
+        DELETE FROM sys_data.logs WHERE id IN
+        <foreach item="item" collection="logslist" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </delete>
+</mapper>
